@@ -1,0 +1,123 @@
+{
+  "schemaVersion": 1,
+  "entries": [
+    {
+      "version": "0.4.4",
+      "notes": {
+        "zh": [
+          "搜索精准匹配优先，折叠明显无关结果，并忽略空格、书名号及常见标点",
+          "搜索结果显示状态、最新章节及可获取的总章数；换源时综合匹配书名、作者、状态和章数",
+          "换源时原地更新书架记录，保留阅读进度、书签、笔记和自定义封面，不再重复添加书籍",
+          "支持 Legado／阅读 v3 JSON 书源文件与 URL 导入，并可导出全部或已选书源",
+          "兼容 Legado exploreUrl／ruleExplore 发现规则，发现页自动使用支持发现功能的书源",
+          "新增正文内容过滤规则，支持文本、正则、删除及自定义替换",
+          "新增六种书籍打开动画，沿用原项目界面并加入克制的 iOS 风格动效",
+          "调整章节分页，使章节标题左对齐并与正文显示在同一页",
+          "新增 iOS iCloud 手动备份与恢复，覆盖书源、书架和阅读进度",
+          "将应用名称与图标更改为「拾页」，补充修改版仓库、上游署名和开源许可说明",
+          "精简设置页并将 GitHub 入口改为拾页仓库",
+          "修复特殊 EPUB／Kindle 中同一图片被数千章节重复复制和解码，导致打开极慢或卡死的问题"
+        ],
+        "zh-TW": [
+          "搜尋精準匹配優先，折疊明顯無關結果，並忽略空格、書名號及常見標點",
+          "搜尋結果顯示狀態、最新章節及可取得的總章數；換源時綜合匹配書名、作者、狀態和章數",
+          "換源時原地更新書架記錄，保留閱讀進度、書籤、筆記和自訂封面，不再重複加入書籍",
+          "支援 Legado／閱讀 v3 JSON 書源檔案與 URL 匯入，並可匯出全部或已選書源",
+          "相容 Legado exploreUrl／ruleExplore 發現規則，發現頁自動使用支援發現功能的書源",
+          "新增正文內容過濾規則，支援文字、正則、刪除及自訂取代",
+          "新增六種書籍開啟動畫，沿用原專案介面並加入克制的 iOS 風格動效",
+          "調整章節分頁，使章節標題靠左並與正文顯示在同一頁",
+          "新增 iOS iCloud 手動備份與還原，涵蓋書源、書架和閱讀進度",
+          "將應用程式名稱與圖示更改為「拾頁」，補充修改版倉庫、上游署名和開源授權說明",
+          "精簡設定頁並將 GitHub 入口改為拾頁倉庫",
+          "修復特殊 EPUB／Kindle 中同一圖片被數千章節重複複製和解碼，導致開啟極慢或卡死的問題"
+        ],
+        "en": [
+          "Prioritized exact search matches, collapsed clearly unrelated results, and ignored whitespace, title marks, and common punctuation",
+          "Added status, latest chapter, and available total chapter counts to search results, with safer source-switch ranking",
+          "Updated shelf records in place when switching sources while preserving progress, bookmarks, notes, and custom covers",
+          "Added Legado/Reading v3 JSON source import from files and URLs, plus export for all or selected sources",
+          "Added Legado exploreUrl/ruleExplore discovery support and automatic selection of discovery-capable sources",
+          "Added in-app content filter rules with text, regex, deletion, and custom replacement actions",
+          "Added six book-opening animations while preserving the original UI with restrained iOS-inspired motion",
+          "Adjusted pagination so chapter titles are left-aligned and share the page with chapter text",
+          "Added manual iOS iCloud backup and restore for sources, shelf books, and reading progress",
+          "Renamed and rebranded the app as ShiYe Reader with fork, upstream attribution, and licensing information",
+          "Simplified Settings and changed the GitHub entry to the ShiYe repository",
+          "Fixed very slow opening or freezes when EPUB/Kindle books reuse the same image across thousands of chapters"
+        ],
+        "ja": [
+          "完全一致の検索結果を優先し、明らかに無関係な結果を折りたたみ、空白や一般的な記号を無視するようにしました",
+          "検索結果に状態、最新章、取得可能な総章数を表示し、ソース切替時の照合を改善しました",
+          "ソース切替時に進捗、ブックマーク、メモ、カスタム表紙を保持したまま本棚レコードを更新するようにしました",
+          "Legado／閲読 v3 JSON 書籍ソースのファイル・URL インポートと、全件または選択項目のエクスポートに対応しました",
+          "Legado exploreUrl／ruleExplore の発見ルールと、発見対応ソースの自動選択に対応しました",
+          "テキスト、正規表現、削除、任意置換に対応する本文フィルタールールを追加しました",
+          "元の UI を保ちながら控えめな iOS 風モーションを用いた6種類の本を開くアニメーションを追加しました",
+          "章タイトルを左揃えにし、本文と同じページに表示するようページ分割を調整しました",
+          "書籍ソース、本棚、読書進捗を対象とする iOS iCloud の手動バックアップと復元を追加しました",
+          "アプリ名とアイコンを「拾页」に変更し、改変版、上流への帰属表示、ライセンス情報を追加しました",
+          "設定画面を整理し、GitHub のリンクを拾页リポジトリに変更しました",
+          "同じ画像を数千章で再利用する EPUB／Kindle の起動が極端に遅くなる、または停止する問題を修正しました"
+        ]
+      }
+    },
+    {
+      "version": "0.4.3 · 拾页修改版",
+      "notes": {
+        "zh": [
+          "将应用名称与图标更改为「拾页」，并补充修改版仓库、上游署名和开源许可说明",
+          "调整章节分页：章节标题左对齐，并与正文显示在同一页",
+          "新增统一书源管理、批量可用性测试、筛选和手动批量删除",
+          "新增 Legado／阅读 v3 JSON 书源文件与 URL 导入，并支持将全部或已选书源导出为可重新导入的 JSON 文件",
+          "新增正文内容过滤规则，可在应用内添加、编辑、启停或删除文本及正则规则，自动屏蔽网址、乱码和广告并支持自定义替换",
+          "修复阅读时换源会被当作新书的问题；现在原地更新书架记录，并保留阅读进度、书签、笔记和自定义封面",
+          "新增 iOS iCloud 手动备份与恢复，覆盖书源、书架和阅读进度",
+          "精简设置页，移除关于与支持、贡献者、QQ 频道、QQ群、Telegram、官网及检测更新入口；GitHub 入口改为拾页仓库"
+          ,"优化聚合搜索：精准书名优先、其他结果折叠，并在可用时异步补全更新状态、最新章节和总章数"
+          ,"兼容包含 exploreUrl／ruleExplore 的 Legado 发现规则，并在换源时综合书名、作者、状态和章数排序"
+          ,"新增六种书籍打开动画选择，整体沿用原项目界面并加入克制的 iOS 风格动效"
+        ],
+        "zh-TW": [
+          "將應用程式名稱與圖示更改為「拾頁」，並補充修改版倉庫、上游署名和開源授權說明",
+          "調整章節分頁：章節標題靠左，並與正文顯示在同一頁",
+          "新增統一書源管理、批次可用性測試、篩選和手動批次刪除",
+          "新增 Legado／閱讀 v3 JSON 書源檔案與 URL 匯入，並支援將全部或已選書源匯出為可重新匯入的 JSON 檔案",
+          "新增正文內容過濾規則，可在應用程式內新增、編輯、啟停或刪除文字及正則規則，自動屏蔽網址、亂碼和廣告並支援自訂取代",
+          "修復閱讀時換源會被視為新書的問題；現在原地更新書架記錄，並保留閱讀進度、書籤、筆記和自訂封面",
+          "新增 iOS iCloud 手動備份與還原，涵蓋書源、書架和閱讀進度",
+          "精簡設定頁，移除關於與支援、貢獻者、QQ 頻道、QQ 群、Telegram、官網及檢查更新入口；GitHub 入口改為拾頁倉庫"
+          ,"最佳化聚合搜尋、折疊非精準結果，並在可用時補全狀態、最新章節及總章數"
+          ,"相容 Legado exploreUrl／ruleExplore 發現規則，換源時綜合書名、作者、狀態與章數排序"
+          ,"新增六種書籍開啟動畫，沿用原專案介面並加入克制的 iOS 風格動效"
+        ],
+        "en": [
+          "Renamed and rebranded the app as ShiYe Reader, with clear fork repository, upstream attribution, and open-source licensing notices",
+          "Adjusted chapter pagination so chapter titles are left-aligned and share the page with the chapter text",
+          "Added unified book-source management with batch availability checks, filtering, and manual batch deletion",
+          "Added Legado/Reading v3 JSON source import from files and URLs, plus re-importable JSON export for all or selected sources",
+          "Added in-app content filter rules with text or regular-expression matching, enable/disable controls, deletion, default URL and garbled-text cleanup, and custom replacements",
+          "Fixed source switching being treated as a new book; the existing shelf record is now updated in place while preserving progress, bookmarks, notes, and custom covers",
+          "Added manual iOS iCloud backup and restore for sources, shelf books, and reading progress",
+          "Simplified Settings by removing About & Support, contributors, QQ Channel, QQ group, Telegram, official website, and update-check entries; the GitHub entry now opens the ShiYe repository"
+          ,"Improved aggregate search with exact-title ranking, collapsed secondary results, and asynchronous status and chapter-count enrichment"
+          ,"Added Legado exploreUrl/ruleExplore discovery support and safer source-switch ranking using title, author, status, and chapter count"
+          ,"Added six book-opening animation choices while preserving the original UI language with restrained iOS-inspired motion"
+        ],
+        "ja": [
+          "アプリ名とアイコンを「拾页」に変更し、改変版リポジトリ、上流への帰属表示、オープンソースライセンス情報を追加しました",
+          "章タイトルを左揃えにし、本文と同じページに表示するよう章のページ分割を調整しました",
+          "書籍ソースの一元管理、一括利用可否テスト、絞り込み、手動一括削除を追加しました",
+          "Legado／閲読 v3 JSON 書籍ソースのファイルおよび URL からのインポートと、全件または選択項目を再インポート可能な JSON としてエクスポートする機能を追加しました",
+          "本文フィルタールールを追加し、テキストまたは正規表現の追加・編集・有効化・無効化・削除、URL や文字化けの自動除去、任意の置換に対応しました",
+          "読書中のソース切替が新しい本として扱われる問題を修正し、進捗、ブックマーク、メモ、カスタム表紙を保持したまま既存の本棚レコードを更新するようにしました",
+          "書籍ソース、本棚、読書進捗を対象とする iOS iCloud の手動バックアップと復元を追加しました",
+          "設定画面から「概要とサポート」、貢献者、QQ チャンネル、QQ グループ、Telegram、公式サイト、更新確認を削除し、GitHub は拾页リポジトリを開くよう変更しました"
+          ,"完全一致の書名を優先し、その他の結果を折りたたみ、状態と章数を非同期で補完する検索改善を追加しました"
+          ,"Legado の exploreUrl／ruleExplore と、書名・著者・状態・章数による安全なソース切替順位付けに対応しました"
+          ,"元の UI を保ちながら、控えめな iOS 風モーションを用いた6種類の本を開くアニメーションを追加しました"
+        ]
+      }
+    }
+  ]
+}
