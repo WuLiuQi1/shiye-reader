@@ -126,9 +126,12 @@ void main() {
     }
 
     expect(client.requestedPages, [1, 2]);
-    // 第 11 本书在首屏之外，滚到底部让 Sliver 构建它再断言。
-    await tester.drag(find.byType(CustomScrollView), const Offset(0, -1600));
-    await tester.pumpAndSettle();
+    // 结果会按相关度重排，让懒构建列表直接滚到目标项。
+    await tester.scrollUntilVisible(
+      find.text('Book 11'),
+      500,
+      scrollable: find.byType(Scrollable).last,
+    );
     expect(find.text('Book 11'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });

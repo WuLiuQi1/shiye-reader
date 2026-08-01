@@ -42,8 +42,11 @@ jobs:
       - name: Generate localizations
         run: flutter gen-l10n
 
-      - name: Format Dart source
-        run: dart format lib test tool
+      - name: Verify generated localizations are current
+        run: git diff --exit-code -- lib/l10n
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed lib test tool
 
       - name: Analyze source
         # Keep existing warnings visible without making them fatal. Analyzer

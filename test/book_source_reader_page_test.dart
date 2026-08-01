@@ -170,14 +170,9 @@ void main() {
       ),
     );
     await _pumpUntilFound(tester, find.text('第一章'));
+    // v0.4.6 keeps the chapter heading and opening body on the same page.
     expect(find.text('第一章'), findsWidgets);
-    expect(find.byType(ReaderChapterTitlePage), findsOneWidget);
-    await tester.fling(
-      find.byKey(const ValueKey('book-source-reader-surface')),
-      const Offset(0, -500),
-      1000,
-    );
-    await tester.pumpAndSettle();
+    expect(find.byType(ReaderChapterTitlePage), findsNothing);
     final firstBody = find.textContaining('第一章正文', findRichText: true);
     await _pumpUntilFound(tester, firstBody);
     expect(firstBody, findsOneWidget);
@@ -349,15 +344,6 @@ void main() {
         tester,
         find.byKey(const ValueKey('book-source-reader-surface')),
       );
-      if (mode == BookSourcePageMode.verticalScroll) {
-        await tester.fling(
-          find.byKey(const ValueKey('book-source-reader-surface')),
-          const Offset(0, -500),
-          1000,
-        );
-      } else {
-        await tester.tapAt(const Offset(760, 300));
-      }
       await tester.pumpAndSettle();
       await _pumpUntilFound(tester, bodyFinder);
 
@@ -396,7 +382,6 @@ void main() {
       tester,
       find.byKey(const ValueKey('book-source-reader-surface')),
     );
-    await tester.tapAt(const Offset(760, 300));
     await tester.pumpAndSettle();
     await _pumpUntilFound(tester, bodyFinder);
 
@@ -675,7 +660,7 @@ void main() {
   );
 
   testWidgets(
-    'next chapter preview is ready even while a farther prefetch is pending',
+    'next chapter preview avoids fetching a farther chapter',
     (tester) async {
       await tester.binding.setSurfaceSize(const Size(1200, 800));
       SharedPreferences.setMockInitialValues({
@@ -692,7 +677,7 @@ void main() {
         );
 
         expect(forwardCurl.forwardPage, isNotNull);
-        expect(client.requestedChapterIds, contains('chapter-3'));
+        expect(client.requestedChapterIds, isNot(contains('chapter-3')));
         expect(client.thirdChapterCompleted, isFalse);
       } finally {
         client.completeThirdChapter();
@@ -1042,7 +1027,7 @@ void main() {
   );
 
   testWidgets(
-    'tablet forward chapter curl previews title and body leaves for a short chapter',
+    'tablet forward chapter curl previews a short chapter without a title-only leaf',
     (tester) async {
       await tester.binding.setSurfaceSize(const Size(1200, 800));
       SharedPreferences.setMockInitialValues({
@@ -1058,15 +1043,11 @@ void main() {
           tester,
           bindingEdge: ReaderPageBindingEdge.left,
           forward: true,
-          pageIdentity: (identity) => identity.contains(':chapter-2:1:'),
+          pageIdentity: (identity) => identity.contains(':chapter-2:0:'),
         );
 
         expect(
           forwardCurl.forwardPage!.key.pageIdentity,
-          contains(':chapter-2:1:'),
-        );
-        expect(
-          forwardCurl.outgoingBackPage!.key.pageIdentity,
           contains(':chapter-2:0:'),
         );
         expect(

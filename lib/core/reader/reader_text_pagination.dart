@@ -186,6 +186,7 @@ List<ReaderTextPage> _paginateReaderText({
           startOffset: sourceOffset,
           endOffset: sourceOffset + text.length,
           layout: layout,
+          showsChapterTitle: includeChapterTitlePage,
         ),
       );
     }
@@ -200,6 +201,7 @@ List<ReaderTextPage> _paginateReaderText({
         endOffset: sourceOffset + text.length,
         layout: layout,
         displayEnd: layout.text.length,
+        showsChapterTitle: includeChapterTitlePage,
       ),
     );
     return pages;

@@ -53,7 +53,7 @@ void main() {
     );
     expect(find.textContaining('provides no source addresses'), findsOneWidget);
     expect(
-      find.textContaining('retained for no more than 30 days'),
+      find.textContaining('GitHub processes your IP address and User-Agent'),
       findsOneWidget,
     );
 

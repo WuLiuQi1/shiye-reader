@@ -71,7 +71,9 @@ void main() {
     }
   });
 
-  testWidgets('TXT chapter title is a dedicated first page', (tester) async {
+  testWidgets('TXT chapter title shares the first page with body text', (
+    tester,
+  ) async {
     await tester.binding.setSurfaceSize(const Size(400, 800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -98,7 +100,7 @@ void main() {
         await Future<void>.delayed(const Duration(milliseconds: 50));
         await tester.pump();
         if (find
-            .byKey(const ValueKey('native-chapter-title-page'))
+            .byKey(const ValueKey('native-reader-content'))
             .evaluate()
             .isNotEmpty) {
           return;
@@ -108,17 +110,15 @@ void main() {
 
     await _pumpUntilFound(
       tester,
-      find.byKey(const ValueKey('native-chapter-title-page')),
+      find.byKey(const ValueKey('native-reader-content')),
     );
 
-    final title = tester.widget<Text>(
+    expect(
       find.byKey(const ValueKey('native-chapter-title-page')),
+      findsNothing,
     );
-    expect(title.data, '第十二章  风暴将至');
-    expect(title.textAlign, TextAlign.center);
-    expect(title.style?.fontSize, 34);
-    expect(find.text('1 / 2'), findsOneWidget);
-    expect(_richTextContaining('天边压着墨色的云。'), findsNothing);
+    expect(_richTextContaining('第十二章  风暴将至'), findsWidgets);
+    expect(_richTextContaining('天边压着墨色的云。'), findsWidgets);
   });
 
   testWidgets('opening placeholder uses the seeded reader theme', (
@@ -239,7 +239,7 @@ void main() {
   });
 
   testWidgets(
-    'vertical paging preserves the dedicated TXT chapter title page',
+    'vertical paging keeps the TXT chapter title with body text',
     (tester) async {
       SharedPreferences.setMockInitialValues({
         ReaderSettingsStore.pageModeKey: ReaderPageMode.verticalScroll.name,
@@ -270,7 +270,7 @@ void main() {
           await Future<void>.delayed(const Duration(milliseconds: 50));
           await tester.pump();
           if (find
-              .byKey(const ValueKey('native-chapter-title-page'))
+              .byKey(const ValueKey('native-reader-content'))
               .evaluate()
               .isNotEmpty) {
             return;
@@ -280,13 +280,15 @@ void main() {
 
       await _pumpUntilFound(
         tester,
-        find.byKey(const ValueKey('native-chapter-title-page')),
+        find.byKey(const ValueKey('native-reader-content')),
       );
 
       expect(
         find.byKey(const ValueKey('native-chapter-title-page')),
-        findsOneWidget,
+        findsNothing,
       );
+      expect(_richTextContaining('第十二章  风暴将至'), findsWidgets);
+      expect(_richTextContaining('天边压着墨色的云。'), findsWidgets);
       expect(
         find.byKey(const ValueKey('native-vertical-reading-window')),
         findsOneWidget,
@@ -378,13 +380,10 @@ void main() {
       );
       await tester.pump();
       expect(
-        tester
-            .widgetList<Text>(
-              find.byKey(const ValueKey('native-chapter-title-page')),
-            )
-            .any((title) => title.data == '第8章 远方'),
-        isTrue,
+        find.byKey(const ValueKey('native-chapter-title-page')),
+        findsNothing,
       );
+      expect(_richTextContaining('第8章 远方'), findsWidgets);
 
       final titlePage = jumpedController.page!;
       final previous = jumpedController.previousPage(
@@ -476,7 +475,7 @@ void main() {
         await Future<void>.delayed(const Duration(milliseconds: 50));
         await tester.pump();
         if (find
-            .byKey(const ValueKey('native-chapter-title-page'))
+            .byKey(const ValueKey('native-reader-content'))
             .evaluate()
             .isNotEmpty) {
           return;
@@ -484,8 +483,12 @@ void main() {
       }
     });
     expect(
-      find.byKey(const ValueKey('native-chapter-title-page')),
+      find.byKey(const ValueKey('native-reader-content')),
       findsOneWidget,
+    );
+    expect(
+      find.byKey(const ValueKey('native-chapter-title-page')),
+      findsNothing,
     );
     final readerOpacity = tester.widget<Opacity>(
       find.byKey(const ValueKey('book-open-transition-reader-opacity')),

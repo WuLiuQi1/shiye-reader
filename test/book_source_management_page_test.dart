@@ -33,7 +33,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('keeps dense source metadata readable on narrow phones', (
+  testWidgets('keeps compact source controls readable on narrow phones', (
     tester,
   ) async {
     await BookSourceRegistry().upsert(
@@ -81,8 +81,8 @@ void main() {
       find.text('A deliberately long connected source name'),
       findsOneWidget,
     );
-    expect(find.text('categories'), findsOneWidget);
-    expect(find.text('Enabled'), findsOneWidget);
+    expect(find.text('example.org'), findsOneWidget);
+    expect(find.text('未测试'), findsOneWidget);
     expect(find.text('导出'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
