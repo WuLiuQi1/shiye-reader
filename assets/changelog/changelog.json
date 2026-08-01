@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "entries": [
     {
+      "version": "0.4.8",
+      "notes": {
+        "zh": [
+          "将 Android 的应用名称、最近任务名称和导出目录统一为拾页",
+          "将 Android、Windows 和 Web 图标替换为拾页白底绿色抽象书页图标",
+          "统一 Windows、Linux、macOS 和 Web 的可见应用名称与窗口标题",
+          "保留包名和可执行文件名；使用同一签名证书构建时可覆盖安装并保留用户数据"
+        ],
+        "zh-TW": [
+          "將 Android 的應用程式名稱、最近任務名稱和匯出目錄統一為拾頁",
+          "將 Android、Windows 和 Web 圖示替換為拾頁白底綠色抽象書頁圖示",
+          "統一 Windows、Linux、macOS 和 Web 的可見應用程式名稱與視窗標題",
+          "保留套件名稱和執行檔名稱；使用同一簽署憑證建置時可覆蓋安裝並保留使用者資料"
+        ],
+        "en": [
+          "Unified the Android app, recent-task, and export-folder names under ShiYe Reader",
+          "Replaced the legacy Android, Windows, and Web icons with the ShiYe green page mark",
+          "Unified visible branding across Windows, Linux, macOS, and Web",
+          "Preserved package identifiers and executable names; builds signed with the same certificate remain upgrade-compatible"
+        ],
+        "ja": [
+          "Android のアプリ名、最近使ったアプリの表示名、書き出し先を拾頁に統一しました",
+          "Android、Windows、Web の旧アイコンを拾頁の緑色ページアイコンに置き換えました",
+          "Windows、Linux、macOS、Web の表示名とウィンドウタイトルを統一しました",
+          "識別子と実行ファイル名を維持し、同じ署名証明書でビルドした場合はデータを保持したまま上書きできます"
+        ]
+      }
+    },
+    {
       "version": "0.4.7",
       "notes": {
         "zh": [

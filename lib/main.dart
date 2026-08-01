@@ -55,8 +55,8 @@ void main(List<String> arguments) async {
     // 检查并启用设备的最高刷新率
     SystemChrome.setApplicationSwitcherDescription(
       const ApplicationSwitcherDescription(
-        label: '开元阅读',
-        primaryColor: 0xFF1976D2,
+        label: '拾页',
+        primaryColor: 0xFF134C37,
       ),
     );
     if (Platform.isAndroid) {

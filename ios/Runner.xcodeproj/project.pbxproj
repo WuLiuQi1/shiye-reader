@@ -522,7 +522,7 @@
 				DEVELOPMENT_TEAM = 2HD5836RZ2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "开元阅读";
+				INFOPLIST_KEY_CFBundleDisplayName = "拾页";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -711,7 +711,7 @@
 				DEVELOPMENT_TEAM = 2HD5836RZ2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "开元阅读";
+				INFOPLIST_KEY_CFBundleDisplayName = "拾页";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -740,7 +740,7 @@
 				DEVELOPMENT_TEAM = 2HD5836RZ2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "开元阅读";
+				INFOPLIST_KEY_CFBundleDisplayName = "拾页";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.books";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

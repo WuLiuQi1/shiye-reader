@@ -1020,13 +1020,13 @@ jobs:
 
           if [[ "${RELEASE_ALREADY_EXISTS:-false}" == "true" ]]; then
             gh release edit "$RELEASE_TAG" \
-              --title "开元阅读 ${RELEASE_TAG}" \
+              --title "拾页 ${RELEASE_TAG}" \
               --notes-file "$notes_file" \
               --draft=false \
               --latest
           else
             gh release create "$RELEASE_TAG" release-assets/* \
-              --title "开元阅读 ${RELEASE_TAG}" \
+              --title "拾页 ${RELEASE_TAG}" \
               --notes-file "$notes_file" \
               --latest
           fi

@@ -93,7 +93,7 @@ class PlatformStorageBridge {
               'sourcePath': sourcePath,
               'displayName': displayName,
               'mimeType': mimeType,
-              'relativePath': 'Download/开元阅读',
+              'relativePath': 'Download/拾页',
             }) ??
         const {'status': 'failure', 'errorCode': 'empty_result'};
   }

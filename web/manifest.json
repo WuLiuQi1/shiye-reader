@@ -1,11 +1,11 @@
 {
-    "name": "开元阅读",
-    "short_name": "开元阅读",
+    "name": "拾页",
+    "short_name": "拾页",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#0175C2",
-    "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "background_color": "#FFFFFF",
+    "theme_color": "#134C37",
+    "description": "拾页是一款简洁的跨平台电子书阅读器。",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

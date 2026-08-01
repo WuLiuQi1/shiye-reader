@@ -67,7 +67,7 @@ class AppUpdateDownloadService {
     final notificationTask = BackgroundDownloadTask(
       id: 'app-update:${asset.buildNumber}',
       kind: BackgroundDownloadKind.update,
-      title: 'Open Reading ${asset.buildNumber}',
+      title: '拾页 ${asset.buildNumber}',
     );
     await _notify(() => BackgroundDownloadNotifier.begin(notificationTask));
 
