@@ -188,13 +188,15 @@ class BookSourceClient {
     }
     if (source.legadoConfig != null) {
       final page = await _legadoClient.browse(source);
-      return BookSourceDiscoveryPage(sections: [
-        BookSourceDiscoverySection(
-          id: 'legado-explore',
-          title: source.name,
-          items: page.items,
-        ),
-      ]);
+      return BookSourceDiscoveryPage(
+        sections: [
+          BookSourceDiscoverySection(
+            id: 'legado-explore',
+            title: source.name,
+            items: page.items,
+          ),
+        ],
+      );
     }
     final uri = _apiUri(source.apiBaseUrl, 'v1/discover');
     try {

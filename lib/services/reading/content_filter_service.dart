@@ -68,7 +68,8 @@ class ContentFilterService {
     ContentFilterRule(
       id: 'default-domain',
       name: '常见域名广告',
-      pattern: r'\b[A-Za-z0-9][A-Za-z0-9.-]*\.(?:com|COM|net|NET|org|ORG|cn|CN|top|TOP|xyz|XYZ)\b[^\s，。；、）】》]*',
+      pattern:
+          r'\b[A-Za-z0-9][A-Za-z0-9.-]*\.(?:com|COM|net|NET|org|ORG|cn|CN|top|TOP|xyz|XYZ)\b[^\s，。；、）】》]*',
     ),
     ContentFilterRule(
       id: 'default-garbled',

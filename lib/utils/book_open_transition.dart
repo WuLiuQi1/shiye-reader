@@ -288,28 +288,35 @@ class BookOpenTransition {
           : const Duration(milliseconds: 300),
       pageBuilder: (_, __, ___) => page,
       transitionsBuilder: (context, animation, _, child) {
-        if (style == BookOpenStyle.none || MediaQuery.disableAnimationsOf(context)) {
+        if (style == BookOpenStyle.none ||
+            MediaQuery.disableAnimationsOf(context)) {
           return child;
         }
-        final curved = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+        final curved = CurvedAnimation(
+          parent: animation,
+          curve: Curves.easeOutCubic,
+        );
         return switch (style) {
           BookOpenStyle.paper => FadeTransition(
-              opacity: curved,
-              child: ScaleTransition(
-                scale: Tween<double>(begin: 0.965, end: 1).animate(curved),
-                alignment: Alignment.center,
-                child: child,
-              ),
-            ),
-          BookOpenStyle.side => SlideTransition(
-              position: Tween<Offset>(begin: const Offset(0.12, 0), end: Offset.zero).animate(curved),
-              child: FadeTransition(opacity: curved, child: child),
-            ),
-          BookOpenStyle.doublePage => ScaleTransition(
-              scale: Tween<double>(begin: 0.88, end: 1).animate(curved),
+            opacity: curved,
+            child: ScaleTransition(
+              scale: Tween<double>(begin: 0.965, end: 1).animate(curved),
               alignment: Alignment.center,
-              child: FadeTransition(opacity: curved, child: child),
+              child: child,
             ),
+          ),
+          BookOpenStyle.side => SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0.12, 0),
+              end: Offset.zero,
+            ).animate(curved),
+            child: FadeTransition(opacity: curved, child: child),
+          ),
+          BookOpenStyle.doublePage => ScaleTransition(
+            scale: Tween<double>(begin: 0.88, end: 1).animate(curved),
+            alignment: Alignment.center,
+            child: FadeTransition(opacity: curved, child: child),
+          ),
           _ => child,
         };
       },

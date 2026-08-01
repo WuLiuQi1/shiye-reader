@@ -11,11 +11,13 @@ class BookSourceExporter {
   const BookSourceExporter();
 
   String encode(Iterable<RegisteredBookSource> sources) {
-    final records = sources.map((source) {
-      final legado = source.legadoConfig;
-      if (legado == null) return source.toJson();
-      return <String, dynamic>{...legado, 'enabled': source.enabled};
-    }).toList(growable: false);
+    final records = sources
+        .map((source) {
+          final legado = source.legadoConfig;
+          if (legado == null) return source.toJson();
+          return <String, dynamic>{...legado, 'enabled': source.enabled};
+        })
+        .toList(growable: false);
     return const JsonEncoder.withIndent('  ').convert(records);
   }
 }

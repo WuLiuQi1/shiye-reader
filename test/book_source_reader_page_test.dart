@@ -659,34 +659,33 @@ void main() {
     },
   );
 
-  testWidgets(
-    'next chapter preview avoids fetching a farther chapter',
-    (tester) async {
-      await tester.binding.setSurfaceSize(const Size(1200, 800));
-      SharedPreferences.setMockInitialValues({
-        ReaderSettingsStore.pageModeKey: BookSourcePageMode.pageCurl.name,
-      });
-      final client = _DelayedThirdChapterClient();
-      try {
-        await tester.pumpWidget(_buildTabletSourceReader(client));
-        final forwardCurl = await _pumpUntilSpreadTarget(
-          tester,
-          bindingEdge: ReaderPageBindingEdge.left,
-          forward: true,
-          pageIdentity: (identity) => identity.contains(':chapter-2:1:'),
-        );
+  testWidgets('next chapter preview avoids fetching a farther chapter', (
+    tester,
+  ) async {
+    await tester.binding.setSurfaceSize(const Size(1200, 800));
+    SharedPreferences.setMockInitialValues({
+      ReaderSettingsStore.pageModeKey: BookSourcePageMode.pageCurl.name,
+    });
+    final client = _DelayedThirdChapterClient();
+    try {
+      await tester.pumpWidget(_buildTabletSourceReader(client));
+      final forwardCurl = await _pumpUntilSpreadTarget(
+        tester,
+        bindingEdge: ReaderPageBindingEdge.left,
+        forward: true,
+        pageIdentity: (identity) => identity.contains(':chapter-2:1:'),
+      );
 
-        expect(forwardCurl.forwardPage, isNotNull);
-        expect(client.requestedChapterIds, isNot(contains('chapter-3')));
-        expect(client.thirdChapterCompleted, isFalse);
-      } finally {
-        client.completeThirdChapter();
-        await tester.pumpWidget(const SizedBox.shrink());
-        await tester.pump();
-        await tester.binding.setSurfaceSize(null);
-      }
-    },
-  );
+      expect(forwardCurl.forwardPage, isNotNull);
+      expect(client.requestedChapterIds, isNot(contains('chapter-3')));
+      expect(client.thirdChapterCompleted, isFalse);
+    } finally {
+      client.completeThirdChapter();
+      await tester.pumpWidget(const SizedBox.shrink());
+      await tester.pump();
+      await tester.binding.setSurfaceSize(null);
+    }
+  });
 
   testWidgets(
     'prefetched chapter turn does not wait for progress persistence',

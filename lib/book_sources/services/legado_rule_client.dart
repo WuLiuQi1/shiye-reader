@@ -43,7 +43,9 @@ class LegadoRuleClient {
           title: title,
           author: _value(element, _rule(rules, 'author')),
           description: _value(element, _rule(rules, 'intro')),
-          coverUrl: _httpUri(_absoluteText(uri, _value(element, _rule(rules, 'coverUrl')))),
+          coverUrl: _httpUri(
+            _absoluteText(uri, _value(element, _rule(rules, 'coverUrl'))),
+          ),
           categories: const [],
           latestChapter: _value(element, _rule(rules, 'lastChapter')),
           status: _value(element, _rule(rules, 'kind')),
@@ -101,16 +103,20 @@ class LegadoRuleClient {
       final href = _value(element, _rule(rules, 'bookUrl'));
       if (title.isEmpty || href.isEmpty) continue;
       final bookUri = _absolute(uri, href);
-      books.add(BookSourceBook(
-        id: bookUri.toString(),
-        title: title,
-        author: _value(element, _rule(rules, 'author')),
-        description: _value(element, _rule(rules, 'intro')),
-        coverUrl: _httpUri(_absoluteText(uri, _value(element, _rule(rules, 'coverUrl')))),
-        categories: const [],
-        status: _value(element, _rule(rules, 'kind')),
-        latestChapter: _value(element, _rule(rules, 'lastChapter')),
-      ));
+      books.add(
+        BookSourceBook(
+          id: bookUri.toString(),
+          title: title,
+          author: _value(element, _rule(rules, 'author')),
+          description: _value(element, _rule(rules, 'intro')),
+          coverUrl: _httpUri(
+            _absoluteText(uri, _value(element, _rule(rules, 'coverUrl'))),
+          ),
+          categories: const [],
+          status: _value(element, _rule(rules, 'kind')),
+          latestChapter: _value(element, _rule(rules, 'lastChapter')),
+        ),
+      );
     }
     return BookSourceSearchPage(
       items: books,
@@ -209,7 +215,9 @@ class LegadoRuleClient {
     final attribute = at >= 0 ? expression.substring(at + 1) : 'text';
     Element? element;
     if (root is Document) {
-      element = selector.isEmpty ? root.documentElement : root.querySelector(selector);
+      element = selector.isEmpty
+          ? root.documentElement
+          : root.querySelector(selector);
     } else if (root is Element) {
       element = selector.isEmpty ? root : root.querySelector(selector);
     }
@@ -233,9 +241,7 @@ class LegadoRuleClient {
   static String _selector(String rule) {
     final expression = rule.split('##').first.trim();
     final at = expression.lastIndexOf('@');
-    final selector = at >= 0
-        ? expression.substring(0, at).trim()
-        : expression;
+    final selector = at >= 0 ? expression.substring(0, at).trim() : expression;
     if (selector.startsWith('class.')) return '.${selector.substring(6)}';
     if (selector.startsWith('id.')) return '#${selector.substring(3)}';
     if (selector.startsWith('tag.')) return selector.substring(4);
@@ -245,14 +251,18 @@ class LegadoRuleClient {
   static String _requestUrl(String value) => value.split(',').first.trim();
 
   static Uri _absolute(Uri base, String value) =>
-      Uri.tryParse(value)?.hasScheme == true ? Uri.parse(value) : base.resolve(value);
+      Uri.tryParse(value)?.hasScheme == true
+      ? Uri.parse(value)
+      : base.resolve(value);
 
   static String _absoluteText(Uri base, String value) =>
       value.isEmpty ? '' : _absolute(base, value).toString();
 
   static Uri? _httpUri(String value) {
     final uri = Uri.tryParse(value);
-    return uri != null && const {'http', 'https'}.contains(uri.scheme) ? uri : null;
+    return uri != null && const {'http', 'https'}.contains(uri.scheme)
+        ? uri
+        : null;
   }
 }
 

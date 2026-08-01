@@ -232,16 +232,14 @@ List<ReaderTextPage> _paginateReaderText({
         text: layout.text,
         spanBuilder: buildSpan,
         firstPageHeight: includeChapterTitlePage
-            ? ((firstPageHeight ?? maxHeight) -
-                      ((style.fontSize ?? 19) * 2.9))
+            ? ((firstPageHeight ?? maxHeight) - ((style.fontSize ?? 19) * 2.9))
                   .clamp(1.0, maxHeight)
             : firstPageHeight,
       );
   pages.addAll(
-    ranges.indexed.map(
-      (entry) {
-        final (index, range) = entry;
-        return ReaderTextPage(
+    ranges.indexed.map((entry) {
+      final (index, range) = entry;
+      return ReaderTextPage(
         text: layout.text.substring(range.start, range.end),
         startOffset: layout.sourceOffsetForDisplayOffset(range.start),
         endOffset: layout.sourceOffsetForDisplayOffset(range.end),
@@ -250,8 +248,7 @@ List<ReaderTextPage> _paginateReaderText({
         displayEnd: range.visibleEnd,
         showsChapterTitle: includeChapterTitlePage && index == 0,
       );
-      },
-    ),
+    }),
   );
 
   assert(pages.isNotEmpty);

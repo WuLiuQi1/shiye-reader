@@ -201,7 +201,8 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
   final BookmarkDao _bookmarkDao = BookmarkDao();
   final BookNoteDao _bookNoteDao = BookNoteDao();
   final ReaderSettingsStore _readerSettingsStore = const ReaderSettingsStore();
-  final ContentFilterService _contentFilterService = const ContentFilterService();
+  final ContentFilterService _contentFilterService =
+      const ContentFilterService();
   List<ContentFilterRule> _contentFilterRules = const [];
 
   String _filteredChapterText(
@@ -221,6 +222,7 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
     }
     return filtered;
   }
+
   final ReaderCustomThemeStore _customThemeStore =
       const ReaderCustomThemeStore();
   final ReaderThemeOrderStore _themeOrderStore = const ReaderThemeOrderStore();
@@ -524,7 +526,8 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
       final tapZones = results[6] as ReaderTapZones;
       _contentFilterRules = results[7] as List<ContentFilterRule>;
       var initialIndex = saved?.chapterIndex ?? 0;
-      if (saved == null && widget.initialChapterTitle?.trim().isNotEmpty == true) {
+      if (saved == null &&
+          widget.initialChapterTitle?.trim().isNotEmpty == true) {
         final normalized = _normalizedChapterTitle(widget.initialChapterTitle!);
         final byTitle = chapters.indexWhere(
           (chapter) => _normalizedChapterTitle(chapter.title) == normalized,
@@ -1598,10 +1601,7 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
   static String _normalizedChapterTitle(String value) => value
       .trim()
       .toLowerCase()
-      .replaceAll(
-        RegExp(r'[\s，。！？、：；,.!?:;《》〈〉「」『』（）【】()]+'),
-        '',
-      );
+      .replaceAll(RegExp(r'[\s，。！？、：；,.!?:;《》〈〉「」『』（）【】()]+'), '');
 
   Future<void> _showChangeSource() async {
     final currentChapterTitle = _chapters.isEmpty
@@ -4028,10 +4028,8 @@ class _BookSourceSwitchSheet extends StatefulWidget {
   final String author;
   final List<RegisteredBookSource> sources;
   final BookSourceClient client;
-  final Future<void> Function(
-    RegisteredBookSource source,
-    BookSourceBook book,
-  ) onSelected;
+  final Future<void> Function(RegisteredBookSource source, BookSourceBook book)
+  onSelected;
 
   @override
   State<_BookSourceSwitchSheet> createState() => _BookSourceSwitchSheetState();
@@ -4063,14 +4061,21 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
               var enriched = book;
               try {
                 final detail = await widget.client.getBook(source, book.id);
-                final chapters = await widget.client.getChapters(source, book.id);
+                final chapters = await widget.client.getChapters(
+                  source,
+                  book.id,
+                );
                 enriched = BookSourceBook(
                   id: book.id,
                   title: detail.title.isEmpty ? book.title : detail.title,
                   author: detail.author.isEmpty ? book.author : detail.author,
-                  description: detail.description.isEmpty ? book.description : detail.description,
+                  description: detail.description.isEmpty
+                      ? book.description
+                      : detail.description,
                   coverUrl: detail.coverUrl ?? book.coverUrl,
-                  categories: detail.categories.isEmpty ? book.categories : detail.categories,
+                  categories: detail.categories.isEmpty
+                      ? book.categories
+                      : detail.categories,
                   status: detail.status ?? book.status,
                   latestChapter: detail.latestChapter ?? book.latestChapter,
                   updatedAt: detail.updatedAt ?? book.updatedAt,
@@ -4114,10 +4119,8 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
   }
 
   static bool _sameAuthor(String a, String b) {
-    String normalize(String value) => value
-        .trim()
-        .toLowerCase()
-        .replaceAll(RegExp(r'[\s著作者:：·•_-]+'), '');
+    String normalize(String value) =>
+        value.trim().toLowerCase().replaceAll(RegExp(r'[\s著作者:：·•_-]+'), '');
     final left = normalize(a);
     final right = normalize(b);
     return left.isNotEmpty && right.isNotEmpty && left == right;
@@ -4173,8 +4176,9 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
                           ].join(' · '),
                         ),
                         trailing: const Icon(Icons.chevron_right_rounded),
-                        onTap: () =>
-                            unawaited(widget.onSelected(item.source, item.book)),
+                        onTap: () => unawaited(
+                          widget.onSelected(item.source, item.book),
+                        ),
                       );
                     },
                   ),

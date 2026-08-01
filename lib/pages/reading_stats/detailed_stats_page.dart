@@ -468,11 +468,7 @@ class _DetailedStatsPageState extends State<DetailedStatsPage>
                 ),
               ],
               const SizedBox(width: 2),
-              Icon(
-                Icons.expand_more_rounded,
-                color: palette.accent,
-                size: 18,
-              ),
+              Icon(Icons.expand_more_rounded, color: palette.accent, size: 18),
             ],
           ),
         ),

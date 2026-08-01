@@ -238,63 +238,62 @@ void main() {
     );
   });
 
-  testWidgets(
-    'vertical paging keeps the TXT chapter title with body text',
-    (tester) async {
-      SharedPreferences.setMockInitialValues({
-        ReaderSettingsStore.pageModeKey: ReaderPageMode.verticalScroll.name,
-      });
-      await tester.binding.setSurfaceSize(const Size(400, 800));
-      addTearDown(() => tester.binding.setSurfaceSize(null));
+  testWidgets('vertical paging keeps the TXT chapter title with body text', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      ReaderSettingsStore.pageModeKey: ReaderPageMode.verticalScroll.name,
+    });
+    await tester.binding.setSurfaceSize(const Size(400, 800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
 
-      await tester.pumpWidget(
-        MaterialApp(
-          localizationsDelegates: AppLocalizations.localizationsDelegates,
-          supportedLocales: AppLocalizations.supportedLocales,
-          home: NativeReaderPage(
-            book: Book(
-              title: 'Vertical title test',
-              filePath: bookFile.path,
-              format: 'txt',
-              textEncoding: 'utf8',
-              fileModifiedTime: bookFile
-                  .lastModifiedSync()
-                  .millisecondsSinceEpoch,
-            ),
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: NativeReaderPage(
+          book: Book(
+            title: 'Vertical title test',
+            filePath: bookFile.path,
+            format: 'txt',
+            textEncoding: 'utf8',
+            fileModifiedTime: bookFile
+                .lastModifiedSync()
+                .millisecondsSinceEpoch,
           ),
         ),
-      );
+      ),
+    );
 
-      await tester.runAsync(() async {
-        for (var attempt = 0; attempt < 30; attempt++) {
-          await Future<void>.delayed(const Duration(milliseconds: 50));
-          await tester.pump();
-          if (find
-              .byKey(const ValueKey('native-reader-content'))
-              .evaluate()
-              .isNotEmpty) {
-            return;
-          }
+    await tester.runAsync(() async {
+      for (var attempt = 0; attempt < 30; attempt++) {
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        await tester.pump();
+        if (find
+            .byKey(const ValueKey('native-reader-content'))
+            .evaluate()
+            .isNotEmpty) {
+          return;
         }
-      });
+      }
+    });
 
-      await _pumpUntilFound(
-        tester,
-        find.byKey(const ValueKey('native-reader-content')),
-      );
+    await _pumpUntilFound(
+      tester,
+      find.byKey(const ValueKey('native-reader-content')),
+    );
 
-      expect(
-        find.byKey(const ValueKey('native-chapter-title-page')),
-        findsNothing,
-      );
-      expect(_richTextContaining('第十二章  风暴将至'), findsWidgets);
-      expect(_richTextContaining('天边压着墨色的云。'), findsWidgets);
-      expect(
-        find.byKey(const ValueKey('native-vertical-reading-window')),
-        findsOneWidget,
-      );
-    },
-  );
+    expect(
+      find.byKey(const ValueKey('native-chapter-title-page')),
+      findsNothing,
+    );
+    expect(_richTextContaining('第十二章  风暴将至'), findsWidgets);
+    expect(_richTextContaining('天边压着墨色的云。'), findsWidgets);
+    expect(
+      find.byKey(const ValueKey('native-vertical-reading-window')),
+      findsOneWidget,
+    );
+  });
 
   testWidgets(
     'horizontal TOC jump mounts the target title on the first frame and keeps the previous page ready',
@@ -482,10 +481,7 @@ void main() {
         }
       }
     });
-    expect(
-      find.byKey(const ValueKey('native-reader-content')),
-      findsOneWidget,
-    );
+    expect(find.byKey(const ValueKey('native-reader-content')), findsOneWidget);
     expect(
       find.byKey(const ValueKey('native-chapter-title-page')),
       findsNothing,

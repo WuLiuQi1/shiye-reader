@@ -62,9 +62,7 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.l10n.bookSourceManagementTitle),
-      ),
+      appBar: AppBar(title: Text(context.l10n.bookSourceManagementTitle)),
       body: Container(
         decoration: BoxDecoration(
           gradient: PageStyleHelper.backgroundGradient(context),
@@ -112,9 +110,7 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
                           ),
                           OutlinedButton.icon(
                             key: const Key('bookSourceExportButton'),
-                            onPressed: _sources.isEmpty
-                                ? null
-                                : _exportSources,
+                            onPressed: _sources.isEmpty ? null : _exportSources,
                             icon: const Icon(Icons.file_upload_outlined),
                             label: Text(
                               _selectedSourceIds.isEmpty
@@ -152,9 +148,7 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
                               showCheckmark: false,
                               onSelected: (value) =>
                                   setState(() => _failedOnly = value),
-                              label: Text(
-                                '仅显示不通过（${_failedSourceCount}）',
-                              ),
+                              label: Text('仅显示不通过（${_failedSourceCount}）'),
                               avatar: const Icon(Icons.error_outline, size: 18),
                             ),
                             if (_failedSourceCount > 0)
@@ -315,7 +309,10 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
           ),
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('取消')),
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: const Text('取消'),
+          ),
           FilledButton(
             onPressed: () => Navigator.pop(context, controller.text.trim()),
             child: const Text('导入'),

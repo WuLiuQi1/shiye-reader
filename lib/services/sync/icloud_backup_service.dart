@@ -111,8 +111,7 @@ class ICloudBackupService {
     final progress = decoded['readingProgress'];
     if (progress is Map) {
       for (final entry in progress.entries) {
-        if ('$entry.key'.startsWith(_progressPrefix) &&
-            entry.value is String) {
+        if ('$entry.key'.startsWith(_progressPrefix) && entry.value is String) {
           await preferences.setString('${entry.key}', entry.value as String);
         }
       }

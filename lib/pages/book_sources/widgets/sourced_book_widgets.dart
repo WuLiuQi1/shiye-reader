@@ -170,16 +170,24 @@ class SourcedBookListTile extends StatelessWidget {
                       children: [
                         for (final item in _bookMetadata(book))
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 7,
+                              vertical: 3,
+                            ),
                             decoration: BoxDecoration(
-                              color: scheme.primaryContainer.withValues(alpha: 0.55),
+                              color: scheme.primaryContainer.withValues(
+                                alpha: 0.55,
+                              ),
                               borderRadius: BorderRadius.circular(8),
                             ),
-                            child: Text(item, style: TextStyle(
-                              color: scheme.onPrimaryContainer,
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
-                            )),
+                            child: Text(
+                              item,
+                              style: TextStyle(
+                                color: scheme.onPrimaryContainer,
+                                fontSize: 11,
+                                fontWeight: FontWeight.w600,
+                              ),
+                            ),
                           ),
                       ],
                     ),
@@ -229,7 +237,13 @@ List<String> _bookMetadata(BookSourceBook book) {
   if (rawStatus.isNotEmpty) {
     final completed = RegExp(r'完结|完本|已完').hasMatch(rawStatus);
     final ongoing = RegExp(r'连载|更新中|未完').hasMatch(rawStatus);
-    result.add(completed ? '已完结' : ongoing ? '更新中' : rawStatus);
+    result.add(
+      completed
+          ? '已完结'
+          : ongoing
+          ? '更新中'
+          : rawStatus,
+    );
   } else {
     result.add('状态未知');
   }

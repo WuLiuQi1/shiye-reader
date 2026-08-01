@@ -99,11 +99,7 @@ class _ContentFilterRulesPageState extends State<ContentFilterRulesPage> {
   Future<void> _restoreDefaults() async {
     await _save([...ContentFilterService.defaultRules]);
     if (mounted) {
-      showSideToast(
-        context,
-        '已恢复默认过滤规则',
-        kind: SideToastKind.success,
-      );
+      showSideToast(context, '已恢复默认过滤规则', kind: SideToastKind.success);
     }
   }
 
@@ -119,32 +115,33 @@ class _ContentFilterRulesPageState extends State<ContentFilterRulesPage> {
         builder: (context, setDialogState) => AlertDialog(
           title: Text(current == null ? '添加过滤规则' : '编辑过滤规则'),
           content: SingleChildScrollView(
-            child: Column(mainAxisSize: MainAxisSize.min, children: [
-              TextField(
-                controller: name,
-                decoration: const InputDecoration(labelText: '规则名称'),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: pattern,
-                minLines: 2,
-                maxLines: 5,
-                decoration: const InputDecoration(labelText: '匹配内容'),
-              ),
-              const SizedBox(height: 10),
-              TextField(
-                controller: replacement,
-                decoration: const InputDecoration(
-                  labelText: '替换文字（留空即删除）',
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                TextField(
+                  controller: name,
+                  decoration: const InputDecoration(labelText: '规则名称'),
                 ),
-              ),
-              SwitchListTile(
-                contentPadding: EdgeInsets.zero,
-                title: const Text('使用正则表达式'),
-                value: isRegex,
-                onChanged: (value) => setDialogState(() => isRegex = value),
-              ),
-            ]),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: pattern,
+                  minLines: 2,
+                  maxLines: 5,
+                  decoration: const InputDecoration(labelText: '匹配内容'),
+                ),
+                const SizedBox(height: 10),
+                TextField(
+                  controller: replacement,
+                  decoration: const InputDecoration(labelText: '替换文字（留空即删除）'),
+                ),
+                SwitchListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('使用正则表达式'),
+                  value: isRegex,
+                  onChanged: (value) => setDialogState(() => isRegex = value),
+                ),
+              ],
+            ),
           ),
           actions: [
             TextButton(
@@ -171,11 +168,7 @@ class _ContentFilterRulesPageState extends State<ContentFilterRulesPage> {
         RegExp(rulePattern);
       } catch (_) {
         if (mounted) {
-          showSideToast(
-            context,
-            '正则表达式无效',
-            kind: SideToastKind.error,
-          );
+          showSideToast(context, '正则表达式无效', kind: SideToastKind.error);
         }
         return;
       }

@@ -342,7 +342,10 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
-              child: Text('书籍打开动画', style: Theme.of(context).textTheme.titleLarge),
+              child: Text(
+                '书籍打开动画',
+                style: Theme.of(context).textTheme.titleLarge,
+              ),
             ),
             for (final style in BookOpenStyle.values)
               RadioListTile<BookOpenStyle>(
@@ -516,9 +519,8 @@ class _SettingsPageState extends State<SettingsPage> {
               _buildActionSetting(
                 title: '内容过滤规则',
                 subtitle: '屏蔽正文中的网址、乱码和自定义内容',
-                onTap: () => _openSettingsSubpage(
-                  const ContentFilterRulesPage(),
-                ),
+                onTap: () =>
+                    _openSettingsSubpage(const ContentFilterRulesPage()),
                 icon: Icons.filter_alt_outlined,
               ),
               _buildActionSetting(
@@ -642,9 +644,9 @@ class _SettingsPageState extends State<SettingsPage> {
     _openSettingsSubpage(const BookSourceManagementPage());
   }
 
-  Future<void> _openSettingsSubpage(Widget page) => Navigator.of(context).push(
-    CustomPageTransitions.createSlideScaleRoute<void>(page),
-  );
+  Future<void> _openSettingsSubpage(Widget page) => Navigator.of(
+    context,
+  ).push(CustomPageTransitions.createSlideScaleRoute<void>(page));
 
   Widget _buildSettingsTopRow(AppLocalizations l10n, bool useRailNavigation) {
     final palette = PageStyleHelper.palette(context);

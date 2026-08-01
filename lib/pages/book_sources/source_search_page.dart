@@ -154,10 +154,7 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
 
     if (!mounted) return;
     setState(() {
-      _results = _sortResults(
-        batches.expand((batch) => batch.items),
-        query,
-      );
+      _results = _sortResults(batches.expand((batch) => batch.items), query);
       _pageStates = {
         for (final batch in batches)
           if (!batch.failed)
@@ -176,7 +173,9 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
 
   Future<void> _enrichExactResults(String query) async {
     final exact = _results
-        .where((item) => SourceSearchPage.relevanceScore(item.book, query) == 100)
+        .where(
+          (item) => SourceSearchPage.relevanceScore(item.book, query) == 100,
+        )
         .take(8)
         .toList(growable: false);
     if (exact.isEmpty) return;
@@ -191,11 +190,15 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
     }
     if (!mounted || query != _activeQuery) return;
     final replacements = {
-      for (final item in enriched) '${item.source.id}\u0000${item.book.id}': item,
+      for (final item in enriched)
+        '${item.source.id}\u0000${item.book.id}': item,
     };
     setState(() {
       _results = _sortResults(
-        _results.map((item) => replacements['${item.source.id}\u0000${item.book.id}'] ?? item),
+        _results.map(
+          (item) =>
+              replacements['${item.source.id}\u0000${item.book.id}'] ?? item,
+        ),
         query,
       );
     });
@@ -307,8 +310,10 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
   List<SourcedBook> _sortResults(Iterable<SourcedBook> items, String query) {
     final result = items.toList(growable: false);
     result.sort((left, right) {
-      final byScore = SourceSearchPage.relevanceScore(right.book, query)
-          .compareTo(SourceSearchPage.relevanceScore(left.book, query));
+      final byScore = SourceSearchPage.relevanceScore(
+        right.book,
+        query,
+      ).compareTo(SourceSearchPage.relevanceScore(left.book, query));
       if (byScore != 0) return byScore;
       return left.book.title.compareTo(right.book.title);
     });
@@ -505,13 +510,18 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
               child: Center(
                 child: TextButton.icon(
                   key: const Key('bookSourceOtherResultsButton'),
-                  onPressed: () => setState(() => _showOtherResults = !_showOtherResults),
-                  icon: Icon(_showOtherResults
-                      ? Icons.expand_less_rounded
-                      : Icons.expand_more_rounded),
-                  label: Text(_showOtherResults
-                      ? '收起其他结果'
-                      : '显示其他结果（$_hiddenResultCount）'),
+                  onPressed: () =>
+                      setState(() => _showOtherResults = !_showOtherResults),
+                  icon: Icon(
+                    _showOtherResults
+                        ? Icons.expand_less_rounded
+                        : Icons.expand_more_rounded,
+                  ),
+                  label: Text(
+                    _showOtherResults
+                        ? '收起其他结果'
+                        : '显示其他结果（$_hiddenResultCount）',
+                  ),
                 ),
               ),
             ),
@@ -556,7 +566,9 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
   }
 
   List<SourcedBook> get _relevantResults => _results
-      .where((item) => SourceSearchPage.relevanceScore(item.book, _activeQuery) > 0)
+      .where(
+        (item) => SourceSearchPage.relevanceScore(item.book, _activeQuery) > 0,
+      )
       .toList(growable: false);
 
   int get _hiddenResultCount {

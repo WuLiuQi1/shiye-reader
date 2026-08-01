@@ -123,7 +123,9 @@ class _ICloudBackupPageState extends State<ICloudBackupPage> {
   }
 
   void _show(String message) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(message)));
+    ScaffoldMessenger.of(
+      context,
+    ).showSnackBar(SnackBar(content: Text(message)));
   }
 
   String _format(DateTime value) =>

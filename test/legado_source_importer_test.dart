@@ -39,9 +39,7 @@ void main() {
 
   test('rejects entries without usable source and search URLs', () {
     expect(
-      () => const LegadoSourceImporter().parse(
-        '[{"bookSourceName":"broken"}]',
-      ),
+      () => const LegadoSourceImporter().parse('[{"bookSourceName":"broken"}]'),
       throwsA(anything),
     );
   });
@@ -57,7 +55,10 @@ void main() {
       }
     ]''').single;
 
-    expect(source.capabilities, containsAll(<String>['search', 'discover', 'browse']));
+    expect(
+      source.capabilities,
+      containsAll(<String>['search', 'discover', 'browse']),
+    );
   });
 
   test('exported native and Legado sources can be imported again', () {
