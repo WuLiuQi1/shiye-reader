@@ -104,7 +104,7 @@ abstract class AppLocalizations {
   /// The title of the application
   ///
   /// In en, this message translates to:
-  /// **'OpenReading'**
+  /// **'拾页'**
   String get appTitle;
 
   /// Home tab label
@@ -4153,7 +4153,7 @@ abstract class AppLocalizations {
   /// Display name of the app in the about card
   ///
   /// In en, this message translates to:
-  /// **'Open Reading'**
+  /// **'拾页'**
   String get settingsAppName;
 
   /// Author line in the about card
@@ -4189,7 +4189,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsOfficialWebsiteSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Download and install from github.com/WuLiuQi1/shiye-reader/releases'**
+  /// **'Download and install from ShiYe GitHub Releases'**
   String get settingsOfficialWebsiteSubtitle;
 
   /// No description provided for @settingsOfficialWebsiteOpenFailed.
@@ -6603,7 +6603,7 @@ abstract class AppLocalizations {
   /// User agreement V2 section 6 body
   ///
   /// In en, this message translates to:
-  /// **'OpenReading is local-first. Books, reading progress, notes, and settings are normally stored on your device. Unless you enable a network book source, AI, sync, or another online feature, the app does not need to send book text to the developers to provide local reading. Automatic and manual update checks contact GitHub and the official site at github.com/WuLiuQi1/shiye-reader/releases with necessary technical parameters such as platform, processor architecture, and release channel; their servers process your IP address and User-Agent as part of ordinary network communication. When you download an installer from the official site, the backend records the version, architecture, download time, IP address, and User-Agent for download counts, security protection, and troubleshooting. Download-event records containing a raw IP are retained for no more than 30 days and then deleted; only aggregate statistics without raw IP addresses are kept longer. Update requests do not include book text, your library, notes, an account, or a unique device identifier. GitHub requests are also governed by GitHub’s privacy terms. When another online feature is used, queries, selected text, network information, or necessary parameters may be sent to the provider you selected under that provider’s policies. Protect your device, API keys, and backups; uninstalling, clearing data, device failure, or user error may permanently erase data.'**
+  /// **'ShiYe Reader is local-first. Books, reading progress, notes, and settings are normally stored on your device. Unless you enable a network book source, AI, sync, or another online feature, the app does not send book text to the developers for local reading. Automatic and manual update checks only contact ShiYe Reader\'s GitHub Releases; GitHub processes your IP address and User-Agent as part of ordinary network communication. Update requests do not include book text, your library, notes, an account, or a unique device identifier. Other online features may send necessary data to the provider you select under that provider\'s policies. Protect your device, API keys, and backups; uninstalling, clearing data, device failure, or user error may permanently erase data.'**
   String get agreementV2Section6Body;
 
   /// User agreement V2 section 7 title
