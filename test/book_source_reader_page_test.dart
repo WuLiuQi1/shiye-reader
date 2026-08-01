@@ -903,9 +903,7 @@ void main() {
 
         final drag = await tester.startGesture(
           tester
-              .getRect(
-                find.byKey(const ValueKey('source-slide:chapter-1')),
-              )
+              .getRect(find.byKey(const ValueKey('source-slide:chapter-1')))
               .center,
         );
         await drag.moveBy(const Offset(360, 0));
@@ -1036,10 +1034,7 @@ void main() {
           forwardCurl.outgoingBackPage!.key.pageIdentity,
           contains(':chapter-2:0:'),
         );
-        expect(
-          forwardCurl.forwardPage!.key.pageIdentity,
-          contains('blank:'),
-        );
+        expect(forwardCurl.forwardPage!.key.pageIdentity, contains('blank:'));
         expect(
           client.requestedChapterIds.where((id) => id == 'chapter-2').length,
           1,
