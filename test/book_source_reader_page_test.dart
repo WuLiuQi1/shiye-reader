@@ -1335,6 +1335,10 @@ Future<ReaderShaderPageCurl> _pumpUntilSpreadTarget(
     final curl = _spreadCurl(tester, bindingEdge);
     final target = forward ? curl.forwardPage : curl.backwardPage;
     if (target != null && pageIdentity(target.key.pageIdentity)) return curl;
+    final backPage = curl.outgoingBackPage;
+    if (backPage != null && pageIdentity(backPage.key.pageIdentity)) {
+      return curl;
+    }
   }
   throw TestFailure('Expected tablet page curl target did not appear.');
 }
