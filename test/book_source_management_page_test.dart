@@ -17,6 +17,7 @@ void main() {
 
     await tester.pumpWidget(
       const MaterialApp(
+        locale: Locale('en'),
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
         home: BookSourceManagementPage(),

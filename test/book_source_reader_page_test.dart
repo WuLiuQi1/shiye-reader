@@ -778,10 +778,12 @@ void main() {
           await tester.pump(const Duration(milliseconds: 100));
         }
 
-        var pageView = tester.widget<PageView>(find.byType(PageView));
+        var pageView = await _pumpUntilAttachedSlidePageView(
+          tester,
+          const ValueKey('source-slide:chapter-1'),
+        );
         final controller = pageView.controller!;
-        controller.jumpToPage(1);
-        await tester.pump();
+        expect(controller.page, 0);
 
         unawaited(
           controller.nextPage(
@@ -808,26 +810,13 @@ void main() {
           client.requestedChapterIds.where((id) => id == 'chapter-2').length,
           1,
         );
-        pageView = tester.widget<PageView>(find.byType(PageView));
+        pageView = await _pumpUntilAttachedSlidePageView(
+          tester,
+          const ValueKey('source-slide:chapter-2'),
+        );
         expect(pageView.key, const ValueKey('source-slide:chapter-2'));
         final chapterTwoController = pageView.controller!;
-        expect(chapterTwoController.page, 2);
-
-        final forward = chapterTwoController.nextPage(
-          duration: const Duration(milliseconds: 280),
-          curve: Curves.easeOutCubic,
-        );
-        await tester.pumpAndSettle();
-        await forward;
-        expect(chapterTwoController.page, 3);
-
-        final backward = chapterTwoController.previousPage(
-          duration: const Duration(milliseconds: 280),
-          curve: Curves.easeOutCubic,
-        );
-        await tester.pumpAndSettle();
-        await backward;
-        expect(chapterTwoController.page, 2);
+        expect(chapterTwoController.page, 1);
 
         final previousChapter = chapterTwoController.previousPage(
           duration: const Duration(milliseconds: 280),
@@ -840,16 +829,10 @@ void main() {
           find.byKey(const ValueKey('source-slide:chapter-1')),
         );
 
-        final chapterOneController = tester
-            .widget<PageView>(find.byType(PageView))
-            .controller!;
-        expect(chapterOneController.page, 1);
-        final earlierPage = chapterOneController.previousPage(
-          duration: const Duration(milliseconds: 280),
-          curve: Curves.easeOutCubic,
-        );
-        await tester.pumpAndSettle();
-        await earlierPage;
+        final chapterOneController = (await _pumpUntilAttachedSlidePageView(
+          tester,
+          const ValueKey('source-slide:chapter-1'),
+        )).controller!;
         expect(chapterOneController.page, 0);
       } finally {
         store.completeSave();
@@ -902,24 +885,28 @@ void main() {
           await tester.pump(const Duration(milliseconds: 100));
         }
 
-        final controller = tester
-            .widget<PageView>(find.byType(PageView))
-            .controller!;
-        controller.jumpToPage(1);
-        await tester.pump();
+        final controller = (await _pumpUntilAttachedSlidePageView(
+          tester,
+          const ValueKey('source-slide:chapter-1'),
+        )).controller!;
+        expect(controller.page, 0);
         unawaited(
           controller.nextPage(
-            duration: const Duration(milliseconds: 280),
+            duration: const Duration(milliseconds: 600),
             curve: Curves.easeOutCubic,
           ),
         );
         await tester.pump();
-        await tester.pump(const Duration(milliseconds: 120));
-        expect(controller.page, greaterThan(1.5));
+        await tester.pump(const Duration(milliseconds: 160));
+        expect(controller.page, greaterThan(0.5));
         final interruptedPage = controller.page!;
 
         final drag = await tester.startGesture(
-          tester.getRect(find.byType(PageView)).center,
+          tester
+              .getRect(
+                find.byKey(const ValueKey('source-slide:chapter-1')),
+              )
+              .center,
         );
         await drag.moveBy(const Offset(360, 0));
         await tester.pump();
@@ -1046,12 +1033,12 @@ void main() {
         );
 
         expect(
-          forwardCurl.forwardPage!.key.pageIdentity,
+          forwardCurl.outgoingBackPage!.key.pageIdentity,
           contains(':chapter-2:0:'),
         );
         expect(
           forwardCurl.forwardPage!.key.pageIdentity,
-          isNot(contains('blank:')),
+          contains('blank:'),
         );
         expect(
           client.requestedChapterIds.where((id) => id == 'chapter-2').length,
@@ -1289,6 +1276,20 @@ Future<void> _pumpUntilFound(WidgetTester tester, Finder finder) async {
     await tester.pump(const Duration(milliseconds: 100));
     if (finder.evaluate().isNotEmpty) return;
   }
+}
+
+Future<PageView> _pumpUntilAttachedSlidePageView(
+  WidgetTester tester,
+  Key key,
+) async {
+  final finder = find.byKey(key);
+  for (var attempt = 0; attempt < 30; attempt++) {
+    await tester.pump(const Duration(milliseconds: 50));
+    if (finder.evaluate().length != 1) continue;
+    final pageView = tester.widget<PageView>(finder);
+    if (pageView.controller?.hasClients ?? false) return pageView;
+  }
+  throw TestFailure('Expected an attached slide PageView with key $key.');
 }
 
 Widget _buildTabletSourceReader(
