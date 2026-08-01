@@ -206,10 +206,20 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
   String _filteredChapterText(
     BookSourceChapterContent content, {
     String fallbackTitle = '',
-  }) => _contentFilterService.apply(
-    readableBookSourceChapterText(content, fallbackTitle: fallbackTitle),
-    _contentFilterRules,
-  );
+  }) {
+    if (identical(content, _content)) {
+      final cached = _readableChapterText[_chapterIndex];
+      if (cached != null) return cached;
+    }
+    final filtered = _contentFilterService.apply(
+      readableBookSourceChapterText(content, fallbackTitle: fallbackTitle),
+      _contentFilterRules,
+    );
+    if (identical(content, _content)) {
+      _readableChapterText[_chapterIndex] = filtered;
+    }
+    return filtered;
+  }
   final ReaderCustomThemeStore _customThemeStore =
       const ReaderCustomThemeStore();
   final ReaderThemeOrderStore _themeOrderStore = const ReaderThemeOrderStore();

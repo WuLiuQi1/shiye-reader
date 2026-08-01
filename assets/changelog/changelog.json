@@ -2,6 +2,43 @@
   "schemaVersion": 1,
   "entries": [
     {
+      "version": "0.4.5",
+      "notes": {
+        "zh": [
+          "更新检查仅使用拾页 GitHub Releases，不再访问原项目或原官网",
+          "删除首次启动捐赠弹窗、设置页支持开发入口及相关运行时资源",
+          "设置页品牌标语改为「拾起一页，片刻自由」",
+          "书源管理整理为导入、本地导入、导出，链接自动识别 ORSP 与 JSON",
+          "限制搜索补全并发、缓存正文过滤结果并缩短启动等待",
+          "精简运行时图片和未使用依赖，减小安装包体积"
+        ],
+        "zh-TW": [
+          "更新檢查僅使用拾頁 GitHub Releases，不再存取原專案或原官網",
+          "移除首次啟動捐贈彈窗、設定頁支持開發入口及相關執行資源",
+          "設定頁品牌標語改為「拾起一頁，片刻自由」",
+          "書源管理整理為匯入、本機匯入、匯出，連結自動辨識 ORSP 與 JSON",
+          "限制搜尋補全並行、快取正文過濾結果並縮短啟動等待",
+          "精簡執行時圖片和未使用依賴，減小安裝套件體積"
+        ],
+        "en": [
+          "Moved update checks exclusively to ShiYe GitHub Releases",
+          "Removed first-launch and Settings donation experiences and runtime assets",
+          "Changed the Settings tagline to ShiYe's new reading slogan",
+          "Unified source link import with automatic ORSP and JSON detection",
+          "Bound search enrichment concurrency and cached filtered chapter text",
+          "Reduced bundled images and unused dependencies"
+        ],
+        "ja": [
+          "更新確認を拾頁の GitHub Releases のみに変更しました",
+          "初回起動と設定画面の寄付機能および実行時リソースを削除しました",
+          "設定画面のブランド標語を更新しました",
+          "ORSP と JSON を自動判別する書籍ソースリンク取込に統合しました",
+          "検索補完の同時実行数を制限し、本文フィルター結果をキャッシュしました",
+          "同梱画像と未使用依存関係を整理しました"
+        ]
+      }
+    },
+    {
       "version": "0.4.4",
       "notes": {
         "zh": [

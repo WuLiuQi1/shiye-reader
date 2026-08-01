@@ -5,7 +5,7 @@ const String openReadingSourceProtocolVersion = '1.4';
 const String openReadingSourceProtocolRepositoryUrl =
     'https://github.com/miloquinn/open-reading-source-protocol';
 const String openReadingRightsReportUrl =
-    'https://github.com/miloquinn/open-reading/issues/new?template=rights_report.yml';
+    'https://github.com/WuLiuQi1/shiye-reader/issues/new?template=rights_report.yml';
 const String openReadingSourceDiscoveryPath =
     '.well-known/open-reading-source.json';
 

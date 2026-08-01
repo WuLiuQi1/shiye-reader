@@ -1001,7 +1001,7 @@ jobs:
           | --- | --- |
           | Android | [![Android APK ARM64-v8a](https://img.shields.io/badge/Android-APK%20ARM64--v8a-3DDC84?logo=android&logoColor=white)](${release_url}/OpenReading-Android-arm64-v8a-${version}.apk) [![Android APK ARMv7](https://img.shields.io/badge/Android-APK%20ARMv7-69C36D?logo=android&logoColor=white)](${release_url}/OpenReading-Android-armeabi-v7a-${version}.apk) [![Android APK x86_64](https://img.shields.io/badge/Android-APK%20x86__64-8BC34A?logo=android&logoColor=white)](${release_url}/OpenReading-Android-x86_64-${version}.apk) |
           ${ios_download_row}
-          | Web | [![Open Reading Web](https://img.shields.io/badge/Web-在线阅读-287FCD?logo=googlechrome&logoColor=white)](https://read.xxread.top/) |
+          | 项目主页 | [![ShiYe Reader](https://img.shields.io/badge/GitHub-拾页-287FCD?logo=github&logoColor=white)](https://github.com/WuLiuQi1/shiye-reader) |
           ${macos_download_row}
           | Windows | [![Windows x64](https://img.shields.io/badge/Windows-ZIP%20x64-0078D4?logo=windows&logoColor=white)](${release_url}/OpenReading-Windows-x64-${version}.zip) |
           | Linux | [![Linux x64](https://img.shields.io/badge/Linux-tar.gz%20x64-FCC624?logo=linux&logoColor=black)](${release_url}/OpenReading-Linux-x64-${version}.tar.gz) |
@@ -1036,6 +1036,7 @@ jobs:
         run: gh release view "$RELEASE_TAG"
 
   deploy-web:
+    if: ${{ false }} # 拾页暂不部署原项目网站
     name: Deploy Flutter Web
     needs: [publish, web]
     runs-on: ubuntu-latest
@@ -1188,6 +1189,7 @@ jobs:
           echo "::warning::The public CDN probe could not confirm ${RELEASE_TAG}; the origin deployment wrapper already validated and atomically activated the release."
 
   mirror-official-site:
+    if: ${{ false }} # 拾页仅通过 GitHub Releases 发布
     name: Mirror release to official site
     needs: publish
     runs-on: ubuntu-latest

@@ -46,7 +46,9 @@ import 'widgets/update_check_gate.dart';
 void main(List<String> arguments) async {
   // 确保可以在 runApp 前安全调用 SystemChrome
   WidgetsFlutterBinding.ensureInitialized();
-  await BookOpenStylePreference.load();
+  // Preferences that only affect a later navigation transition should not
+  // delay the first frame.
+  unawaited(BookOpenStylePreference.load());
 
   // 🚀 启用高刷新率支持
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
@@ -343,7 +345,6 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
   bool? _hasAcceptedAgreement;
   bool _isBootstrapped = false;
-  bool _showFirstHomeSupportAfterAgreement = false;
   _BootstrapError? _bootstrapError;
   StreamSubscription<BackgroundDownloadTap>? _notificationTapSubscription;
   BackgroundDownloadTap? _pendingNotificationTap;
@@ -591,7 +592,6 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
   void _onAgreementAccepted() {
     setState(() {
       _hasAcceptedAgreement = true;
-      _showFirstHomeSupportAfterAgreement = true;
     });
     _syncIncomingBookReadiness();
     unawaited(_openPendingNotificationTap());
@@ -768,11 +768,7 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
     }
 
     // 已同意协议，显示主页面
-    return UpdateCheckGate(
-      child: HomeShellPage(
-        showFirstHomeSupport: _showFirstHomeSupportAfterAgreement,
-      ),
-    );
+    return const UpdateCheckGate(child: HomeShellPage());
   }
 
   Widget _buildBootstrapErrorPage(BuildContext context) {

@@ -17,13 +17,13 @@ void main() {
         currentVersion: '0.9.1',
         latestRelease: AppRelease(
           version: '0.10.0',
-          name: 'Open Reading v0.10.0',
+          name: '拾页 v0.10.0',
           notes: '''# Highlights
 
 - Added **automatic update checks**.
 - Read the [full notes](https://example.com/releases/0.10.0).''',
           releaseUrl: Uri.parse(
-            'https://github.com/miloquinn/open-reading/releases/tag/v0.10.0',
+            'https://github.com/WuLiuQi1/shiye-reader/releases/tag/v0.10.0',
           ),
           publishedAt: DateTime.utc(2026, 7, 12),
         ),
@@ -80,10 +80,10 @@ void main() {
         currentVersion: '1.0.0',
         latestRelease: AppRelease(
           version: '2.0.0',
-          name: 'Open Reading v2.0.0',
+          name: '拾页 v2.0.0',
           notes: 'A safer updater.',
           releaseUrl: Uri.parse(
-            'https://github.com/miloquinn/open-reading/releases/tag/v2.0.0',
+            'https://github.com/WuLiuQi1/shiye-reader/releases/tag/v2.0.0',
           ),
           publishedAt: DateTime.utc(2026, 7, 19),
         ),
@@ -143,10 +143,10 @@ void main() {
         currentVersion: '1.0.0',
         latestRelease: AppRelease(
           version: '2.0.0',
-          name: 'Open Reading v2.0.0',
+          name: '拾页 v2.0.0',
           notes: 'Still available when checked manually.',
           releaseUrl: Uri.parse(
-            'https://github.com/miloquinn/open-reading/releases/tag/v2.0.0',
+            'https://github.com/WuLiuQi1/shiye-reader/releases/tag/v2.0.0',
           ),
           publishedAt: DateTime.utc(2026, 7, 19),
         ),
@@ -171,10 +171,10 @@ void main() {
         currentVersion: '1.0.0',
         latestRelease: AppRelease(
           version: '2.1.0',
-          name: 'Open Reading v2.1.0',
+          name: '拾页 v2.1.0',
           notes: 'A newer release.',
           releaseUrl: Uri.parse(
-            'https://github.com/miloquinn/open-reading/releases/tag/v2.1.0',
+            'https://github.com/WuLiuQi1/shiye-reader/releases/tag/v2.1.0',
           ),
           publishedAt: DateTime.utc(2026, 7, 20),
         ),
@@ -198,13 +198,13 @@ void main() {
         currentVersion: '1.0.0',
         latestRelease: AppRelease(
           version: '2.0.0',
-          name: 'Open Reading v2.0.0',
+          name: '拾页 v2.0.0',
           notes: List.filled(
             8,
             '- A detailed Markdown release-note item.',
           ).join('\n'),
           releaseUrl: Uri.parse(
-            'https://github.com/miloquinn/open-reading/releases/tag/v2.0.0',
+            'https://github.com/WuLiuQi1/shiye-reader/releases/tag/v2.0.0',
           ),
           publishedAt: DateTime.utc(2026, 7, 19),
         ),

@@ -28,7 +28,7 @@ body:
     attributes:
       label: Exact URL or file path
       description: Provide the narrowest location that identifies the material.
-      placeholder: https://github.com/miloquinn/open-reading/...
+      placeholder: https://github.com/WuLiuQi1/shiye-reader/...
     validations:
       required: true
   - type: textarea

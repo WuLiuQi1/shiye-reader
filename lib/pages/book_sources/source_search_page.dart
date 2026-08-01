@@ -177,32 +177,18 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
   Future<void> _enrichExactResults(String query) async {
     final exact = _results
         .where((item) => SourceSearchPage.relevanceScore(item.book, query) == 100)
-        .take(12)
+        .take(8)
         .toList(growable: false);
     if (exact.isEmpty) return;
-    final enriched = await Future.wait(exact.map((item) async {
-      try {
-        final detail = await widget.client.getBook(item.source, item.book.id);
-        final chapters = await widget.client.getChapters(item.source, item.book.id);
-        return SourcedBook(
-          source: item.source,
-          book: BookSourceBook(
-            id: item.book.id,
-            title: detail.title.isEmpty ? item.book.title : detail.title,
-            author: detail.author.isEmpty ? item.book.author : detail.author,
-            description: detail.description.isEmpty ? item.book.description : detail.description,
-            categories: detail.categories.isEmpty ? item.book.categories : detail.categories,
-            coverUrl: detail.coverUrl ?? item.book.coverUrl,
-            status: detail.status ?? item.book.status,
-            latestChapter: detail.latestChapter ?? item.book.latestChapter,
-            updatedAt: detail.updatedAt ?? item.book.updatedAt,
-            chapterCount: chapters.isEmpty ? item.book.chapterCount : chapters.length,
-          ),
-        );
-      } catch (_) {
-        return item;
-      }
-    }));
+    final enriched = <SourcedBook>[];
+    // Bound follow-up traffic so exact matches cannot create a burst of
+    // detail/catalog requests that blocks animations on slower devices.
+    for (var offset = 0; offset < exact.length; offset += 2) {
+      enriched.addAll(
+        await Future.wait(exact.skip(offset).take(2).map(_enrichSearchResult)),
+      );
+      if (!mounted || query != _activeQuery) return;
+    }
     if (!mounted || query != _activeQuery) return;
     final replacements = {
       for (final item in enriched) '${item.source.id}\u0000${item.book.id}': item,
@@ -213,6 +199,41 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
         query,
       );
     });
+  }
+
+  Future<SourcedBook> _enrichSearchResult(SourcedBook item) async {
+    try {
+      final detail = await widget.client.getBook(item.source, item.book.id);
+      var chapterCount = item.book.chapterCount;
+      if (chapterCount == null || chapterCount <= 0) {
+        final chapters = await widget.client.getChapters(
+          item.source,
+          item.book.id,
+        );
+        if (chapters.isNotEmpty) chapterCount = chapters.length;
+      }
+      return SourcedBook(
+        source: item.source,
+        book: BookSourceBook(
+          id: item.book.id,
+          title: detail.title.isEmpty ? item.book.title : detail.title,
+          author: detail.author.isEmpty ? item.book.author : detail.author,
+          description: detail.description.isEmpty
+              ? item.book.description
+              : detail.description,
+          categories: detail.categories.isEmpty
+              ? item.book.categories
+              : detail.categories,
+          coverUrl: detail.coverUrl ?? item.book.coverUrl,
+          status: detail.status ?? item.book.status,
+          latestChapter: detail.latestChapter ?? item.book.latestChapter,
+          updatedAt: detail.updatedAt ?? item.book.updatedAt,
+          chapterCount: chapterCount,
+        ),
+      );
+    } catch (_) {
+      return item;
+    }
   }
 
   Future<void> _loadMore() async {

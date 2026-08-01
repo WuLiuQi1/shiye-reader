@@ -27,7 +27,8 @@ void main() {
     expect(await BookSourceRegistry().load(), isEmpty);
     expect(find.text('Manage sources'), findsOneWidget);
     expect(find.text('Connected sources'), findsOneWidget);
-    expect(find.text('Add source'), findsOneWidget);
+    expect(find.text('导入'), findsOneWidget);
+    expect(find.text('本地导入'), findsOneWidget);
     expect(find.text('Open Reading Source Protocol'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
@@ -82,11 +83,11 @@ void main() {
     );
     expect(find.text('categories'), findsOneWidget);
     expect(find.text('Enabled'), findsOneWidget);
-    expect(find.text('导出全部'), findsOneWidget);
+    expect(find.text('导出'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
-  testWidgets('adding a source requires explicit third-party acknowledgment', (
+  testWidgets('unified link import accepts ORSP or JSON addresses', (
     tester,
   ) async {
     tester.view.devicePixelRatio = 1;
@@ -102,23 +103,11 @@ void main() {
     );
     await tester.pumpAndSettle();
 
-    await tester.tap(find.widgetWithText(FilledButton, 'Add source'));
+    await tester.tap(find.byKey(const Key('bookSourceUrlImportButton')));
     await tester.pumpAndSettle();
 
-    expect(
-      find.textContaining('OpenReading includes no sources'),
-      findsOneWidget,
-    );
-    expect(find.textContaining('bypass sign-in, payment, DRM'), findsOneWidget);
-    FilledButton connectButton() => tester.widget<FilledButton>(
-      find.byKey(const Key('bookSourceConnectButton')),
-    );
-    expect(connectButton().onPressed, isNull);
-
-    await tester.tap(find.byKey(const Key('bookSourceResponsibilityCheckbox')));
-    await tester.pump();
-
-    expect(connectButton().onPressed, isNotNull);
+    expect(find.text('导入书源链接'), findsOneWidget);
+    expect(find.text('ORSP 或 JSON 链接'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 

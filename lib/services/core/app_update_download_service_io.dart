@@ -258,7 +258,9 @@ Future<void> _clearOldUpdateFiles(Directory updatesDirectory) async {
 }
 
 bool _isAllowedDownloadUri(Uri uri) =>
-    uri.scheme == 'https' && uri.host.toLowerCase() == 'open.xxread.top';
+    uri.scheme == 'https' &&
+    uri.host.toLowerCase() == 'github.com' &&
+    uri.path.toLowerCase().startsWith('/wuliuqi1/shiye-reader/releases/');
 
 extension on File {
   Future<void> deleteIfExists() async {

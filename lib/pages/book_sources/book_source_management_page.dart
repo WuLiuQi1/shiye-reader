@@ -64,19 +64,6 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(context.l10n.bookSourceManagementTitle),
-        actions: [
-          IconButton(
-            tooltip: '导入 Legado/阅读书源',
-            onPressed: _importLegadoSources,
-            icon: const Icon(Icons.file_download_outlined),
-          ),
-          IconButton(
-            tooltip: context.l10n.bookSourcesAdd,
-            onPressed: _showAddSourceDialog,
-            icon: const Icon(Icons.add_link_rounded),
-          ),
-          const SizedBox(width: 4),
-        ],
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -102,7 +89,7 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
                       ),
                       const SizedBox(height: 20),
                       Text(
-                        context.l10n.bookSourcesManageTitle,
+                        '${context.l10n.bookSourcesManageTitle}（${_sources.length}）',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           fontWeight: FontWeight.w800,
                         ),
@@ -113,20 +100,15 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
                         runSpacing: 8,
                         children: [
                           FilledButton.icon(
-                            onPressed: _showAddSourceDialog,
-                            icon: const Icon(Icons.add_rounded),
-                            label: Text(context.l10n.bookSourcesAdd),
-                          ),
-                          OutlinedButton.icon(
-                            onPressed: _importLegadoSources,
-                            icon: const Icon(Icons.file_download_outlined),
+                            key: const Key('bookSourceUrlImportButton'),
+                            onPressed: _importSourcesFromUrl,
+                            icon: const Icon(Icons.link_rounded),
                             label: const Text('导入'),
                           ),
                           OutlinedButton.icon(
-                            key: const Key('bookSourceUrlImportButton'),
-                            onPressed: _importLegadoSourcesFromUrl,
-                            icon: const Icon(Icons.link_rounded),
-                            label: const Text('URL 导入'),
+                            onPressed: _importLegadoSources,
+                            icon: const Icon(Icons.folder_open_rounded),
+                            label: const Text('本地导入'),
                           ),
                           OutlinedButton.icon(
                             key: const Key('bookSourceExportButton'),
@@ -136,8 +118,8 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
                             icon: const Icon(Icons.file_upload_outlined),
                             label: Text(
                               _selectedSourceIds.isEmpty
-                                  ? '导出全部'
-                                  : '导出已选（${_selectedSourceIds.length}）',
+                                  ? '导出'
+                                  : '导出（${_selectedSourceIds.length}）',
                             ),
                           ),
                         ],
@@ -162,14 +144,16 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
                               label: Text(
                                 _testingAll
                                     ? '正在测试 $_testedCount/${_sources.length}'
-                                    : '一键测试全部',
+                                    : '测试全部',
                               ),
                             ),
                             FilterChip(
                               selected: _failedOnly,
                               onSelected: (value) =>
                                   setState(() => _failedOnly = value),
-                              label: const Text('只看不通过'),
+                              label: Text(
+                                '仅显示不通过（${_failedSourceCount}）',
+                              ),
                               avatar: const Icon(Icons.error_outline, size: 18),
                             ),
                             if (_selectedSourceIds.isNotEmpty)
@@ -265,20 +249,28 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
     }
   }
 
-  Future<void> _importLegadoSourcesFromUrl() async {
+  int get _failedSourceCount => _testStatus.values
+      .where(
+        (status) =>
+            status == _SourceTestStatus.failed ||
+            status == _SourceTestStatus.timeout,
+      )
+      .length;
+
+  Future<void> _importSourcesFromUrl() async {
     final controller = TextEditingController();
     final value = await showDialog<String>(
       context: context,
       builder: (context) => AlertDialog(
-        title: const Text('通过 URL 导入书源'),
+        title: const Text('导入书源链接'),
         content: TextField(
           key: const Key('bookSourceUrlImportField'),
           controller: controller,
           autofocus: true,
           keyboardType: TextInputType.url,
           decoration: const InputDecoration(
-            labelText: 'JSON 下载地址',
-            hintText: 'https://example.com/sources.json',
+            labelText: 'ORSP 或 JSON 链接',
+            hintText: 'https://example.com/source',
           ),
         ),
         actions: [
@@ -296,20 +288,31 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
       showSideToast(context, '请输入有效的网址', kind: SideToastKind.error);
       return;
     }
-    showSideToast(context, '正在下载书源…');
+    showSideToast(context, '正在识别并导入书源…');
     try {
-      final imported = await LegadoSourceUrlImporter().load(uri);
+      List<RegisteredBookSource> imported;
+      try {
+        imported = await LegadoSourceUrlImporter().load(uri);
+      } on BookSourceProtocolException {
+        final discovered = await _client.discover(uri.toString());
+        imported = [
+          RegisteredBookSource.fromManifest(
+            manifest: discovered.manifest,
+            manifestUrl: discovered.manifestUrl,
+          ),
+        ];
+      }
       final sources = await _registry.upsertAll(imported);
       if (!mounted) return;
       setState(() => _sources = sources);
       showSideToast(
         context,
-        '已从 URL 导入 ${imported.length} 个书源',
+        '已导入 ${imported.length} 个书源',
         kind: SideToastKind.success,
       );
     } catch (error) {
       if (!mounted) return;
-      showSideToast(context, 'URL 导入失败：$error', kind: SideToastKind.error);
+      showSideToast(context, '导入失败：无法识别该链接（$error）', kind: SideToastKind.error);
     }
   }
 
