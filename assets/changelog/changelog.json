@@ -2,6 +2,27 @@
   "schemaVersion": 1,
   "entries": [
     {
+      "version": "0.4.7",
+      "notes": {
+        "zh": [
+          "修复跨平台发布任务遗漏 Android APK 的问题",
+          "使用新的发布版本，避免覆盖 v0.4.6 的不可变附件"
+        ],
+        "zh-TW": [
+          "修復跨平台發佈任務遺漏 Android APK 的問題",
+          "使用新的發佈版本，避免覆蓋 v0.4.6 的不可變附件"
+        ],
+        "en": [
+          "Fixed missing Android APKs in cross-platform releases",
+          "Published as a new version to preserve immutable v0.4.6 assets"
+        ],
+        "ja": [
+          "クロスプラットフォームリリースで Android APK が欠落する問題を修正しました",
+          "v0.4.6 の不変アセットを保持するため新しいバージョンとして公開します"
+        ]
+      }
+    },
+    {
       "version": "0.4.6",
       "notes": {
         "zh": [
