@@ -20,14 +20,15 @@ void main() {
 
       final catalogs = await Future.wait(locales.map(service.load));
       final versions = catalogs.first.map((entry) => entry.version).toList();
-
-      expect(versions, [
+      const expectedVersions = [
         '0.4.7',
         '0.4.6',
         '0.4.5',
         '0.4.4',
         '0.4.3 · 拾页修改版',
-      ]);
+      ];
+
+      expect(versions, expectedVersions);
       for (final catalog in catalogs) {
         expect(catalog.map((entry) => entry.version), versions);
         expect(catalog.every((entry) => entry.items.isNotEmpty), isTrue);
