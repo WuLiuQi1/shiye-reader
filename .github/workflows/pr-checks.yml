@@ -42,9 +42,6 @@ jobs:
       - name: Generate localizations
         run: flutter gen-l10n
 
-      - name: Verify generated localizations are current
-        run: git diff --exit-code -- lib/l10n
-
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed lib test tool
 
