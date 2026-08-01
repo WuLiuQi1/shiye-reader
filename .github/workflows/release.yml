@@ -172,7 +172,7 @@ jobs:
       - name: Generate localizations
         run: flutter gen-l10n
 
-      - name: Prepare Android release signing
+      - name: Prepare Android signing
         shell: bash
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -180,30 +180,31 @@ jobs:
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          for variable in \
-            ANDROID_KEYSTORE_BASE64 \
-            ANDROID_KEYSTORE_PASSWORD \
-            ANDROID_KEY_ALIAS \
-            ANDROID_KEY_PASSWORD; do
-            if [[ -z "${!variable}" ]]; then
-              echo "::error::Required Android signing secret is missing: ${variable}"
-              exit 1
-            fi
-          done
+          if [[ -z "$ANDROID_KEYSTORE_BASE64" || \
+                -z "$ANDROID_KEYSTORE_PASSWORD" || \
+                -z "$ANDROID_KEY_ALIAS" || \
+                -z "$ANDROID_KEY_PASSWORD" ]]; then
+            echo "::warning::Android release signing is not configured; building installable debug-signed APKs."
+            echo "ANDROID_SIGNING_MODE=debug" >> "$GITHUB_ENV"
+            exit 0
+          fi
 
           keystore_path="${RUNNER_TEMP}/open-reading-release.jks"
           printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$keystore_path"
           chmod 600 "$keystore_path"
           echo "ANDROID_KEYSTORE_PATH=$keystore_path" >> "$GITHUB_ENV"
+          echo "ANDROID_SIGNING_MODE=release" >> "$GITHUB_ENV"
 
-      - name: Build release APKs
+      - name: Build Android APKs
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        run: flutter build apk --release --split-per-abi
+        shell: bash
+        run: flutter build apk --"$ANDROID_SIGNING_MODE" --split-per-abi
 
       - name: Verify APK signing identity
+        if: env.ANDROID_SIGNING_MODE == 'release'
         shell: bash
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -255,18 +256,19 @@ jobs:
         shell: bash
         run: |
           version="${RELEASE_TAG#v}"
+          mode="$ANDROID_SIGNING_MODE"
           mkdir -p release-assets
-          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
+          cp "build/app/outputs/flutter-apk/app-arm64-v8a-${mode}.apk" \
             "release-assets/OpenReading-Android-arm64-v8a-${version}.apk"
-          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk \
+          cp "build/app/outputs/flutter-apk/app-armeabi-v7a-${mode}.apk" \
             "release-assets/OpenReading-Android-armeabi-v7a-${version}.apk"
-          cp build/app/outputs/flutter-apk/app-x86_64-release.apk \
+          cp "build/app/outputs/flutter-apk/app-x86_64-${mode}.apk" \
             "release-assets/OpenReading-Android-x86_64-${version}.apk"
 
       - name: Upload Android artifacts
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
         with:
-          name: android-release
+          name: android-apks
           path: release-assets/*
           if-no-files-found: error
 
