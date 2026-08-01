@@ -178,6 +178,7 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
   String? _paginationKey;
   List<BookSourceTextPage> _paginatedPages = const [];
   int _chapterLoadSerial = 0;
+  bool _appActive = true;
   final Map<int, BookSourceChapterContent> _prefetchedContent = {};
   final Map<int, String> _readableChapterText = {};
   final Map<int, Future<BookSourceChapterContent>> _continuousContentLoads = {};
@@ -389,6 +390,7 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
     if (state == AppLifecycleState.resumed) {
+      _appActive = true;
       _startReadingSession();
       unawaited(ReaderKeepScreenOnController.reapply(this));
       if (_readerSystemUiApplied) unawaited(_applyReaderSystemUi());
@@ -400,6 +402,7 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
     if (state == AppLifecycleState.inactive ||
         state == AppLifecycleState.paused ||
         state == AppLifecycleState.detached) {
+      _appActive = false;
       unawaited(_saveProgress());
       unawaited(_flushReadingSession());
     }
@@ -925,17 +928,17 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
   }
 
   Future<void> _preloadAround(int index) async {
+    if (!_appActive) return;
     // The next chapter is the only cache entry needed for a forward turn.
     // Load and lay it out before competing for a source connection with the
-    // backwards preview or the farther look-ahead chapter.
+    // backwards preview.
     await _preloadChapter(index + 1);
-    for (final chapterIndex in <int>[index - 1, index + 2]) {
-      unawaited(_preloadChapter(chapterIndex));
-    }
+    // 只保留前一章回翻缓存；更远的第二章不提前联网和排版。
+    unawaited(_preloadChapter(index - 1));
   }
 
   Future<void> _preloadChapter(int index) async {
-    if (index < 0 || index >= _chapters.length) return;
+    if (!_appActive || index < 0 || index >= _chapters.length) return;
     try {
       await _continuousContentFor(index);
       _schedulePagedLayoutWarm(index);

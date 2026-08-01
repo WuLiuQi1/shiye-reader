@@ -234,54 +234,75 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 
   Future<void> _showFilterMenu(Rect anchor) async {
-    final overlay =
-        Navigator.of(context).overlay!.context.findRenderObject()! as RenderBox;
-    final selected = await showMenu<_LibraryFilter>(
+    final selected = await showModalBottomSheet<_LibraryFilter>(
       context: context,
-      position: RelativeRect.fromRect(anchor, Offset.zero & overlay.size),
-      initialValue: _selectedFilter,
-      items: [
-        _buildFilterMenuItem(
-          _LibraryFilter.all,
-          context.l10n.libraryFilterAll(_books.length),
-        ),
-        _buildFilterMenuItem(
-          _LibraryFilter.reading,
-          context.l10n.libraryFilterReading(
-            _books.where(_isReadingBook).length,
-          ),
-        ),
-        _buildFilterMenuItem(
-          _LibraryFilter.finished,
-          context.l10n.libraryFilterFinished(
-            _books.where(_isFinishedBook).length,
-          ),
-        ),
-      ],
+      backgroundColor: Colors.transparent,
+      showDragHandle: false,
+      builder: (sheetContext) => _buildFilterSheet(sheetContext),
     );
     if (selected == null || !mounted) return;
     setState(() => _selectedFilter = selected);
     _syncFilterActive();
   }
 
-  PopupMenuItem<_LibraryFilter> _buildFilterMenuItem(
-    _LibraryFilter filter,
-    String label,
-  ) {
-    final selected = _selectedFilter == filter;
-    final scheme = Theme.of(context).colorScheme;
-    return PopupMenuItem<_LibraryFilter>(
-      value: filter,
-      child: Row(
-        children: [
-          Icon(
-            selected ? Icons.radio_button_checked : Icons.radio_button_off,
-            size: 18,
-            color: selected ? scheme.primary : scheme.onSurfaceVariant,
-          ),
-          const SizedBox(width: 10),
-          Text(label),
-        ],
+  Widget _buildFilterSheet(BuildContext sheetContext) {
+    final scheme = Theme.of(sheetContext).colorScheme;
+    final options = <(_LibraryFilter, String)>[
+      (_LibraryFilter.all, context.l10n.libraryFilterAll(_books.length)),
+      (
+        _LibraryFilter.reading,
+        context.l10n.libraryFilterReading(_books.where(_isReadingBook).length),
+      ),
+      (
+        _LibraryFilter.finished,
+        context.l10n.libraryFilterFinished(
+          _books.where(_isFinishedBook).length,
+        ),
+      ),
+    ];
+    return SafeArea(
+      child: Container(
+        margin: const EdgeInsets.all(12),
+        padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+        decoration: BoxDecoration(
+          color: scheme.surfaceContainerHigh,
+          borderRadius: BorderRadius.circular(28),
+          border: Border.all(color: scheme.outlineVariant),
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 36,
+              height: 4,
+              margin: const EdgeInsets.only(bottom: 14),
+              decoration: BoxDecoration(
+                color: scheme.onSurfaceVariant.withValues(alpha: .3),
+                borderRadius: BorderRadius.circular(99),
+              ),
+            ),
+            for (final option in options)
+              Padding(
+                padding: const EdgeInsets.only(bottom: 8),
+                child: ListTile(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18),
+                  ),
+                  tileColor: option.$1 == _selectedFilter
+                      ? scheme.primaryContainer
+                      : scheme.surfaceContainerLow,
+                  title: Text(
+                    option.$2,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
+                  trailing: option.$1 == _selectedFilter
+                      ? Icon(Icons.check_rounded, color: scheme.primary)
+                      : null,
+                  onTap: () => Navigator.of(sheetContext).pop(option.$1),
+                ),
+              ),
+          ],
+        ),
       ),
     );
   }

@@ -37,6 +37,7 @@ import 'package:xxread/utils/app_themes_translator.dart';
 import 'package:xxread/utils/font_catalog_helper.dart';
 import 'package:xxread/utils/localization_extension.dart';
 import 'package:xxread/utils/page_style_helper.dart';
+import 'package:xxread/utils/page_transitions.dart';
 import 'package:xxread/utils/reader_themes.dart';
 import 'package:xxread/utils/system_ui_helper.dart';
 import 'package:xxread/utils/ui_style.dart';
@@ -515,10 +516,8 @@ class _SettingsPageState extends State<SettingsPage> {
               _buildActionSetting(
                 title: '内容过滤规则',
                 subtitle: '屏蔽正文中的网址、乱码和自定义内容',
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const ContentFilterRulesPage(),
-                  ),
+                onTap: () => _openSettingsSubpage(
+                  const ContentFilterRulesPage(),
                 ),
                 icon: Icons.filter_alt_outlined,
               ),
@@ -640,10 +639,12 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _openBookSourceManagement() {
-    Navigator.of(context).push(
-      MaterialPageRoute<void>(builder: (_) => const BookSourceManagementPage()),
-    );
+    _openSettingsSubpage(const BookSourceManagementPage());
   }
+
+  Future<void> _openSettingsSubpage(Widget page) => Navigator.of(context).push(
+    CustomPageTransitions.createSlideScaleRoute<void>(page),
+  );
 
   Widget _buildSettingsTopRow(AppLocalizations l10n, bool useRailNavigation) {
     final palette = PageStyleHelper.palette(context);

@@ -434,47 +434,107 @@ class _DetailedStatsPageState extends State<DetailedStatsPage>
 
   Widget _buildTimeRangeSelector({required bool compact}) {
     final palette = _palette;
-    return PopupMenuButton<String>(
-      initialValue: _selectedTimeRange,
-      tooltip: _timeRangeLabel(_selectedTimeRange),
-      onSelected: (value) => setState(() => _selectedTimeRange = value),
-      itemBuilder: (context) => ['7d', '30d', '90d', '1y', 'all']
-          .map(
-            (range) => PopupMenuItem(
-              value: range,
-              child: Text(_timeRangeLabel(range)),
-            ),
-          )
-          .toList(),
-      child: Container(
-        height: 42,
-        padding: EdgeInsets.symmetric(horizontal: compact ? 11 : 13),
-        decoration: BoxDecoration(
-          color: palette.softAccent,
-          borderRadius: BorderRadius.circular(999),
-          border: Border.all(color: palette.border),
-        ),
-        child: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(Icons.calendar_today_rounded, color: palette.accent, size: 16),
-            if (!compact) ...[
-              const SizedBox(width: 7),
-              Text(
-                _timeRangeLabel(_selectedTimeRange),
-                style: TextStyle(
-                  color: palette.accent,
-                  fontSize: 13,
-                  fontWeight: FontWeight.w700,
+    return Semantics(
+      button: true,
+      label: _timeRangeLabel(_selectedTimeRange),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(999),
+        onTap: _showTimeRangeSheet,
+        child: Container(
+          height: 42,
+          padding: EdgeInsets.symmetric(horizontal: compact ? 11 : 13),
+          decoration: BoxDecoration(
+            color: palette.softAccent,
+            borderRadius: BorderRadius.circular(999),
+            border: Border.all(color: palette.border),
+          ),
+          child: Row(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.calendar_today_rounded,
+                color: palette.accent,
+                size: 16,
+              ),
+              if (!compact) ...[
+                const SizedBox(width: 7),
+                Text(
+                  _timeRangeLabel(_selectedTimeRange),
+                  style: TextStyle(
+                    color: palette.accent,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
+              ],
+              const SizedBox(width: 2),
+              Icon(
+                Icons.expand_more_rounded,
+                color: palette.accent,
+                size: 18,
               ),
             ],
-            const SizedBox(width: 2),
-            Icon(Icons.expand_more_rounded, color: palette.accent, size: 18),
-          ],
+          ),
         ),
       ),
     );
+  }
+
+  Future<void> _showTimeRangeSheet() async {
+    final selected = await showModalBottomSheet<String>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (sheetContext) {
+        final scheme = Theme.of(sheetContext).colorScheme;
+        return SafeArea(
+          child: Container(
+            margin: const EdgeInsets.all(12),
+            padding: const EdgeInsets.fromLTRB(16, 10, 16, 16),
+            decoration: BoxDecoration(
+              color: scheme.surfaceContainerHigh,
+              borderRadius: BorderRadius.circular(28),
+              border: Border.all(color: scheme.outlineVariant),
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Container(
+                  width: 36,
+                  height: 4,
+                  margin: const EdgeInsets.only(bottom: 14),
+                  decoration: BoxDecoration(
+                    color: scheme.onSurfaceVariant.withValues(alpha: .3),
+                    borderRadius: BorderRadius.circular(99),
+                  ),
+                ),
+                for (final range in const ['7d', '30d', '90d', '1y', 'all'])
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: ListTile(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18),
+                      ),
+                      tileColor: range == _selectedTimeRange
+                          ? scheme.primaryContainer
+                          : scheme.surfaceContainerLow,
+                      title: Text(
+                        _timeRangeLabel(range),
+                        style: const TextStyle(fontWeight: FontWeight.w600),
+                      ),
+                      trailing: range == _selectedTimeRange
+                          ? Icon(Icons.check_rounded, color: scheme.primary)
+                          : null,
+                      onTap: () => Navigator.of(sheetContext).pop(range),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+    if (selected == null || !mounted) return;
+    setState(() => _selectedTimeRange = selected);
   }
 
   Widget _buildTabBar() {

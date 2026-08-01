@@ -2,6 +2,35 @@
   "schemaVersion": 1,
   "entries": [
     {
+      "version": "0.4.6",
+      "notes": {
+        "zh": [
+          "新增全选不通过书源并修复失败筛选图标",
+          "书库和详细统计筛选统一为圆角主题面板",
+          "统一设置子页面转场并优化缓存恢复体验",
+          "后台暂停周期任务和章节预加载，降低耗电"
+        ],
+        "zh-TW": [
+          "新增全選未通過書源並修復失敗篩選圖示",
+          "書庫和詳細統計篩選統一為圓角主題面板",
+          "統一設定子頁面轉場並優化快取恢復體驗",
+          "背景暫停週期任務和章節預載，降低耗電"
+        ],
+        "en": [
+          "Added select-all-failed sources and fixed the failed filter icon",
+          "Replaced library and statistics menus with themed rounded sheets",
+          "Unified Settings subpage transitions and cache restoration",
+          "Paused periodic work and chapter preloading in the background"
+        ],
+        "ja": [
+          "失敗した書籍ソースの一括選択とフィルターアイコンを修正",
+          "ライブラリと統計の絞り込みをテーマ対応シートに統一",
+          "設定サブページの遷移とキャッシュ復元を最適化",
+          "バックグラウンドの定期処理と先読みを停止して省電力化"
+        ]
+      }
+    },
+    {
       "version": "0.4.5",
       "notes": {
         "zh": [

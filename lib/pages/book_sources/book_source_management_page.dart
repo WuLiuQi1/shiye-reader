@@ -149,6 +149,7 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
                             ),
                             FilterChip(
                               selected: _failedOnly,
+                              showCheckmark: false,
                               onSelected: (value) =>
                                   setState(() => _failedOnly = value),
                               label: Text(
@@ -156,6 +157,21 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
                               ),
                               avatar: const Icon(Icons.error_outline, size: 18),
                             ),
+                            if (_failedSourceCount > 0)
+                              OutlinedButton.icon(
+                                key: const Key('selectAllFailedSourcesButton'),
+                                onPressed: _toggleSelectAllFailedSources,
+                                icon: Icon(
+                                  _allFailedSourcesSelected
+                                      ? Icons.deselect_rounded
+                                      : Icons.select_all_rounded,
+                                ),
+                                label: Text(
+                                  _allFailedSourcesSelected
+                                      ? '取消全选不通过'
+                                      : '全选不通过',
+                                ),
+                              ),
                             if (_selectedSourceIds.isNotEmpty)
                               OutlinedButton.icon(
                                 onPressed: _confirmRemoveSelected,
@@ -256,6 +272,31 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
             status == _SourceTestStatus.timeout,
       )
       .length;
+
+  Set<String> get _failedSourceIds => _sources
+      .where(
+        (source) =>
+            _testStatus[source.id] == _SourceTestStatus.failed ||
+            _testStatus[source.id] == _SourceTestStatus.timeout,
+      )
+      .map((source) => source.id)
+      .toSet();
+
+  bool get _allFailedSourcesSelected {
+    final failedIds = _failedSourceIds;
+    return failedIds.isNotEmpty && _selectedSourceIds.containsAll(failedIds);
+  }
+
+  void _toggleSelectAllFailedSources() {
+    final failedIds = _failedSourceIds;
+    setState(() {
+      if (_selectedSourceIds.containsAll(failedIds)) {
+        _selectedSourceIds.removeAll(failedIds);
+      } else {
+        _selectedSourceIds.addAll(failedIds);
+      }
+    });
+  }
 
   Future<void> _importSourcesFromUrl() async {
     final controller = TextEditingController();

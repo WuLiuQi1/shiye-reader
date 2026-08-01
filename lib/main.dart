@@ -481,6 +481,9 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
+    final active = state == AppLifecycleState.resumed;
+    unawaited(DataCacheService().setAppActive(active));
+    unawaited(AppStateService().setAppActive(active));
     if (state == AppLifecycleState.resumed) {
       unawaited(_runAutomaticWebDavSyncIfNeeded());
     }
