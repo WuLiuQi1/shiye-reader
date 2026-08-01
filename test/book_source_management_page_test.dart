@@ -27,7 +27,7 @@ void main() {
 
     expect(await BookSourceRegistry().load(), isEmpty);
     expect(find.text('Manage sources'), findsOneWidget);
-    expect(find.text('Connected sources'), findsOneWidget);
+    expect(find.text('Connected sources（0）'), findsOneWidget);
     expect(find.text('导入'), findsOneWidget);
     expect(find.text('本地导入'), findsOneWidget);
     expect(find.text('Open Reading Source Protocol'), findsOneWidget);
