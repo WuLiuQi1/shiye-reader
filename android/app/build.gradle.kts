@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -5,10 +7,23 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
+val keystoreProperties = Properties().apply {
+    val propertiesFile = rootProject.file("key.properties")
+    if (propertiesFile.exists()) {
+        propertiesFile.inputStream().use(::load)
+    }
+}
+
+// CI can provide its own credentials through environment variables. Local release
+// builds fall back to android/key.properties and the bundled project keystore.
 val releaseKeystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
+    ?: keystoreProperties.getProperty("storeFile")
 val releaseKeystorePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
+    ?: keystoreProperties.getProperty("storePassword")
 val releaseKeyAlias = System.getenv("ANDROID_KEY_ALIAS")
+    ?: keystoreProperties.getProperty("keyAlias")
 val releaseKeyPassword = System.getenv("ANDROID_KEY_PASSWORD")
+    ?: keystoreProperties.getProperty("keyPassword")
 val hasReleaseSigning = listOf(
     releaseKeystorePath,
     releaseKeystorePassword,
@@ -26,7 +41,8 @@ gradle.taskGraph.whenReady {
     if (buildsRelease && !hasReleaseSigning) {
         throw GradleException(
             "Release signing is required. Set ANDROID_KEYSTORE_PATH, " +
-                "ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, and ANDROID_KEY_PASSWORD.",
+                "ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, and ANDROID_KEY_PASSWORD, " +
+                "or provide android/key.properties.",
         )
     }
 }
