@@ -16,9 +16,12 @@ class AppTheme {
 }
 
 class AppThemes {
-  /// Books-style warm orange.  This remains an app accent rather than using
-  /// any Apple artwork or brand asset.
-  static const Color defaultAccentColor = Color(0xFFFF9500);
+  /// The reference reader uses a restrained ink-and-blue palette: black is
+  /// reserved for reading, and blue only communicates progress or selection.
+  /// This intentionally avoids Apple artwork and brand assets.
+  /// The reference UI uses a single clear system-blue selection colour.
+  /// Keeping it neutral lets book covers and reading paper remain dominant.
+  static const Color defaultAccentColor = Color(0xFF0A84FF);
 
   /// 设置页中的快捷强调色。任意颜色仍可通过色盘或十六进制输入选择。
   static const List<Color> accentColors = [
@@ -69,8 +72,8 @@ class AppThemes {
       lightColorScheme: ColorScheme.fromSeed(
         seedColor: seedColor,
         brightness: Brightness.light,
-        surface: const Color(0xFFFFFBFF),
-        onSurface: const Color(0xFF1C1B1F),
+        surface: const Color(0xFFFFFFFF),
+        onSurface: const Color(0xFF000000),
       ),
       darkColorScheme: ColorScheme.fromSeed(
         seedColor: seedColor,

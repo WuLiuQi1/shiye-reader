@@ -23,9 +23,9 @@ class HomeMobileTopBar extends StatelessWidget {
     super.key,
     required this.title,
     this.trailing,
-    this.titleFontSize = 34,
-    this.titleFontWeight = FontWeight.w700,
-    this.horizontalPadding = 16,
+    this.titleFontSize = 40,
+    this.titleFontWeight = FontWeight.w800,
+    this.horizontalPadding = 24,
   });
 
   @override
@@ -37,18 +37,14 @@ class HomeMobileTopBar extends StatelessWidget {
     final content = Container(
       height: metrics.topBarHeight,
       decoration: BoxDecoration(
-        color: (isDark ? const Color(0xE6000000) : const Color(0xF7FFFFFF)),
-        border: Border(
-          bottom: BorderSide(
-            color: isDark ? const Color(0xFF38383A) : const Color(0x1F3C3C43),
-            width: 0.5,
-          ),
-        ),
+        // The screenshot's header is visually part of the page rather than a
+        // separate Material app bar.  Keep it clean; sheets provide borders.
+        color: (isDark ? const Color(0xF2000000) : const Color(0xF2FFFFFF)),
       ),
       child: Padding(
         padding: EdgeInsets.fromLTRB(
           horizontalPadding,
-          metrics.systemTopInset + 7,
+          metrics.systemTopInset + 12,
           horizontalPadding,
           8,
         ),
@@ -61,7 +57,8 @@ class HomeMobileTopBar extends StatelessWidget {
                   fontSize: titleFontSize,
                   fontWeight: FontWeight.w700,
                   color: scheme.onSurface,
-                  height: 1.0,
+                  height: 1.05,
+                  letterSpacing: -1.4,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

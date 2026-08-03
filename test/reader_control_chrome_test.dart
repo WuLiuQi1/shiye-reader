@@ -116,7 +116,7 @@ void main() {
     expect(roseSurface.g, lessThan(greenSurface.g));
   });
 
-  testWidgets('bottom control bar only shows reader actions', (tester) async {
+  testWidgets('reader menu expands from one lower-right action', (tester) async {
     const bottomKey = ValueKey('reader-bottom-controls');
     const statusKey = ValueKey('reader-status');
 
@@ -155,26 +155,17 @@ void main() {
       findsNothing,
     );
     expect(
-      find.descendant(
-        of: bottomControls,
-        matching: find.byIcon(Icons.format_list_bulleted_rounded),
-      ),
+      find.descendant(of: bottomControls, matching: find.byIcon(Icons.format_list_bulleted_rounded)),
       findsOneWidget,
     );
-    expect(
-      find.descendant(
-        of: bottomControls,
-        matching: find.byIcon(Icons.headphones_rounded),
-      ),
-      findsOneWidget,
-    );
-    expect(
-      find.descendant(
-        of: bottomControls,
-        matching: find.byIcon(Icons.tune_rounded),
-      ),
-      findsOneWidget,
-    );
+    await tester.tap(find.descendant(
+      of: bottomControls,
+      matching: find.byIcon(Icons.format_list_bulleted_rounded),
+    ));
+    await tester.pumpAndSettle();
+    expect(find.text('Contents'), findsOneWidget);
+    expect(find.text('Settings'), findsOneWidget);
+    expect(find.byIcon(Icons.headphones_rounded), findsOneWidget);
     expect(find.byKey(statusKey), findsOneWidget);
   });
 }

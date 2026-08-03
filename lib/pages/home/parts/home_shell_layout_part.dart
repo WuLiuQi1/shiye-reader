@@ -209,7 +209,7 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
     );
   }
 
-  /// 手机布局：PageView + 底部悬浮药丸导航。
+  /// 手机布局：PageView + 系统式底部标签导航。
   ///
   /// 说明：
   /// - PageView 负责横向切页手势。
@@ -284,7 +284,9 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
               ),
             ),
             _buildMobileTopBarOverlay(),
-            // Books 式固定底部栏：内容向下延展，标签和图标随安全区固定。
+            // Reference-style three-zone navigation.  It is intentionally
+            // full-width: the screenshots use a quiet system tab bar, while
+            // the previous floating capsule made the app read as Material.
             Positioned(
               left: 0,
               right: 0,
@@ -308,29 +310,46 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
                   );
                 },
                 child: RepaintBoundary(
-                  child: Container(
+                  child: SizedBox(
                     height: metrics.navContainerHeight,
-                    decoration: BoxDecoration(
-                      color: Theme.of(context).navigationBarTheme.backgroundColor,
-                      border: Border(
-                        top: BorderSide(
-                          color: Theme.of(context).dividerTheme.color ?? Colors.transparent,
-                          width: 0.5,
-                        ),
-                      ),
-                    ),
                     child: Padding(
-                      padding: EdgeInsets.only(bottom: metrics.systemBottomInset),
-                      child: NavigationBar(
-                        selectedIndex: visualSelectedIndex,
-                        labelBehavior:
-                            NavigationDestinationLabelBehavior.alwaysShow,
-                        onDestinationSelected: _switchToTab,
-                        destinations: _navigationItems.map((item) => NavigationDestination(
-                          icon: Icon(item.icon),
-                          selectedIcon: Icon(item.selectedIcon),
-                          label: item.label,
-                        )).toList(growable: false),
+                      padding: EdgeInsets.fromLTRB(
+                        0,
+                        0,
+                        0,
+                        metrics.systemBottomInset + kHomeMobileFloatingNavBottomGap,
+                      ),
+                        child: Container(
+                          width: double.infinity,
+                          height: kHomeMobileFloatingNavHeight,
+                          decoration: BoxDecoration(
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? const Color(0xFF000000)
+                                : const Color(0xFFFBFBFC),
+                            border: Border(
+                              top: BorderSide(
+                                color: Theme.of(context).brightness == Brightness.dark
+                                    ? const Color(0xFF38383A)
+                                    : const Color(0x1F3C3C43),
+                                width: 0.5,
+                              ),
+                            ),
+                          ),
+                          child: NavigationBar(
+                            backgroundColor: Colors.transparent,
+                            surfaceTintColor: Colors.transparent,
+                            elevation: 0,
+                            height: kHomeMobileFloatingNavHeight,
+                            selectedIndex: visualSelectedIndex,
+                            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+                            onDestinationSelected: _switchToTab,
+                            indicatorColor: Colors.transparent,
+                            destinations: _navigationItems.map((item) => NavigationDestination(
+                              icon: Icon(item.icon),
+                              selectedIcon: Icon(item.selectedIcon),
+                              label: item.label,
+                            )).toList(growable: false),
+                        ),
                       ),
                     ),
                   ),
@@ -381,54 +400,9 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
         ],
       );
     } else if (currentPage is LibraryPage) {
-      trailing = Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          _buildTopBarActionButton(
-            icon: Icons.search_rounded,
-            tooltip: context.l10n.bookSourcesSearch,
-            onTap: _libraryController.toggleSearch,
-          ),
-          const SizedBox(width: 8),
-          _buildTopBarActionButton(
-            icon: Icons.downloading_rounded,
-            tooltip: context.l10n.downloadTasksTitle,
-            highlighted:
-                context.watch<DownloadTaskController?>()?.hasActiveTasks ??
-                false,
-            onTap: () => Navigator.of(context).push(
-              MaterialPageRoute<void>(
-                builder: (_) => const DownloadTasksPage(),
-              ),
-            ),
-          ),
-          const SizedBox(width: 8),
-          ValueListenableBuilder<bool>(
-            valueListenable: _libraryController.filterActive,
-            builder: (context, active, _) => _LibraryTopBarFilterButton(
-              active: active,
-              buildButton:
-                  ({
-                    required IconData icon,
-                    required VoidCallback onTap,
-                    String? tooltip,
-                    bool highlighted = false,
-                  }) => _buildTopBarActionButton(
-                    icon: icon,
-                    onTap: onTap,
-                    tooltip: tooltip,
-                    highlighted: highlighted,
-                  ),
-              onTapWithRect: _libraryController.showFilterMenu,
-            ),
-          ),
-          const SizedBox(width: 8),
-          _buildTopBarActionButton(
-            icon: Icons.add_rounded,
-            onTap: _navigateToImport,
-          ),
-        ],
-      );
+      // Library owns its own large title and two circular actions, matching
+      // the supplied reference.  A generic shell header would duplicate it.
+      return const SizedBox.shrink();
     } else if (currentPage is BookSourcesPage) {
       trailing = Row(
         mainAxisSize: MainAxisSize.min,
@@ -447,7 +421,9 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
         ],
       );
     } else if (currentPage is SettingsPage) {
-      trailing = null;
+      // Settings follows the native large-title layout inside SettingsPage.
+      // Do not overlay the shared home header on top of it.
+      return const SizedBox.shrink();
     } else {
       // 其他自定义页不强行覆盖标题，避免和页面自身顶部冲突。
       return const SizedBox.shrink();
@@ -493,18 +469,18 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
     final scheme = Theme.of(context).colorScheme;
     final palette = PageStyleHelper.palette(context);
     final button = InkWell(
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(30),
       onTap: onTap,
       child: Container(
-        width: 44,
-        height: 44,
+        width: 56,
+        height: 56,
         decoration: BoxDecoration(
           color: highlighted
               ? scheme.primaryContainer
               : (_isMaterial3Style
                     ? scheme.surfaceContainer
                     : palette.cardStrong),
-          borderRadius: BorderRadius.circular(22),
+          borderRadius: BorderRadius.circular(30),
           border: Border.all(
             color: highlighted
                 ? scheme.primary.withValues(alpha: 0.35)
@@ -516,7 +492,7 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
         ),
         child: Icon(
           icon,
-          size: 20,
+          size: 29,
           color: highlighted
               ? scheme.onPrimaryContainer
               : scheme.onSurface.withValues(alpha: 0.78),

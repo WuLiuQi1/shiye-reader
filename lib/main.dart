@@ -920,6 +920,20 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colorScheme.surface,
       cardColor: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFFFFFFF),
+      cardTheme: CardThemeData(
+        color: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFFFFFFF),
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        margin: EdgeInsets.zero,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+      ),
+      listTileTheme: ListTileThemeData(
+        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+        minVerticalPadding: 10,
+        iconColor: colorScheme.onSurfaceVariant,
+        textColor: colorScheme.onSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      ),
       dialogTheme: DialogThemeData(
         backgroundColor: isDark
             ? const Color(0xFF1C1C1E)
@@ -976,6 +990,49 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
               ? colorScheme.primary
               : colorScheme.onSurfaceVariant,
         )),
+      ),
+      switchTheme: SwitchThemeData(
+        thumbColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? Colors.white
+              : (isDark ? const Color(0xFF8E8E93) : const Color(0xFFFFFFFF)),
+        ),
+        trackColor: WidgetStateProperty.resolveWith(
+          (states) => states.contains(WidgetState.selected)
+              ? const Color(0xFF34C759)
+              : (isDark ? const Color(0xFF3A3A3C) : const Color(0xFF787880)),
+        ),
+      ),
+      sliderTheme: SliderThemeData(
+        trackHeight: 3,
+        activeTrackColor: colorScheme.primary,
+        inactiveTrackColor: colorScheme.primary.withValues(alpha: 0.18),
+        thumbColor: colorScheme.primary,
+        overlayColor: colorScheme.primary.withValues(alpha: 0.12),
+        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7),
+        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide.none,
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
+        ),
+      ),
+      popupMenuTheme: PopupMenuThemeData(
+        color: isDark ? const Color(0xFF2C2C2E) : const Color(0xFFFFFFFF),
+        surfaceTintColor: Colors.transparent,
+        elevation: 8,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       dividerTheme: DividerThemeData(
         color: dividerColor,

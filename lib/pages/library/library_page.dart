@@ -408,16 +408,14 @@ class _LibraryPageState extends State<LibraryPage> {
     final mobileChrome = HomeMobileChromeScope.of(context);
     // 手机模式：内容从屏幕顶端开始、滚动时穿过毛玻璃顶栏，
     // 顶栏的模糊层才有真实内容可以取样；用内边距避开首屏遮挡。
-    final mobileTopInset = mobileChrome.pageTopPadding;
-    final listTopPadding = useRailNavigation
-        ? 8.0
-        : (_searchBarVisible ? 10.0 : mobileTopInset);
+    final listTopPadding = 8.0;
     final content = Column(
       children: [
-        if (useRailNavigation) ...[_buildTopBar(), const SizedBox(height: 10)],
+        _buildTopBar(),
+        const SizedBox(height: 10),
         if (_searchBarVisible) ...[
-          if (!useRailNavigation) SizedBox(height: mobileTopInset),
           _buildSearchBar(),
+          const SizedBox(height: 8),
         ],
         Expanded(
           child: _isInitialLoading
@@ -867,8 +865,7 @@ class _LibraryPageState extends State<LibraryPage> {
                 horizontalPadding * 2 -
                 spacing * (crossAxisCount - 1)) /
             crossAxisCount;
-        final itemHeight =
-            itemWidth * 3 / 2 +
+        final itemHeight = itemWidth * 3 / 2 +
             (showDetails ? LibraryGridBookDetails.height : 0);
         return GridView.builder(
           key: const ValueKey('library-cover-grid'),
@@ -987,25 +984,7 @@ class _LibraryPageState extends State<LibraryPage> {
             _BookCoverItem.gap;
         final childAspectRatio = itemWidth > 0 ? itemWidth / itemHeight : 0.75;
 
-        return Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              stops: const [0.0, 0.3, 0.7, 1.0],
-              colors: [
-                Theme.of(context).colorScheme.surface.withValues(alpha: 0.0),
-                Theme.of(
-                  context,
-                ).colorScheme.primaryContainer.withValues(alpha: 0.03),
-                Theme.of(
-                  context,
-                ).colorScheme.secondaryContainer.withValues(alpha: 0.03),
-                Theme.of(context).colorScheme.surface.withValues(alpha: 0.0),
-              ],
-            ),
-          ),
-          child: GridView.builder(
+        return GridView.builder(
             scrollCacheExtent: const ScrollCacheExtent.pixels(720),
             physics: const AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),
@@ -1043,8 +1022,7 @@ class _LibraryPageState extends State<LibraryPage> {
                 ),
               );
             },
-          ),
-        );
+          );
       },
     );
   }

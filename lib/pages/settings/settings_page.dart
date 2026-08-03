@@ -415,25 +415,22 @@ class _SettingsPageState extends State<SettingsPage> {
         NavigationContext.of(context)?.useRailNavigation ?? false;
     final mobileChrome = HomeMobileChromeScope.of(context);
     final viewPadding = MediaQuery.viewPaddingOf(context);
-    return Container(
-      decoration: BoxDecoration(
-        gradient: PageStyleHelper.backgroundGradient(context),
-      ),
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    return ColoredBox(
+      color: isDark ? const Color(0xFF000000) : const Color(0xFFF2F2F7),
       child: ListView(
         controller: _scrollController,
         padding: EdgeInsets.fromLTRB(
-          16,
-          useRailNavigation ? viewPadding.top + 8 : mobileChrome.pageTopPadding,
-          16,
+          20,
+          useRailNavigation ? viewPadding.top + 18 : viewPadding.top + 28,
+          20,
           useRailNavigation
               ? viewPadding.bottom + 24
-              : mobileChrome.pageBottomPadding,
+              : mobileChrome.pageBottomPadding + 16,
         ),
         children: [
-          if (useRailNavigation) ...[
-            _buildSettingsTopRow(l10n, useRailNavigation),
-            const SizedBox(height: 24),
-          ],
+          _buildSettingsTopRow(l10n, useRailNavigation),
+          const SizedBox(height: 28),
           _buildSectionCard(
             title: l10n.settingsSectionAppearanceFonts,
             icon: Icons.palette_outlined,
@@ -470,7 +467,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
           _buildSectionCard(
             title: l10n.readingSettings,
             icon: Icons.book_outlined,
@@ -505,7 +502,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
           _buildSectionCard(
             title: l10n.settingsSectionDataServices,
             icon: Icons.hub_outlined,
@@ -567,7 +564,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
           _buildSectionCard(
             title: l10n.settingsSectionGeneral,
             icon: Icons.tune_rounded,
@@ -589,9 +586,9 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
             ],
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 30),
           _buildAboutCard(),
-          const SizedBox(height: 100),
+          const SizedBox(height: 48),
         ],
       ),
     );
@@ -649,33 +646,15 @@ class _SettingsPageState extends State<SettingsPage> {
   ).push(CustomPageTransitions.createSlideScaleRoute<void>(page));
 
   Widget _buildSettingsTopRow(AppLocalizations l10n, bool useRailNavigation) {
-    final palette = PageStyleHelper.palette(context);
     return Row(
       children: [
         Text(
           l10n.settings,
           style: Theme.of(context).textTheme.headlineLarge?.copyWith(
-            fontWeight: FontWeight.w700,
-            height: 1.05,
-          ),
-        ),
-        const Spacer(),
-        InkWell(
-          borderRadius: BorderRadius.circular(22),
-          onTap: () =>
-              showSideToast(context, context.l10n.settingsHelpPlaceholder),
-          child: Container(
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: palette.card,
-              borderRadius: BorderRadius.circular(22),
-            ),
-            child: Icon(
-              Icons.question_mark_rounded,
-              size: 20,
-              color: palette.iconMuted,
-            ),
+            fontSize: 34,
+            fontWeight: FontWeight.w800,
+            height: 1.1,
+            letterSpacing: -1.1,
           ),
         ),
       ],
@@ -687,29 +666,43 @@ class _SettingsPageState extends State<SettingsPage> {
     required IconData icon,
     required List<Widget> children,
   }) {
-    final palette = PageStyleHelper.palette(context);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final cardColor = isDark ? const Color(0xFF1C1C1E) : Colors.white;
+    final dividerColor = isDark ? const Color(0xFF38383A) : const Color(0xFFC6C6C8);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
           padding: const EdgeInsets.fromLTRB(16, 0, 8, 7),
           child: Text(
-            title.toUpperCase(),
+            title,
             style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: palette.textMuted,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.25,
+              color: isDark ? const Color(0xFF98989F) : const Color(0xFF6D6D72),
+              fontWeight: FontWeight.w500,
+              fontSize: 13,
             ),
           ),
         ),
         Container(
           decoration: BoxDecoration(
-            color: palette.card,
+            color: cardColor,
             borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: palette.border),
           ),
           clipBehavior: Clip.antiAlias,
-          child: Column(children: children),
+          child: Column(
+            children: [
+              for (var index = 0; index < children.length; index++) ...[
+                children[index],
+                if (index != children.length - 1)
+                  Divider(
+                    height: 0.5,
+                    thickness: 0.5,
+                    indent: 68,
+                    color: dividerColor,
+                  ),
+              ],
+            ],
+          ),
         ),
       ],
     );
@@ -747,28 +740,17 @@ class _SettingsPageState extends State<SettingsPage> {
     final subtitle = '$colorName · ${_hexColor(accentColor)}';
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 1),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: () => _showAccentColorModal(themeNotifier),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+            padding: const EdgeInsets.fromLTRB(16, 11, 12, 11),
             child: Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Icon(
-                    Icons.color_lens_rounded,
-                    size: 16,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
+                _buildSettingsIcon(
+                  Icons.color_lens_rounded,
+                  backgroundColor: const Color(0xFFFF2D55),
                 ),
                 const SizedBox(width: 12),
                 Expanded(
@@ -778,7 +760,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       Text(
                         l10n.settingsAccentColorTitle,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       Text(
@@ -798,7 +780,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   margin: const EdgeInsets.only(right: 8),
                   decoration: BoxDecoration(
                     color: accentColor,
-                    borderRadius: BorderRadius.circular(6),
+                    borderRadius: BorderRadius.circular(7),
                     border: Border.all(
                       color: Theme.of(
                         context,
@@ -807,8 +789,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   ),
                 ),
                 Icon(
-                  Icons.arrow_forward_ios,
-                  size: 16,
+                  Icons.chevron_right_rounded,
+                  size: 24,
                   color: Theme.of(
                     context,
                   ).colorScheme.onSurface.withValues(alpha: 0.4),
@@ -1737,9 +1719,7 @@ class _SettingsPageState extends State<SettingsPage> {
     bool enabled = true,
     bool persistPageSettings = true,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 1),
-      child: Material(
+    return Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: enabled
@@ -1751,15 +1731,11 @@ class _SettingsPageState extends State<SettingsPage> {
                 }
               : null,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+            padding: const EdgeInsets.fromLTRB(16, 11, 12, 11),
             child: Row(
               children: [
-                Icon(
-                  icon,
-                  size: 19,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                const SizedBox(width: 13),
+                _buildSettingsIcon(icon),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1767,7 +1743,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       Text(
                         title,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w600,
+                          fontWeight: FontWeight.w400,
                         ),
                       ),
                       Text(
@@ -1781,7 +1757,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ],
                   ),
                 ),
-                Switch(
+                Switch.adaptive(
                   value: value,
                   onChanged: enabled
                       ? (newValue) {
@@ -1791,19 +1767,53 @@ class _SettingsPageState extends State<SettingsPage> {
                           }
                         }
                       : null,
-                  activeTrackColor: Theme.of(context).colorScheme.primary,
-                  thumbColor: WidgetStateProperty.resolveWith(
-                    (states) => states.contains(WidgetState.selected)
-                        ? Theme.of(context).colorScheme.onPrimary
-                        : Theme.of(context).colorScheme.outline,
-                  ),
+                  activeTrackColor: const Color(0xFF34C759),
                 ),
               ],
             ),
           ),
         ),
-      ),
     );
+  }
+
+  Widget _buildSettingsIcon(IconData icon, {Color? backgroundColor}) {
+    final color = backgroundColor ?? _settingsIconColor(icon);
+    return Container(
+      width: 29,
+      height: 29,
+      decoration: BoxDecoration(
+        color: color,
+        borderRadius: BorderRadius.circular(7),
+      ),
+      alignment: Alignment.center,
+      child: Icon(icon, size: 18, color: Colors.white),
+    );
+  }
+
+  Color _settingsIconColor(IconData icon) {
+    switch (icon) {
+      case Icons.volume_up:
+      case Icons.restore:
+      case Icons.auto_stories_outlined:
+      case Icons.chrome_reader_mode_outlined:
+        return const Color(0xFFFF9500);
+      case Icons.cloud_outlined:
+      case Icons.cloud_upload_outlined:
+      case Icons.travel_explore_outlined:
+        return const Color(0xFF0A84FF);
+      case Icons.filter_alt_outlined:
+      case Icons.cleaning_services_outlined:
+        return const Color(0xFF34C759);
+      case Icons.auto_awesome_outlined:
+      case Icons.translate:
+      case Icons.blur_on_rounded:
+        return const Color(0xFF5856D6);
+      case Icons.stay_current_portrait:
+      case Icons.save_outlined:
+        return const Color(0xFF007AFF);
+      default:
+        return Theme.of(context).colorScheme.primary;
+    }
   }
 
   Widget _buildAboutCard() {
@@ -2094,18 +2104,16 @@ class _SettingsPageState extends State<SettingsPage> {
     String? badge,
     Widget? trailing,
   }) {
-    return Container(
-      margin: const EdgeInsets.only(bottom: 1),
-      child: Material(
+    return Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+            padding: const EdgeInsets.fromLTRB(16, 11, 12, 11),
             child: Row(
               children: [
-                Icon(icon, size: 19, color: Theme.of(context).colorScheme.primary),
-                const SizedBox(width: 13),
+                _buildSettingsIcon(icon),
+                const SizedBox(width: 12),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -2118,7 +2126,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           Text(
                             title,
                             style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(fontWeight: FontWeight.w600),
+                                ?.copyWith(fontWeight: FontWeight.w400),
                           ),
                           if (badge != null)
                             Container(
@@ -2161,8 +2169,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   trailing,
                 ] else
                   Icon(
-                    Icons.arrow_forward_ios,
-                    size: 16,
+                    Icons.chevron_right_rounded,
+                    size: 24,
                     color: Theme.of(
                       context,
                     ).colorScheme.onSurface.withValues(alpha: 0.4),
@@ -2171,7 +2179,6 @@ class _SettingsPageState extends State<SettingsPage> {
             ),
           ),
         ),
-      ),
     );
   }
 }

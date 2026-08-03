@@ -153,53 +153,39 @@ class ReaderChromeOverlay extends StatelessWidget {
           key: topKey,
           duration: const Duration(milliseconds: 260),
           curve: Curves.easeOutQuart,
-          left: 0,
-          right: 0,
+          left: 24,
+          right: 24,
           top: visible ? 0 : -130,
           child: SafeArea(
             bottom: false,
-            child: ReaderControlBar(
-              palette: palette,
-              isTopBar: true,
-              child: SizedBox(
-                height: 50,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 12,
-                    vertical: 5,
+            child: SizedBox(
+              height: 58,
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 76),
+                    child: Text(
+                      title,
+                      textAlign: TextAlign.center,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: textTheme.labelLarge?.copyWith(
+                        color: palette.secondaryText.withValues(alpha: .72),
+                        fontWeight: FontWeight.w700,
+                      ),
+                    ),
                   ),
-                  child: Row(
-                    children: [
-                      ReaderControlIconButton(
-                        palette: palette,
-                        onPressed: onBack,
-                        tooltip: backTooltip,
-                        icon: Icons.arrow_back_rounded,
-                      ),
-                      const SizedBox(width: 6),
-                      Expanded(
-                        child: Text(
-                          title,
-                          textAlign: TextAlign.center,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: textTheme.titleSmall?.copyWith(
-                            fontWeight: FontWeight.w600,
-                            color: palette.text,
-                          ),
-                        ),
-                      ),
-                      ReaderControlIconButton(
-                        palette: palette,
-                        onPressed: bookmarkBusy ? null : onBookmark,
-                        tooltip: bookmarkTooltip,
-                        icon: bookmarked
-                            ? Icons.bookmark_rounded
-                            : Icons.bookmark_border_rounded,
-                      ),
-                    ],
+                  Align(
+                    alignment: Alignment.centerRight,
+                    child: ReaderControlIconButton(
+                      palette: palette,
+                      onPressed: onBack,
+                      tooltip: backTooltip,
+                      icon: Icons.close_rounded,
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
@@ -208,67 +194,229 @@ class ReaderChromeOverlay extends StatelessWidget {
           key: bottomKey,
           duration: const Duration(milliseconds: 260),
           curve: Curves.easeOutQuart,
-          left: 0,
-          right: 0,
-          bottom: visible ? 0 : -110,
+          right: 24,
+          bottom: visible ? statusBottom + 8 : -180,
           child: SafeArea(
             top: false,
-            child: ReaderControlBar(
+            child: _ReaderQuickMenu(
               palette: palette,
-              isTopBar: false,
-              child: SizedBox(
-                height: 54,
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      ReaderControlIconButton(
-                        palette: palette,
-                        onPressed: onTableOfContents,
-                        tooltip: tableOfContentsTooltip,
-                        icon: Icons.format_list_bulleted_rounded,
-                      ),
-                      if (onReadAloud != null)
-                        ReaderControlIconButton(
-                          palette: palette,
-                          onPressed: onReadAloud,
-                          tooltip: readAloudTooltip ?? '',
-                          icon: readAloudActive
-                              ? Icons.graphic_eq_rounded
-                              : Icons.headphones_rounded,
-                        ),
-                      if (onAskAi != null)
-                        ReaderControlIconButton(
-                          palette: palette,
-                          onPressed: onAskAi,
-                          tooltip: askAiTooltip ?? '',
-                          icon: Icons.auto_awesome_outlined,
-                        ),
-                      if (onChangeSource != null)
-                        ReaderControlIconButton(
-                          palette: palette,
-                          onPressed: onChangeSource,
-                          tooltip: changeSourceTooltip ?? '',
-                          icon: Icons.swap_horiz_rounded,
-                        ),
-                      if (showSettingsAction)
-                        ReaderControlIconButton(
-                          palette: palette,
-                          onPressed: onSettings,
-                          tooltip: settingsTooltip,
-                          icon: Icons.tune_rounded,
-                        ),
-                    ],
-                  ),
-                ),
-              ),
+              title: title,
+              onTableOfContents: onTableOfContents,
+              onSettings: onSettings,
+              onBookmark: bookmarkBusy ? null : onBookmark,
+              onReadAloud: onReadAloud,
+              onAskAi: onAskAi,
+              onChangeSource: onChangeSource,
+              tableOfContentsTooltip: tableOfContentsTooltip,
+              settingsTooltip: settingsTooltip,
+              bookmarkTooltip: bookmarkTooltip,
+              bookmarked: bookmarked,
             ),
           ),
         ),
       ],
     );
   }
+}
+
+/// 阅读页只保留一个右下角入口。展开后用逐层上浮的操作卡替代传统底栏，
+/// 让正文始终占据完整页面，交互层级与参考稿一致。
+class _ReaderQuickMenu extends StatefulWidget {
+  const _ReaderQuickMenu({
+    required this.palette,
+    required this.title,
+    required this.onTableOfContents,
+    required this.onSettings,
+    required this.onBookmark,
+    required this.onReadAloud,
+    required this.onAskAi,
+    required this.onChangeSource,
+    required this.tableOfContentsTooltip,
+    required this.settingsTooltip,
+    required this.bookmarkTooltip,
+    required this.bookmarked,
+  });
+
+  final ReaderThemePalette palette;
+  final String title;
+  final VoidCallback? onTableOfContents;
+  final VoidCallback onSettings;
+  final VoidCallback? onBookmark;
+  final VoidCallback? onReadAloud;
+  final VoidCallback? onAskAi;
+  final VoidCallback? onChangeSource;
+  final String tableOfContentsTooltip;
+  final String settingsTooltip;
+  final String bookmarkTooltip;
+  final bool bookmarked;
+
+  @override
+  State<_ReaderQuickMenu> createState() => _ReaderQuickMenuState();
+}
+
+class _ReaderQuickMenuState extends State<_ReaderQuickMenu> {
+  bool _expanded = false;
+
+  void _run(VoidCallback? action) {
+    setState(() => _expanded = false);
+    action?.call();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final panelColor = widget.palette.brightness == Brightness.dark
+        ? const Color(0xED343438)
+        : const Color(0xEE363638);
+    final lightPanel = widget.palette.brightness == Brightness.dark
+        ? const Color(0xE82B2B2F)
+        : const Color(0xEEEEEFF2);
+    return SizedBox(
+      width: 286,
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.end,
+        children: [
+          AnimatedSize(
+            duration: const Duration(milliseconds: 260),
+            curve: Curves.easeOutCubic,
+            child: _expanded
+                ? Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      _animatedMenuItem(
+                        index: 0,
+                        child: _menuRow(
+                        color: panelColor,
+                        label: widget.tableOfContentsTooltip,
+                        icon: Icons.format_list_bulleted_rounded,
+                        foreground: Colors.white,
+                        onTap: () => _run(widget.onTableOfContents),
+                      ),
+                      ),
+                      const SizedBox(height: 10),
+                      _animatedMenuItem(
+                        index: 1,
+                        child: _menuRow(
+                        color: lightPanel,
+                        label: '智能阅读助手',
+                        icon: Icons.search_rounded,
+                        foreground: widget.palette.text,
+                        onTap: () => _run(widget.onAskAi),
+                      ),
+                      ),
+                      const SizedBox(height: 10),
+                      _animatedMenuItem(
+                        index: 2,
+                        child: _menuRow(
+                        color: lightPanel,
+                        label: widget.settingsTooltip,
+                        icon: Icons.text_fields_rounded,
+                        foreground: widget.palette.text,
+                        onTap: () => _run(widget.onSettings),
+                      ),
+                      ),
+                      const SizedBox(height: 10),
+                      _animatedMenuItem(
+                        index: 3,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            _smallButton(Icons.ios_share_rounded, widget.onChangeSource),
+                            _smallButton(Icons.headphones_rounded, widget.onReadAloud),
+                            _smallButton(Icons.format_list_bulleted_rounded, widget.onTableOfContents),
+                            _smallButton(
+                              widget.bookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
+                              widget.onBookmark,
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 12),
+                    ],
+                  )
+                : const SizedBox.shrink(),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: Semantics(
+              button: true,
+              label: '阅读菜单',
+              child: InkWell(
+                borderRadius: BorderRadius.circular(32),
+                onTap: () => setState(() => _expanded = !_expanded),
+                child: Container(
+                  width: 64,
+                  height: 64,
+                  decoration: BoxDecoration(
+                    color: lightPanel,
+                    shape: BoxShape.circle,
+                    border: Border.all(
+                      color: widget.palette.border.withValues(alpha: .26),
+                    ),
+                  ),
+                  child: Icon(
+                    _expanded ? Icons.close_rounded : Icons.format_list_bulleted_rounded,
+                    color: widget.palette.text,
+                    size: 31,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _menuRow({
+    required Color color,
+    required String label,
+    required IconData icon,
+    required Color foreground,
+    required VoidCallback onTap,
+  }) => InkWell(
+    borderRadius: BorderRadius.circular(30),
+    onTap: onTap,
+    child: Container(
+      height: 72,
+      padding: const EdgeInsets.symmetric(horizontal: 22),
+      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(30)),
+      child: Row(
+        children: [
+          Expanded(child: Text(label, style: TextStyle(color: foreground, fontSize: 18, fontWeight: FontWeight.w700))),
+          Icon(icon, color: foreground, size: 29),
+        ],
+      ),
+    ),
+  );
+
+  Widget _animatedMenuItem({required int index, required Widget child}) {
+    return TweenAnimationBuilder<double>(
+      key: ValueKey('reader-menu-item-$index'),
+      duration: Duration(milliseconds: 180 + index * 45),
+      curve: Curves.easeOutCubic,
+      tween: Tween(begin: 0, end: 1),
+      builder: (context, value, child) => Opacity(
+        opacity: value,
+        child: Transform.translate(
+          offset: Offset(0, 14 * (1 - value)),
+          child: child,
+        ),
+      ),
+      child: child,
+    );
+  }
+
+  Widget _smallButton(IconData icon, VoidCallback? onTap) => InkWell(
+    borderRadius: BorderRadius.circular(31),
+    onTap: onTap == null ? null : () => _run(onTap),
+    child: Container(
+      width: 62,
+      height: 62,
+      decoration: BoxDecoration(color: widget.palette.controlFill, shape: BoxShape.circle),
+      child: Icon(icon, color: widget.palette.text, size: 28),
+    ),
+  );
 }
 
 class ReaderControlBar extends StatelessWidget {
