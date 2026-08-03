@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../models/registered_book_source.dart';
 import '../protocol/book_source_protocol.dart';
 import 'book_source_client.dart';
+import 'legado_rule_client.dart';
 
 class BookSourceRegistry {
   static const String _storageKey = 'open_reading_book_sources_v1';
@@ -23,19 +24,22 @@ class BookSourceRegistry {
       final decoded = jsonDecode(raw);
       if (decoded is! List) return const [];
       final sources = <RegisteredBookSource>[];
+      var upgraded = false;
       for (final item in decoded) {
         if (item is! Map) continue;
         try {
-          sources.add(
-            RegisteredBookSource.fromJson(
-              item.map((key, value) => MapEntry('$key', value)),
-            ),
+          final source = RegisteredBookSource.fromJson(
+            item.map((key, value) => MapEntry('$key', value)),
           );
+          final normalized = _withLegadoDiscoveryCapabilities(source);
+          upgraded = upgraded || !identical(source, normalized);
+          sources.add(normalized);
         } catch (_) {
           // Skip a damaged entry instead of making the whole registry unusable.
         }
       }
       sources.sort((a, b) => a.name.compareTo(b.name));
+      if (upgraded) await _save(sources);
       return sources;
     } catch (_) {
       return const [];
@@ -178,6 +182,46 @@ class BookSourceRegistry {
     await preferences.setString(
       _storageKey,
       jsonEncode(sources.map((source) => source.toJson()).toList()),
+    );
+  }
+
+  /// Older app versions stored imported Legado sources before the optional
+  /// categories capability existed. Upgrade those records on read so users do
+  /// not have to remove and re-import an otherwise valid JSON source.
+  RegisteredBookSource _withLegadoDiscoveryCapabilities(
+    RegisteredBookSource source,
+  ) {
+    final config = source.legadoConfig;
+    if (config == null ||
+        LegadoRuleClient.exploreEntries(config['exploreUrl']).isEmpty) {
+      return source;
+    }
+    final capabilities = {
+      ...source.capabilities,
+      'discover',
+      'browse',
+      'categories',
+    };
+    if (capabilities.length == source.capabilities.length) return source;
+    return RegisteredBookSource(
+      id: source.id,
+      name: source.name,
+      description: source.description,
+      manifestUrl: source.manifestUrl,
+      apiBaseUrl: source.apiBaseUrl,
+      iconUrl: source.iconUrl,
+      websiteUrl: source.websiteUrl,
+      operatorName: source.operatorName,
+      contactUrl: source.contactUrl,
+      contentLicense: source.contentLicense,
+      rightsStatement: source.rightsStatement,
+      protocolVersion: source.protocolVersion,
+      languages: source.languages,
+      capabilities: capabilities,
+      maxCatalogPageSize: source.maxCatalogPageSize,
+      enabled: source.enabled,
+      addedAt: source.addedAt,
+      legadoConfig: config,
     );
   }
 }

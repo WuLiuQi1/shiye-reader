@@ -2910,9 +2910,7 @@ class _NativeReaderPageState extends State<NativeReaderPage>
         itemPositionsListener: _verticalPagePositionsListener,
         initialScrollIndex: _pageIndex.clamp(0, pages.length - 1),
         minCacheExtent: _verticalPageExtentFor(viewport),
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+        physics: const AlwaysScrollableScrollPhysics(),
         itemCount: pages.length,
         itemBuilder: (context, index) => _buildVerticalPageCell(
           chapter,
@@ -2935,9 +2933,7 @@ class _NativeReaderPageState extends State<NativeReaderPage>
         itemPositionsListener: _verticalChapterPositionsListener,
         initialScrollIndex: _chapterIndex.clamp(0, chapters.length - 1),
         minCacheExtent: _verticalPageExtentFor(viewport),
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+        physics: const AlwaysScrollableScrollPhysics(),
         itemCount: chapters.length,
         itemBuilder: (context, index) =>
             _buildVerticalChapterItem(chapters, index, viewport),

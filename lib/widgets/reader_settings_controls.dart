@@ -750,7 +750,6 @@ class ReaderThemeStrip extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 1),
-        physics: const BouncingScrollPhysics(),
         itemCount: themes.length + 1,
         separatorBuilder: (_, __) => const SizedBox(width: 10),
         itemBuilder: (context, index) {

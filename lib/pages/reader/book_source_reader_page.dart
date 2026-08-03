@@ -334,12 +334,14 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
   @override
   void initState() {
     super.initState();
-    _showOpeningLoader = widget.initialTheme == null;
-    if (!_showOpeningLoader) {
-      _openingLoaderTimer = Timer(_openingLoaderDelay, () {
-        if (mounted) setState(() => _showOpeningLoader = true);
-      });
-    }
+    // Cached catalogs and chapters normally settle within a few frames. Keep
+    // the reader surface stable for that path and only show a spinner when an
+    // actual slow source request exceeds the opening threshold.
+    _openingLoaderTimer = Timer(_openingLoaderDelay, () {
+      if (mounted && (_loadingCatalog || _loadingContent)) {
+        setState(() => _showOpeningLoader = true);
+      }
+    });
     WidgetsBinding.instance.addObserver(this);
     _leafStatusController
       ..addListener(_onLeafStatusChanged)
@@ -1604,6 +1606,10 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
       .replaceAll(RegExp(r'[\s，。！？、：；,.!?:;《》〈〉「」『』（）【】()]+'), '');
 
   Future<void> _showChangeSource() async {
+    // A shelf entry opened through a route transition can reach the reader
+    // before the background lookup below finishes. Resolve it here as well so
+    // a quick manual source switch still updates the original shelf row.
+    if (_shelfBookId == null) await _resolveShelfBook();
     final currentChapterTitle = _chapters.isEmpty
         ? null
         : _chapters[_chapterIndex.clamp(0, _chapters.length - 1)].title;
@@ -1628,6 +1634,7 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
       builder: (sheetContext) => _BookSourceSwitchSheet(
         title: widget.book.title,
         author: widget.book.author,
+        currentChapterTitle: currentChapterTitle,
         sources: sources,
         client: _client,
         onSelected: (source, book) async {
@@ -1647,6 +1654,13 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
             return;
           }
           if (!mounted || !sheetContext.mounted) return;
+          unawaited(
+            _prefetchSwitchedSourceChapter(
+              source: source,
+              book: book,
+              chapterTitle: currentChapterTitle,
+            ),
+          );
           Navigator.pop(sheetContext);
           Navigator.of(context).pushReplacement(
             MaterialPageRoute<void>(
@@ -1665,6 +1679,37 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
         },
       ),
     );
+  }
+
+  Future<void> _prefetchSwitchedSourceChapter({
+    required RegisteredBookSource source,
+    required BookSourceBook book,
+    required String? chapterTitle,
+  }) async {
+    try {
+      final chapters = await _client.getChapters(source, book.id);
+      if (chapters.isEmpty) return;
+      final target = _matchingChapter(chapters, chapterTitle) ?? chapters.first;
+      await _client.prefetchChapterContent(
+        source,
+        bookId: book.id,
+        chapterId: target.id,
+      );
+    } catch (_) {
+      // The reader still opens normally when a source cannot be prewarmed.
+    }
+  }
+
+  static BookSourceChapter? _matchingChapter(
+    Iterable<BookSourceChapter> chapters,
+    String? chapterTitle,
+  ) {
+    if (chapterTitle == null || chapterTitle.trim().isEmpty) return null;
+    final normalized = _normalizedChapterTitle(chapterTitle);
+    for (final chapter in chapters) {
+      if (_normalizedChapterTitle(chapter.title) == normalized) return chapter;
+    }
+    return null;
   }
 
   String _readerThemeName(String themeId) {
@@ -2926,9 +2971,7 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
           layout.pages.length - 1,
         ),
         minCacheExtent: _verticalPageExtentFor(viewport),
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+        physics: const AlwaysScrollableScrollPhysics(),
         itemCount: layout.pages.length,
         itemBuilder: (context, index) => _buildVerticalPageCell(
           layout.pages[index],
@@ -2975,9 +3018,7 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
         itemPositionsListener: _verticalChapterPositionsListener,
         initialScrollIndex: _chapterIndex.clamp(0, _chapters.length - 1),
         minCacheExtent: _verticalPageExtentFor(viewport),
-        physics: const BouncingScrollPhysics(
-          parent: AlwaysScrollableScrollPhysics(),
-        ),
+        physics: const AlwaysScrollableScrollPhysics(),
         itemCount: _chapters.length,
         itemBuilder: (context, index) => _buildVerticalChapter(index, viewport),
       ),
@@ -4019,6 +4060,7 @@ class _BookSourceSwitchSheet extends StatefulWidget {
   const _BookSourceSwitchSheet({
     required this.title,
     required this.author,
+    required this.currentChapterTitle,
     required this.sources,
     required this.client,
     required this.onSelected,
@@ -4026,6 +4068,7 @@ class _BookSourceSwitchSheet extends StatefulWidget {
 
   final String title;
   final String author;
+  final String? currentChapterTitle;
   final List<RegisteredBookSource> sources;
   final BookSourceClient client;
   final Future<void> Function(RegisteredBookSource source, BookSourceBook book)
@@ -4059,9 +4102,10 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
           for (final book in page.items) {
             if (_sameBookTitle(book.title, widget.title)) {
               var enriched = book;
+              List<BookSourceChapter> chapters = const [];
               try {
                 final detail = await widget.client.getBook(source, book.id);
-                final chapters = await widget.client.getChapters(
+                chapters = await widget.client.getChapters(
                   source,
                   book.id,
                 );
@@ -4084,6 +4128,13 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
               } catch (_) {
                 // 目录补全失败仍保留搜索结果，不影响换源。
               }
+              unawaited(
+                _prefetchCurrentChapter(
+                  source: source,
+                  book: enriched,
+                  chapters: chapters,
+                ),
+              );
               items.add(_SourceBookCandidate(source, enriched));
             }
           }
@@ -4107,6 +4158,36 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
       _items = items;
       _loading = false;
     });
+  }
+
+  Future<void> _prefetchCurrentChapter({
+    required RegisteredBookSource source,
+    required BookSourceBook book,
+    required List<BookSourceChapter> chapters,
+  }) async {
+    if (chapters.isEmpty) return;
+    final normalized = widget.currentChapterTitle == null
+        ? ''
+        : _BookSourceReaderPageState._normalizedChapterTitle(
+            widget.currentChapterTitle!,
+          );
+    final chapter = normalized.isEmpty
+        ? chapters.first
+        : chapters.firstWhere(
+            (item) =>
+                _BookSourceReaderPageState._normalizedChapterTitle(item.title) ==
+                normalized,
+            orElse: () => chapters.first,
+          );
+    try {
+      await widget.client.prefetchChapterContent(
+        source,
+        bookId: book.id,
+        chapterId: chapter.id,
+      );
+    } catch (_) {
+      // Candidate metadata remains usable even when content prefetch fails.
+    }
   }
 
   static bool _sameBookTitle(String a, String b) {

@@ -21,7 +21,7 @@ class DatabaseService {
 
   static Database? _database;
   static const String _dbName = 'xxread_v2.db';
-  static const int _dbVersion = 20;
+  static const int _dbVersion = 21;
   static Future<Database>? _openingDatabase;
 
   Future<Database> get database async {
@@ -87,6 +87,12 @@ class DatabaseService {
     // sqflite 默认关闭外键约束，必须在每个连接上显式开启，
     // 否则建表语句里的 ON DELETE CASCADE 不会生效。
     await db.execute('PRAGMA foreign_keys = ON');
+    // Keep reader progress, imports and cache maintenance from blocking one
+    // another on mobile. Web's IndexedDB-backed adapter does not support WAL.
+    if (!kIsWeb) {
+      await db.execute('PRAGMA journal_mode = WAL');
+      await db.execute('PRAGMA synchronous = NORMAL');
+    }
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -361,6 +367,9 @@ class DatabaseService {
     if (oldVersion < 20) {
       await ReaderAnnotationSchemaMigration.migrate(db);
     }
+    if (oldVersion < 21) {
+      await _createBooksTableIndexes(db);
+    }
   }
 
   Future<void> _createTables(Database db) async {
@@ -472,6 +481,10 @@ class DatabaseService {
     // 为importDate创建索引，用于按导入时间排序
     await db.execute(
       'CREATE INDEX IF NOT EXISTS idx_books_import_date ON books (importDate DESC)',
+    );
+    await db.execute(
+      'CREATE INDEX IF NOT EXISTS idx_books_reading_progress '
+      'ON books (currentPage DESC, importDate DESC)',
     );
     // 为title和author创建索引，用于搜索功能
     await db.execute(

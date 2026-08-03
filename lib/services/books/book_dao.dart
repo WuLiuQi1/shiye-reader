@@ -103,6 +103,29 @@ class BookDao implements BookImportStore {
     }
   }
 
+  /// Loads recent-book cards in one query. The caller-provided ordering is
+  /// restored afterwards because SQLite does not guarantee IN-clause order.
+  Future<List<Book>> getBooksByIdsInOrder(Iterable<int> bookIds) async {
+    final ids = <int>[];
+    final seen = <int>{};
+    for (final id in bookIds) {
+      if (seen.add(id)) ids.add(id);
+    }
+    if (ids.isEmpty) return const [];
+    final db = await _dbService.database;
+    final placeholders = List<String>.filled(ids.length, '?').join(', ');
+    final rows = await db.query(
+      'books',
+      where: 'id IN ($placeholders)',
+      whereArgs: ids,
+    );
+    final byId = <int, Book>{
+      for (final row in rows)
+        if (row['id'] is int) row['id'] as int: Book.fromMap(row),
+    };
+    return [for (final id in ids) if (byId[id] case final book?) book];
+  }
+
   Future<Book?> getBookBySource({
     required String sourceId,
     required String sourceBookId,

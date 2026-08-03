@@ -676,6 +676,7 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
             book: shelfService.sourceBookFrom(book),
             client: client,
             shelfService: shelfService,
+            initialShelfBookId: book.id,
           ),
           waitForReaderReady: true,
         );
@@ -712,10 +713,11 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
                 navigatorKey: _navigatorKey,
                 onGenerateTitle: (context) => context.l10n.appTitle,
                 debugShowCheckedModeBanner: false,
-                // 🚀 启用高性能渲染，支持120Hz高刷新率
-                scrollBehavior: const MaterialScrollBehavior().copyWith(
-                  physics: const BouncingScrollPhysics(),
-                ),
+                // Keep each platform's native scroll physics. Forcing iOS
+                // bouncing globally made every Android list simulate an extra
+                // overscroll spring, which showed up as app-wide vertical
+                // scrolling jank on mid-range devices.
+                scrollBehavior: const MaterialScrollBehavior(),
                 theme: _buildLightTheme(
                   themeNotifier.currentAppTheme,
                   appFontFamily,

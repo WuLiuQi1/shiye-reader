@@ -4,6 +4,7 @@
 // 毛玻璃效果配置管理器
 // 集中管理所有界面的毛玻璃效果和透明度设置
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'progressive_blur.dart';
 
@@ -135,10 +136,17 @@ class GlassEffectConfig {
   static double get dialogOpacity => effectiveOpacity(_dialogOpacityBase);
   static double get modalOpacity => effectiveOpacity(_modalOpacityBase);
 
-  static bool get shouldDisableBlur => _disableAllGlassEffects;
+  // Android's backdrop readback is performed again while a list moves behind
+  // a translucent bar. It affects every scrolling page, not just the reader,
+  // so use opaque themed surfaces there. iOS keeps the glass presentation.
+  static bool get _disableBlurForPlatform =>
+      !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
+
+  static bool get shouldDisableBlur =>
+      _disableAllGlassEffects || _disableBlurForPlatform;
 
   static double effectiveOpacity(double opacity) {
-    if (_disableAllGlassEffects) return 1.0;
+    if (shouldDisableBlur) return 1.0;
     return opacity.clamp(0.0, 1.0);
   }
 

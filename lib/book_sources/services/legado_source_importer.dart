@@ -4,6 +4,7 @@ import 'package:crypto/crypto.dart';
 
 import '../models/registered_book_source.dart';
 import '../protocol/book_source_protocol.dart';
+import 'legado_rule_client.dart';
 
 /// Imports the JSON format used by Legado/阅读.
 ///
@@ -69,6 +70,8 @@ class LegadoSourceImporter {
             if ('${json['exploreUrl'] ?? ''}'.trim().isNotEmpty) ...{
               'discover',
               'browse',
+              if (LegadoRuleClient.exploreEntries(json['exploreUrl']).isNotEmpty)
+                'categories',
             },
           },
           enabled: json['enabled'] != false,

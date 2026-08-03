@@ -590,7 +590,6 @@ class _DetailedStatsPageState extends State<DetailedStatsPage>
 
   Widget _buildTabScrollBody({required Widget child}) {
     return SingleChildScrollView(
-      physics: const BouncingScrollPhysics(),
       padding: EdgeInsets.fromLTRB(
         16,
         12,

@@ -208,14 +208,19 @@ class SourcedBookListTile extends StatelessWidget {
                   ),
                   if (book.description.isNotEmpty) ...[
                     const SizedBox(height: 7),
-                    Text(
-                      book.description,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: scheme.onSurfaceVariant,
-                        fontSize: 13,
-                        height: 1.35,
+                    ConstrainedBox(
+                      constraints: const BoxConstraints(maxHeight: 36),
+                      child: ClipRect(
+                        child: Text(
+                          book.description,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: scheme.onSurfaceVariant,
+                            fontSize: 13,
+                            height: 1.35,
+                          ),
+                        ),
                       ),
                     ),
                   ],
@@ -223,6 +228,66 @@ class SourcedBookListTile extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 6),
+            const Icon(Icons.chevron_right_rounded),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+/// Dense alternative for discovery lists. It preserves the same tap target
+/// while avoiding descriptions and metadata chips on long source result sets.
+class SourcedBookCompactTile extends StatelessWidget {
+  const SourcedBookCompactTile({
+    super.key,
+    required this.result,
+    required this.onTap,
+  });
+
+  final SourcedBook result;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    final book = result.book;
+    return InkWell(
+      borderRadius: BorderRadius.circular(14),
+      onTap: onTap,
+      child: Container(
+        height: 74,
+        padding: const EdgeInsets.all(8),
+        decoration: bookSourcePanelDecoration(context, radius: 14),
+        child: Row(
+          children: [
+            _BookCoverThumb(book: book, width: 42, height: 56),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    book.title,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: const TextStyle(fontWeight: FontWeight.w700),
+                  ),
+                  const SizedBox(height: 4),
+                  Text(
+                    [book.author, result.source.name]
+                        .where((item) => item.isNotEmpty)
+                        .join(' · '),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      fontSize: 12,
+                    ),
+                  ),
+                ],
+              ),
+            ),
             const Icon(Icons.chevron_right_rounded),
           ],
         ),
@@ -258,14 +323,20 @@ List<String> _bookMetadata(BookSourceBook book) {
 
 class _BookCoverThumb extends StatelessWidget {
   final BookSourceBook book;
+  final double width;
+  final double height;
 
-  const _BookCoverThumb({required this.book});
+  const _BookCoverThumb({
+    required this.book,
+    this.width = 58,
+    this.height = 78,
+  });
 
   @override
   Widget build(BuildContext context) {
     final fallback = SizedBox(
-      width: 58,
-      height: 78,
+      width: width,
+      height: height,
       child: GeneratedBookCover(title: book.title, author: book.author),
     );
     if (book.coverUrl == null) return fallback;
@@ -273,10 +344,10 @@ class _BookCoverThumb extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: SourceCoverImage(
         url: book.coverUrl!,
-        width: 58,
-        height: 78,
+        width: width,
+        height: height,
         fit: BoxFit.cover,
-        cacheWidth: (58 * MediaQuery.devicePixelRatioOf(context)).round(),
+        cacheWidth: (width * MediaQuery.devicePixelRatioOf(context)).round(),
         fallback: fallback,
       ),
     );

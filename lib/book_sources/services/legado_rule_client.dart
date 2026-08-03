@@ -42,7 +42,9 @@ class LegadoRuleClient {
           id: bookUri.toString(),
           title: title,
           author: _value(element, _rule(rules, 'author')),
-          description: _value(element, _rule(rules, 'intro')),
+          description: compactDescription(
+            _value(element, _rule(rules, 'intro')),
+          ),
           coverUrl: _httpUri(
             _absoluteText(uri, _value(element, _rule(rules, 'coverUrl'))),
           ),
@@ -71,7 +73,7 @@ class LegadoRuleClient {
       id: bookId,
       title: _value(document, _rule(rules, 'name')),
       author: _value(document, _rule(rules, 'author')),
-      description: _value(document, _rule(rules, 'intro')),
+      description: compactDescription(_value(document, _rule(rules, 'intro'))),
       coverUrl: _httpUri(
         _absoluteText(uri, _value(document, _rule(rules, 'coverUrl'))),
       ),
@@ -83,16 +85,17 @@ class LegadoRuleClient {
 
   Future<BookSourceSearchPage> browse(
     RegisteredBookSource source, {
+    String? category,
     int page = 1,
     int pageSize = 20,
   }) async {
     final config = _config(source);
-    final template = '${config['exploreUrl'] ?? ''}'.trim();
-    if (template.isEmpty) {
+    final entries = exploreEntries(config['exploreUrl']);
+    if (entries.isEmpty) {
       throw const BookSourceProtocolException('该 Legado 书源没有发现规则。');
     }
-    final firstLine = template.split(RegExp(r'\r?\n')).first.trim();
-    final url = firstLine.replaceAll('{{page}}', '$page');
+    final entry = _entryForCategory(entries, category);
+    final url = _applyPage(entry.urlTemplate, page);
     final uri = _absolute(source.apiBaseUrl, _requestUrl(url));
     final document = await _document(uri);
     final rules = _rules(config['ruleExplore']);
@@ -108,7 +111,9 @@ class LegadoRuleClient {
           id: bookUri.toString(),
           title: title,
           author: _value(element, _rule(rules, 'author')),
-          description: _value(element, _rule(rules, 'intro')),
+          description: compactDescription(
+            _value(element, _rule(rules, 'intro')),
+          ),
           coverUrl: _httpUri(
             _absoluteText(uri, _value(element, _rule(rules, 'coverUrl'))),
           ),
@@ -124,6 +129,67 @@ class LegadoRuleClient {
       pageSize: pageSize,
       hasMore: books.length >= pageSize,
     );
+  }
+
+  /// Converts 阅读's `exploreUrl` into the channel list used by the discovery
+  /// page. The usual `频道名::URL` form is supported, as is a single URL.
+  /// IDs are stable list indexes instead of raw URLs, so they remain safe to
+  /// persist and can contain arbitrary URL query parameters.
+  static List<LegadoExploreEntry> exploreEntries(Object? value) {
+    final raw = '${value ?? ''}'.trim();
+    if (raw.isEmpty) return const [];
+    final lines = raw
+        .split(RegExp(r'\r?\n|&&'))
+        .map((line) => line.trim())
+        .where((line) => line.isNotEmpty)
+        .toList(growable: false);
+    final entries = <LegadoExploreEntry>[];
+    for (final line in lines) {
+      final separator = line.indexOf('::');
+      final name = separator < 0 ? '' : line.substring(0, separator).trim();
+      final url = (separator < 0 ? line : line.substring(separator + 2)).trim();
+      if (url.isEmpty) continue;
+      entries.add(
+        LegadoExploreEntry(
+          id: 'legado-explore-${entries.length}',
+          name: name.isEmpty
+              ? (entries.isEmpty ? '发现' : '频道 ${entries.length + 1}')
+              : name,
+          urlTemplate: url,
+        ),
+      );
+    }
+    return List<LegadoExploreEntry>.unmodifiable(entries);
+  }
+
+  static LegadoExploreEntry _entryForCategory(
+    List<LegadoExploreEntry> entries,
+    String? category,
+  ) {
+    if (category != null && category.trim().isNotEmpty) {
+      for (final entry in entries) {
+        if (entry.id == category) return entry;
+      }
+    }
+    return entries.first;
+  }
+
+  static String _applyPage(String template, int page) {
+    final normalizedPage = page < 1 ? 1 : page;
+    return template
+        .replaceAll('{{page}}', '$normalizedPage')
+        .replaceAll('{{page-1}}', '${normalizedPage - 1}');
+  }
+
+  /// Makes source-provided summaries safe for ordinary Flutter text widgets.
+  /// Some 阅读 rules select an entire web page (navigation, ads and all) or
+  /// contain hundreds of blank lines. Keeping only normalized visible text and
+  /// a bounded prefix prevents one bad source record from stretching a result
+  /// card beyond the screen.
+  static String compactDescription(String value, {int maxLength = 640}) {
+    final normalized = _normalizeText(value);
+    if (normalized.length <= maxLength) return normalized;
+    return '${normalized.substring(0, maxLength).trimRight()}…';
   }
 
   Future<List<BookSourceChapter>> getChapters(
@@ -222,9 +288,11 @@ class LegadoRuleClient {
       element = selector.isEmpty ? root : root.querySelector(selector);
     }
     if (element == null) return '';
-    var result = attribute == 'text' || attribute == 'textNodes'
-        ? element.text
-        : element.attributes[attribute] ?? '';
+    var result = switch (attribute) {
+      'text' || 'textNodes' => element.text,
+      'html' => element.innerHtml,
+      _ => element.attributes[attribute] ?? '',
+    };
     if (cleanup.length >= 2 && cleanup[1].isNotEmpty) {
       try {
         result = result.replaceAll(
@@ -235,7 +303,19 @@ class LegadoRuleClient {
         // Invalid optional cleanup patterns do not discard extracted content.
       }
     }
-    return result.trim();
+    return _normalizeText(result);
+  }
+
+  static String _normalizeText(String value) {
+    final withoutMarkup = value.contains('<')
+        ? html_parser
+              .parseFragment(value.replaceAll(RegExp(r'<[^>]*>'), ' '))
+              .text
+        : value;
+    return withoutMarkup
+        .replaceAll(RegExp(r'[\u0000-\u001f\u007f]'), ' ')
+        .replaceAll(RegExp(r'\s+'), ' ')
+        .trim();
   }
 
   static String _selector(String rule) {
@@ -264,6 +344,18 @@ class LegadoRuleClient {
         ? uri
         : null;
   }
+}
+
+class LegadoExploreEntry {
+  final String id;
+  final String name;
+  final String urlTemplate;
+
+  const LegadoExploreEntry({
+    required this.id,
+    required this.name,
+    required this.urlTemplate,
+  });
 }
 
 /// Kept separate to make network-target validation reusable without exposing

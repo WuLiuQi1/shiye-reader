@@ -4,6 +4,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xxread/book_sources/models/registered_book_source.dart';
 import 'package:xxread/book_sources/protocol/book_source_protocol.dart';
 import 'package:xxread/book_sources/services/book_source_client.dart';
@@ -95,13 +96,19 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
   List<RegisteredBookSource> _sources = const [];
   bool _loadingSources = true;
   _DiscoverSection _section = _DiscoverSection.recommended;
+  _DiscoverListLayout _listLayout = _DiscoverListLayout.standard;
   String? _selectedSourceId;
+
+  static const _discoverListLayoutPreference = 'discover_list_layout_v1';
 
   // 每个 Tab 的内容独立缓存，切换回来不再重新请求。
   final Map<_DiscoverSection, _SectionCache> _cache = {};
   _SourcedCategory? _selectedCategory;
   List<SourcedBook> _categoryBooks = const [];
   bool _loadingCategoryBooks = false;
+  bool _loadingMoreCategoryBooks = false;
+  bool _categoryHasMore = false;
+  int _categoryPage = 0;
 
   @override
   void initState() {
@@ -109,6 +116,7 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
     _client = widget.client ?? BookSourceClient();
     _registrySubscription = _registry.changes.listen((_) => _reloadAll());
     unawaited(_loadSources());
+    unawaited(_restoreListLayout());
   }
 
   @override
@@ -133,6 +141,9 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
     _selectedCategory = null;
     _categoryBooks = const [];
     _loadingCategoryBooks = false;
+    _loadingMoreCategoryBooks = false;
+    _categoryHasMore = false;
+    _categoryPage = 0;
     await _loadSources();
   }
 
@@ -158,6 +169,11 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
     bool force = false,
   }) async {
     if (!force && _cache[section] != null) return;
+    if (force) {
+      for (final source in _sourcesFor(section)) {
+        _client.invalidateSourceMetadata(source.id);
+      }
+    }
     setState(() => _cache[section] = const _SectionCache.loading());
     _SectionCache next;
     try {
@@ -274,6 +290,9 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
       _selectedCategory = null;
       _categoryBooks = const [];
       _loadingCategoryBooks = false;
+      _loadingMoreCategoryBooks = false;
+      _categoryHasMore = false;
+      _categoryPage = 0;
     });
     if (_section == _DiscoverSection.categories) {
       _autoSelectFirstCategory();
@@ -291,6 +310,9 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
         _selectedCategory = null;
         _categoryBooks = const [];
         _loadingCategoryBooks = false;
+        _loadingMoreCategoryBooks = false;
+        _categoryHasMore = false;
+        _categoryPage = 0;
       }
     });
     await _loadSection(section);
@@ -299,29 +321,74 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
     }
   }
 
+  Future<void> _restoreListLayout() async {
+    final prefs = await SharedPreferences.getInstance();
+    final value = prefs.getString(_discoverListLayoutPreference);
+    if (!mounted || value == null) return;
+    final layout = _DiscoverListLayout.values.where(
+      (item) => item.name == value,
+    );
+    if (layout.isNotEmpty) setState(() => _listLayout = layout.first);
+  }
+
+  Future<void> _setListLayout(_DiscoverListLayout layout) async {
+    if (_listLayout == layout) return;
+    setState(() => _listLayout = layout);
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString(_discoverListLayoutPreference, layout.name);
+  }
+
   Future<void> _selectCategory(_SourcedCategory category) async {
     setState(() {
       _selectedCategory = category;
       _categoryBooks = const [];
       _loadingCategoryBooks = category.source.capabilities.contains('browse');
+      _loadingMoreCategoryBooks = false;
+      _categoryHasMore = false;
+      _categoryPage = 0;
     });
     if (!category.source.capabilities.contains('browse')) return;
+    await _loadCategoryPage(category, reset: true);
+  }
+
+  Future<void> _loadMoreCategoryBooks() async {
+    final category = _selectedCategory;
+    if (category == null || !_categoryHasMore || _loadingMoreCategoryBooks) {
+      return;
+    }
+    setState(() => _loadingMoreCategoryBooks = true);
+    await _loadCategoryPage(category);
+  }
+
+  Future<void> _loadCategoryPage(
+    _SourcedCategory category, {
+    bool reset = false,
+  }) async {
+    final pageNumber = reset ? 1 : _categoryPage + 1;
     try {
       final page = await _client.browse(
         category.source,
         category: category.id,
         sort: 'popular',
+        page: pageNumber,
       );
       if (!mounted || _selectedCategory != category) return;
       setState(() {
-        _categoryBooks = page.items
+        final items = page.items
             .map((book) => SourcedBook(source: category.source, book: book))
             .toList(growable: false);
+        _categoryBooks = reset ? items : [..._categoryBooks, ...items];
         _loadingCategoryBooks = false;
+        _loadingMoreCategoryBooks = false;
+        _categoryPage = page.page;
+        _categoryHasMore = page.hasMore;
       });
     } catch (_) {
       if (!mounted || _selectedCategory != category) return;
-      setState(() => _loadingCategoryBooks = false);
+      setState(() {
+        _loadingCategoryBooks = false;
+        _loadingMoreCategoryBooks = false;
+      });
     }
   }
 
@@ -426,6 +493,27 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
                         children: [
                           if (useRailNavigation) _buildRailHeader(),
                           _buildSectionTabs(),
+                          Align(
+                            alignment: Alignment.centerRight,
+                            child: IconButton.filledTonal(
+                              key: const Key('bookSourceDiscoverLayoutToggle'),
+                              tooltip: _listLayout == _DiscoverListLayout.standard
+                                  ? '切换为紧凑列表'
+                                  : '切换为标准列表',
+                              onPressed: () => unawaited(
+                                _setListLayout(
+                                  _listLayout == _DiscoverListLayout.standard
+                                      ? _DiscoverListLayout.compact
+                                      : _DiscoverListLayout.standard,
+                                ),
+                              ),
+                              icon: Icon(
+                                _listLayout == _DiscoverListLayout.standard
+                                    ? Icons.view_compact_alt_outlined
+                                    : Icons.view_agenda_outlined,
+                              ),
+                            ),
+                          ),
                           if (_sourcesFor(_section).length > 1) ...[
                             const SizedBox(height: 8),
                             _buildSourceScope(_sourcesFor(_section)),
@@ -711,8 +799,35 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
       );
     } else {
       slivers.add(
-        _bookListSliver(_categoryBooks, bottomPadding: bottomPadding),
+        _bookListSliver(
+          _categoryBooks,
+          bottomPadding: _categoryHasMore ? 12 : bottomPadding,
+        ),
       );
+      if (_categoryHasMore) {
+        slivers.add(
+          _paddedSectionSliver(
+            Center(
+              child: OutlinedButton.icon(
+                key: const Key('bookSourceCategoryLoadMore'),
+                onPressed: _loadingMoreCategoryBooks
+                    ? null
+                    : () => unawaited(_loadMoreCategoryBooks()),
+                icon: _loadingMoreCategoryBooks
+                    ? const SizedBox(
+                        width: 18,
+                        height: 18,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : const Icon(Icons.expand_more_rounded),
+                label: Text(_loadingMoreCategoryBooks ? '正在加载…' : '加载更多'),
+              ),
+            ),
+            topPadding: 0,
+            bottomPadding: bottomPadding,
+          ),
+        );
+      }
     }
     return slivers;
   }
@@ -738,18 +853,24 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
     List<SourcedBook> books, {
     required double bottomPadding,
   }) {
+    final compact = _listLayout == _DiscoverListLayout.compact;
     return SliverPadding(
       padding: EdgeInsets.fromLTRB(16, 0, 16, bottomPadding),
       sliver: SliverList.separated(
         itemCount: books.length,
-        separatorBuilder: (_, _) => const SizedBox(height: 10),
+        separatorBuilder: (_, _) => SizedBox(height: compact ? 6 : 10),
         itemBuilder: (context, index) {
           final result = books[index];
           return _centerSectionChild(
-            SourcedBookListTile(
-              result: result,
-              onTap: () => _actions.showBookDetails(result),
-            ),
+            compact
+                ? SourcedBookCompactTile(
+                    result: result,
+                    onTap: () => _actions.showBookDetails(result),
+                  )
+                : SourcedBookListTile(
+                    result: result,
+                    onTap: () => _actions.showBookDetails(result),
+                  ),
           );
         },
       ),
@@ -870,6 +991,8 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
 }
 
 enum _DiscoverSection { recommended, categories, latest }
+
+enum _DiscoverListLayout { standard, compact }
 
 /// 一个 Tab 的缓存态：loading / error / 三种内容之一。
 class _SectionCache {

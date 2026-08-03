@@ -24,6 +24,13 @@
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
+	<!-- Keep AVSpeechSynthesizer active when the screen locks or the app is in
+	     the background. This is required together with the playback audio
+	     session configured by TtsService. -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+	</array>
 	<!--
 	  Legado/阅读书源中仍有大量仅提供 HTTP 的站点。允许这些用户主动
 	  导入的书源联网，否则 iOS App Transport Security 会直接拦截请求。

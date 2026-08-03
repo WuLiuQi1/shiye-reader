@@ -111,6 +111,7 @@ class HomeMobileDashboardPage extends StatefulWidget {
       book: shelfService.sourceBookFrom(book),
       client: client,
       shelfService: shelfService,
+      initialShelfBookId: book.id,
     );
   }
 
@@ -202,15 +203,7 @@ class _HomeMobileDashboardPageState extends State<HomeMobileDashboardPage>
   Future<List<Book>> _loadRecentBooks() async {
     try {
       final orderedBookIds = await _statsDao.getRecentBookIds(limit: 6);
-      final books = <Book>[];
-      final seen = <int>{};
-
-      for (final id in orderedBookIds) {
-        final book = await _bookDao.getBookById(id);
-        if (book == null) continue;
-        books.add(book);
-        seen.add(id);
-      }
+      final books = await _bookDao.getBooksByIdsInOrder(orderedBookIds);
 
       if (books.isNotEmpty) {
         return books.take(6).toList(growable: false);
@@ -381,9 +374,7 @@ class _HomeMobileDashboardPageState extends State<HomeMobileDashboardPage>
               backgroundColor: palette.cardColor,
               child: ListView(
                 scrollCacheExtent: const ScrollCacheExtent.pixels(720),
-                physics: const AlwaysScrollableScrollPhysics(
-                  parent: BouncingScrollPhysics(),
-                ),
+                physics: const AlwaysScrollableScrollPhysics(),
                 padding: EdgeInsets.fromLTRB(
                   metrics.horizontalPadding,
                   metrics.contentTopPadding,
@@ -839,7 +830,6 @@ class _HomeMobileDashboardPageState extends State<HomeMobileDashboardPage>
       height: 206,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
         itemCount: books.length,
         separatorBuilder: (_, _) => const SizedBox(width: 14),
         itemBuilder: (context, index) =>

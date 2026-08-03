@@ -28,6 +28,15 @@ class BookSourceClient {
   static const int maxResponseBytes = 8 * 1024 * 1024;
   static const int maxDownloadResponseBytes = 24 * 1024 * 1024;
   static const Duration downloadReceiveTimeout = Duration(seconds: 90);
+  static const Duration discoveryCacheLifetime = Duration(minutes: 5);
+  static const Duration browseCacheLifetime = Duration(minutes: 2);
+  static const Duration bookDetailsCacheLifetime = Duration(minutes: 10);
+
+  // Discovery widgets, the details sheet and navigation can ask for the same
+  // metadata during one frame. Keep one shared request per URL and retain the
+  // decoded result briefly so switching tabs never fans out duplicate calls.
+  final Map<String, _MetadataCacheEntry<Object>> _metadataCache = {};
+  final Map<String, Future<Object>> _metadataInFlight = {};
 
   /// ORSP §11 章节目录默认页大小；书源未声明 maxCatalogPageSize 时使用。
   static const int _defaultChapterPageSize = 100;
@@ -186,29 +195,44 @@ class BookSourceClient {
         'This source does not support discovery.',
       );
     }
-    if (source.legadoConfig != null) {
-      final page = await _legadoClient.browse(source);
-      return BookSourceDiscoveryPage(
-        sections: [
-          BookSourceDiscoverySection(
-            id: 'legado-explore',
-            title: source.name,
-            items: page.items,
-          ),
-        ],
-      );
-    }
-    final uri = _apiUri(source.apiBaseUrl, 'v1/discover');
-    try {
-      return BookSourceDiscoveryPage.fromJson(
-        decodeBookSourceJson(await _getBounded(uri)),
-      );
-    } on DioException catch (error) {
-      throw BookSourceProtocolException(
-        _dioErrorMessage(error),
-        code: _sourceErrorCode(error),
-      );
-    }
+    return _cachedMetadata(
+      _metadataKey(source, 'discover'),
+      lifetime: discoveryCacheLifetime,
+      loader: () async {
+        if (source.legadoConfig != null) {
+          final categories = _legadoClient.exploreEntries(
+            source.legadoConfig!['exploreUrl'],
+          );
+          final firstCategory = categories.isEmpty ? null : categories.first;
+          final page = await _legadoClient.browse(
+            source,
+            category: firstCategory?.id,
+          );
+          return BookSourceDiscoveryPage(
+            sections: [
+              BookSourceDiscoverySection(
+                id: 'legado-explore',
+                title: firstCategory == null
+                    ? source.name
+                    : '${source.name} · ${firstCategory.name}',
+                items: page.items,
+              ),
+            ],
+          );
+        }
+        final uri = _apiUri(source.apiBaseUrl, 'v1/discover');
+        try {
+          return BookSourceDiscoveryPage.fromJson(
+            decodeBookSourceJson(await _getBounded(uri)),
+          );
+        } on DioException catch (error) {
+          throw BookSourceProtocolException(
+            _dioErrorMessage(error),
+            code: _sourceErrorCode(error),
+          );
+        }
+      },
+    );
   }
 
   Future<List<BookSourceCategory>> getCategories(
@@ -219,26 +243,40 @@ class BookSourceClient {
         'This source does not support categories.',
       );
     }
-    final uri = _apiUri(source.apiBaseUrl, 'v1/categories');
-    try {
-      final json = decodeBookSourceJson(await _getBounded(uri));
-      final items = json['items'];
-      if (items is! List) {
-        throw const BookSourceProtocolException(
-          'Category response must contain an items array.',
-        );
-      }
-      return items
-          .map(
-            (item) => BookSourceCategory.fromJson(decodeBookSourceJson(item)),
-          )
-          .toList(growable: false);
-    } on DioException catch (error) {
-      throw BookSourceProtocolException(
-        _dioErrorMessage(error),
-        code: _sourceErrorCode(error),
-      );
-    }
+    return _cachedMetadata(
+      _metadataKey(source, 'categories'),
+      lifetime: discoveryCacheLifetime,
+      loader: () async {
+        if (source.legadoConfig != null) {
+          return List<BookSourceCategory>.unmodifiable([
+            for (final entry in _legadoClient.exploreEntries(
+              source.legadoConfig!['exploreUrl'],
+            ))
+              BookSourceCategory(id: entry.id, name: entry.name),
+          ]);
+        }
+        final uri = _apiUri(source.apiBaseUrl, 'v1/categories');
+        try {
+          final json = decodeBookSourceJson(await _getBounded(uri));
+          final items = json['items'];
+          if (items is! List) {
+            throw const BookSourceProtocolException(
+              'Category response must contain an items array.',
+            );
+          }
+          return List<BookSourceCategory>.unmodifiable(
+            items.map(
+              (item) => BookSourceCategory.fromJson(decodeBookSourceJson(item)),
+            ),
+          );
+        } on DioException catch (error) {
+          throw BookSourceProtocolException(
+            _dioErrorMessage(error),
+            code: _sourceErrorCode(error),
+          );
+        }
+      },
+    );
   }
 
   Future<BookSourceSearchPage> browse(
@@ -253,9 +291,6 @@ class BookSourceClient {
         'This source does not support browsing.',
       );
     }
-    if (source.legadoConfig != null) {
-      return _legadoClient.browse(source, page: page, pageSize: pageSize);
-    }
     final uri = _apiUri(source.apiBaseUrl, 'v1/browse').replace(
       queryParameters: {
         if (category != null && category.trim().isNotEmpty)
@@ -265,39 +300,90 @@ class BookSourceClient {
         'pageSize': '$pageSize',
       },
     );
-    try {
-      return BookSourceSearchPage.fromJson(
-        decodeBookSourceJson(await _getBounded(uri)),
-      );
-    } on DioException catch (error) {
-      throw BookSourceProtocolException(
-        _dioErrorMessage(error),
-        code: _sourceErrorCode(error),
-      );
-    }
+    return _cachedMetadata(
+      _metadataKey(source, 'browse:${uri.query}'),
+      lifetime: browseCacheLifetime,
+      loader: () async {
+        if (source.legadoConfig != null) {
+          return _legadoClient.browse(
+            source,
+            category: category,
+            page: page,
+            pageSize: pageSize,
+          );
+        }
+        try {
+          return BookSourceSearchPage.fromJson(
+            decodeBookSourceJson(await _getBounded(uri)),
+          );
+        } on DioException catch (error) {
+          throw BookSourceProtocolException(
+            _dioErrorMessage(error),
+            code: _sourceErrorCode(error),
+          );
+        }
+      },
+    );
   }
 
   Future<BookSourceBook> getBook(
     RegisteredBookSource source,
     String bookId,
   ) async {
-    if (source.legadoConfig != null) {
-      return _legadoClient.getBook(source, bookId);
-    }
-    final uri = _apiUri(
-      source.apiBaseUrl,
-      'v1/books/${Uri.encodeComponent(bookId)}',
+    return _cachedMetadata(
+      _metadataKey(source, 'book:$bookId'),
+      lifetime: bookDetailsCacheLifetime,
+      loader: () async {
+        if (source.legadoConfig != null) {
+          return _legadoClient.getBook(source, bookId);
+        }
+        final uri = _apiUri(
+          source.apiBaseUrl,
+          'v1/books/${Uri.encodeComponent(bookId)}',
+        );
+        try {
+          return BookSourceBook.fromJson(
+            decodeBookSourceJson(await _getBounded(uri)),
+          );
+        } on DioException catch (error) {
+          throw BookSourceProtocolException(
+            _dioErrorMessage(error),
+            code: _sourceErrorCode(error),
+          );
+        }
+      },
     );
-    try {
-      return BookSourceBook.fromJson(
-        decodeBookSourceJson(await _getBounded(uri)),
-      );
-    } on DioException catch (error) {
-      throw BookSourceProtocolException(
-        _dioErrorMessage(error),
-        code: _sourceErrorCode(error),
-      );
+  }
+
+  void invalidateSourceMetadata(String sourceId) {
+    final prefix = '$sourceId|';
+    _metadataCache.removeWhere((key, _) => key.startsWith(prefix));
+  }
+
+  String _metadataKey(RegisteredBookSource source, String resource) =>
+      '${source.id}|${source.apiBaseUrl}|$resource';
+
+  Future<T> _cachedMetadata<T>(
+    String key, {
+    required Duration lifetime,
+    required Future<T> Function() loader,
+  }) {
+    final cached = _metadataCache[key];
+    if (cached != null && DateTime.now().difference(cached.cachedAt) < lifetime) {
+      return Future<T>.value(cached.value as T);
     }
+    final pending = _metadataInFlight[key];
+    if (pending != null) return pending.then((value) => value as T);
+    final request = loader().then<Object>((value) {
+      _metadataCache[key] = _MetadataCacheEntry<Object>(value, DateTime.now());
+      return value;
+    });
+    _metadataInFlight[key] = request;
+    return request.whenComplete(() {
+      if (identical(_metadataInFlight[key], request)) {
+        _metadataInFlight.remove(key);
+      }
+    }).then((value) => value as T);
   }
 
   Future<List<BookSourceChapter>> getChapters(
@@ -615,4 +701,11 @@ class BookSourceClient {
       return null;
     }
   }
+}
+
+class _MetadataCacheEntry<T> {
+  const _MetadataCacheEntry(this.value, this.cachedAt);
+
+  final T value;
+  final DateTime cachedAt;
 }

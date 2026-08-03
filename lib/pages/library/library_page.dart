@@ -118,6 +118,7 @@ class _LibraryPageState extends State<LibraryPage> {
               book: sourceBook,
               shelfService: _sourceShelfService,
               initialTheme: initialTheme,
+              initialShelfBookId: fullBook.id,
             ),
             animation: animation,
             readerBackgroundColor: initialTheme?.background,
@@ -796,9 +797,7 @@ class _LibraryPageState extends State<LibraryPage> {
     return LayoutBuilder(
       builder: (context, constraints) {
         return ListView(
-          physics: const AlwaysScrollableScrollPhysics(
-            parent: BouncingScrollPhysics(),
-          ),
+          physics: const AlwaysScrollableScrollPhysics(),
           children: [SizedBox(height: constraints.maxHeight, child: state)],
         );
       },
@@ -836,9 +835,7 @@ class _LibraryPageState extends State<LibraryPage> {
         return GridView.builder(
           key: const ValueKey('library-cover-grid'),
           scrollCacheExtent: const ScrollCacheExtent.pixels(720),
-          physics: const AlwaysScrollableScrollPhysics(
-            parent: BouncingScrollPhysics(),
-          ),
+          physics: const AlwaysScrollableScrollPhysics(),
           padding: EdgeInsets.fromLTRB(
             horizontalPadding,
             topPadding,
@@ -967,9 +964,7 @@ class _LibraryPageState extends State<LibraryPage> {
           ),
           child: GridView.builder(
             scrollCacheExtent: const ScrollCacheExtent.pixels(720),
-            physics: const AlwaysScrollableScrollPhysics(
-              parent: BouncingScrollPhysics(),
-            ),
+            physics: const AlwaysScrollableScrollPhysics(),
             padding: EdgeInsets.fromLTRB(
               16,
               12,
@@ -1014,9 +1009,7 @@ class _LibraryPageState extends State<LibraryPage> {
     final scheme = theme.colorScheme;
     return ListView.builder(
       scrollCacheExtent: const ScrollCacheExtent.pixels(720),
-      physics: const AlwaysScrollableScrollPhysics(
-        parent: BouncingScrollPhysics(),
-      ),
+      physics: const AlwaysScrollableScrollPhysics(),
       padding: EdgeInsets.fromLTRB(
         16,
         topPadding,

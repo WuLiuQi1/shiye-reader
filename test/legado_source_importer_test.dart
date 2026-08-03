@@ -1,4 +1,5 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:xxread/book_sources/services/legado_rule_client.dart';
 import 'package:xxread/book_sources/services/legado_source_importer.dart';
 import 'package:xxread/book_sources/services/book_source_exporter.dart';
 import 'package:xxread/book_sources/models/registered_book_source.dart';
@@ -57,8 +58,33 @@ void main() {
 
     expect(
       source.capabilities,
-      containsAll(<String>['search', 'discover', 'browse']),
+      containsAll(<String>['search', 'discover', 'browse', 'categories']),
     );
+  });
+
+  test('parses Legado explore channels and keeps page templates', () {
+    final entries = LegadoRuleClient.exploreEntries('''
+      热门::/popular?page={{page}}
+      新书::/new?page={{page-1}}
+    ''');
+
+    expect(entries.map((entry) => entry.id), [
+      'legado-explore-0',
+      'legado-explore-1',
+    ]);
+    expect(entries.map((entry) => entry.name), ['热门', '新书']);
+    expect(entries.last.urlTemplate, '/new?page={{page-1}}');
+  });
+
+  test('compacts source HTML summaries and blank-line padding', () {
+    final summary = LegadoRuleClient.compactDescription(
+      '<p>返回</p>\n\n\n<p>小说信息</p>'
+      '${List.filled(120, '\n').join()}正文内容',
+      maxLength: 20,
+    );
+
+    expect(summary, '返回 小说信息 正文内容');
+    expect(summary, isNot(contains('\n')));
   });
 
   test('exported native and Legado sources can be imported again', () {
