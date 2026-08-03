@@ -88,8 +88,12 @@ class DatabaseService {
     // 否则建表语句里的 ON DELETE CASCADE 不会生效。
     await db.execute('PRAGMA foreign_keys = ON');
     // Keep reader progress, imports and cache maintenance from blocking one
-    // another on mobile. Web's IndexedDB-backed adapter does not support WAL.
-    if (!kIsWeb) {
+    // another where SQLite supports changing the journal during configure.
+    // sqflite_darwin reports a DatabaseException for this pragma on iOS
+    // (including the misleading "not an error" native message), which then
+    // prevents the whole database from opening. iOS keeps its default journal
+    // mode here; foreign keys above still apply on every connection.
+    if (!kIsWeb && !Platform.isIOS) {
       await db.execute('PRAGMA journal_mode = WAL');
       await db.execute('PRAGMA synchronous = NORMAL');
     }

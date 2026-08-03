@@ -138,13 +138,20 @@ class SourcedBookListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final book = result.book;
+    final summary = _safeSearchSummary(book.description);
     return InkWell(
       borderRadius: BorderRadius.circular(18),
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(12),
-        decoration: bookSourcePanelDecoration(context, radius: 18),
-        child: Row(
+      child: ConstrainedBox(
+        // A broken rule can return a whole HTML page as its introduction.
+        // Keep a single result card bounded even when a third-party source
+        // supplies malformed text or unexpected inline whitespace.
+        constraints: const BoxConstraints(maxHeight: 154),
+        child: Container(
+          padding: const EdgeInsets.all(12),
+          decoration: bookSourcePanelDecoration(context, radius: 18),
+          clipBehavior: Clip.hardEdge,
+          child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             _BookCoverThumb(book: book),
@@ -206,13 +213,13 @@ class SourcedBookListTile extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  if (book.description.isNotEmpty) ...[
+                  if (summary.isNotEmpty) ...[
                     const SizedBox(height: 7),
                     ConstrainedBox(
                       constraints: const BoxConstraints(maxHeight: 36),
                       child: ClipRect(
                         child: Text(
-                          book.description,
+                          summary,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
@@ -230,9 +237,26 @@ class SourcedBookListTile extends StatelessWidget {
             const SizedBox(width: 6),
             const Icon(Icons.chevron_right_rounded),
           ],
+          ),
         ),
       ),
     );
+  }
+
+  static String _safeSearchSummary(String value) {
+    final normalized = value.replaceAll(RegExp(r'\s+'), ' ').trim();
+    if (normalized.isEmpty) return '';
+    // These navigation labels together identify an incorrectly scraped page
+    // rather than a book synopsis (as seen with some converted sources).
+    const pageNavigation = ['返回', '首页', '小说信息', '搜索', '登录', '注册'];
+    final navigationHits = pageNavigation
+        .where(normalized.contains)
+        .length;
+    if (navigationHits >= 3) return '';
+    const maxLength = 220;
+    return normalized.length <= maxLength
+        ? normalized
+        : '${normalized.substring(0, maxLength).trimRight()}…';
   }
 }
 

@@ -1151,52 +1151,66 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
       return;
     }
     _exitPromptVisible = true;
-    await _saveProgress();
-    // 阅读统计是退出后的派生写入，不应阻塞“加入书架？”确认弹窗。
-    unawaited(_flushReadingSession());
-    final shelfBook = await _shelfService.findShelfBook(
-      sourceId: widget.source.id,
-      sourceBookId: widget.book.id,
-    );
-    if (!mounted) return;
-    if (shelfBook != null) {
+    try {
+      // 进度保存只应在后台完成；不能阻塞返回按钮或“加入书架”确认框。
+      unawaited(_saveProgress());
+      unawaited(_flushReadingSession());
+      final shelfBook = await _shelfService.findShelfBook(
+        sourceId: widget.source.id,
+        sourceBookId: widget.book.id,
+      );
+      if (!mounted) return;
+      if (shelfBook != null) {
+        BookOpenTransition.beginExit();
+        setState(() => _allowPop = true);
+        Navigator.of(context).pop();
+        return;
+      }
+
+      final shouldAdd = await showDialog<bool>(
+        context: context,
+        builder: (dialogContext) => AlertDialog(
+          title: Text(context.l10n.bookSourceExitAddTitle),
+          content: Text(
+            context.l10n.bookSourceExitAddMessage(widget.book.title),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(dialogContext, false),
+              child: Text(context.l10n.bookSourceNotNow),
+            ),
+            FilledButton(
+              onPressed: () => Navigator.pop(dialogContext, true),
+              child: Text(context.l10n.bookSourceAddToShelf),
+            ),
+          ],
+        ),
+      );
+      if (!mounted) return;
+      if (shouldAdd == true) {
+        final added = await _shelfService.addOnline(
+          source: widget.source,
+          book: widget.book,
+        );
+        _shelfBookId = added.id;
+        unawaited(_saveProgress());
+        if (!mounted) return;
+      }
       BookOpenTransition.beginExit();
       setState(() => _allowPop = true);
       Navigator.of(context).pop();
-      return;
+    } catch (error) {
+      // A transient database/source failure must never leave the exit guard
+      // set forever, otherwise the visible top-left back button appears dead.
+      debugPrint('exit source reader failed: $error');
+      if (mounted) {
+        BookOpenTransition.beginExit();
+        setState(() => _allowPop = true);
+        Navigator.of(context).pop();
+      }
+    } finally {
+      _exitPromptVisible = false;
     }
-
-    final shouldAdd = await showDialog<bool>(
-      context: context,
-      builder: (dialogContext) => AlertDialog(
-        title: Text(context.l10n.bookSourceExitAddTitle),
-        content: Text(context.l10n.bookSourceExitAddMessage(widget.book.title)),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.pop(dialogContext, false),
-            child: Text(context.l10n.bookSourceNotNow),
-          ),
-          FilledButton(
-            onPressed: () => Navigator.pop(dialogContext, true),
-            child: Text(context.l10n.bookSourceAddToShelf),
-          ),
-        ],
-      ),
-    );
-    _exitPromptVisible = false;
-    if (!mounted) return;
-    if (shouldAdd == true) {
-      final added = await _shelfService.addOnline(
-        source: widget.source,
-        book: widget.book,
-      );
-      _shelfBookId = added.id;
-      await _saveProgress();
-      if (!mounted) return;
-    }
-    BookOpenTransition.beginExit();
-    setState(() => _allowPop = true);
-    Navigator.of(context).pop();
   }
 
   void _handleHorizontalSwipe(DragEndDetails details) {

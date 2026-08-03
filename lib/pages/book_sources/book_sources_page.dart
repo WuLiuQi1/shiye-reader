@@ -493,27 +493,30 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
                         children: [
                           if (useRailNavigation) _buildRailHeader(),
                           _buildSectionTabs(),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: IconButton.filledTonal(
-                              key: const Key('bookSourceDiscoverLayoutToggle'),
-                              tooltip: _listLayout == _DiscoverListLayout.standard
-                                  ? '切换为紧凑列表'
-                                  : '切换为标准列表',
-                              onPressed: () => unawaited(
-                                _setListLayout(
+                          // 推荐页是横向书架卡片，没有可切换的列表布局。
+                          // 不显示无实际作用的按钮，分类和最新页仍可切换。
+                          if (_section != _DiscoverSection.recommended)
+                            Align(
+                              alignment: Alignment.centerRight,
+                              child: IconButton.filledTonal(
+                                key: const Key('bookSourceDiscoverLayoutToggle'),
+                                tooltip: _listLayout == _DiscoverListLayout.standard
+                                    ? '切换为紧凑列表'
+                                    : '切换为标准列表',
+                                onPressed: () => unawaited(
+                                  _setListLayout(
+                                    _listLayout == _DiscoverListLayout.standard
+                                        ? _DiscoverListLayout.compact
+                                        : _DiscoverListLayout.standard,
+                                  ),
+                                ),
+                                icon: Icon(
                                   _listLayout == _DiscoverListLayout.standard
-                                      ? _DiscoverListLayout.compact
-                                      : _DiscoverListLayout.standard,
+                                      ? Icons.view_compact_alt_outlined
+                                      : Icons.view_agenda_outlined,
                                 ),
                               ),
-                              icon: Icon(
-                                _listLayout == _DiscoverListLayout.standard
-                                    ? Icons.view_compact_alt_outlined
-                                    : Icons.view_agenda_outlined,
-                              ),
                             ),
-                          ),
                           if (_sourcesFor(_section).length > 1) ...[
                             const SizedBox(height: 8),
                             _buildSourceScope(_sourcesFor(_section)),
