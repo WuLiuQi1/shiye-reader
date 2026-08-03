@@ -4,7 +4,6 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:xxread/book_sources/models/registered_book_source.dart';
 import 'package:xxread/book_sources/protocol/book_source_protocol.dart';
 import 'package:xxread/book_sources/services/book_source_client.dart';
@@ -96,10 +95,7 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
   List<RegisteredBookSource> _sources = const [];
   bool _loadingSources = true;
   _DiscoverSection _section = _DiscoverSection.recommended;
-  _DiscoverListLayout _listLayout = _DiscoverListLayout.standard;
   String? _selectedSourceId;
-
-  static const _discoverListLayoutPreference = 'discover_list_layout_v1';
 
   // 每个 Tab 的内容独立缓存，切换回来不再重新请求。
   final Map<_DiscoverSection, _SectionCache> _cache = {};
@@ -116,7 +112,6 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
     _client = widget.client ?? BookSourceClient();
     _registrySubscription = _registry.changes.listen((_) => _reloadAll());
     unawaited(_loadSources());
-    unawaited(_restoreListLayout());
   }
 
   @override
@@ -321,23 +316,6 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
     }
   }
 
-  Future<void> _restoreListLayout() async {
-    final prefs = await SharedPreferences.getInstance();
-    final value = prefs.getString(_discoverListLayoutPreference);
-    if (!mounted || value == null) return;
-    final layout = _DiscoverListLayout.values.where(
-      (item) => item.name == value,
-    );
-    if (layout.isNotEmpty) setState(() => _listLayout = layout.first);
-  }
-
-  Future<void> _setListLayout(_DiscoverListLayout layout) async {
-    if (_listLayout == layout) return;
-    setState(() => _listLayout = layout);
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_discoverListLayoutPreference, layout.name);
-  }
-
   Future<void> _selectCategory(_SourcedCategory category) async {
     setState(() {
       _selectedCategory = category;
@@ -493,30 +471,6 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
                         children: [
                           if (useRailNavigation) _buildRailHeader(),
                           _buildSectionTabs(),
-                          // 推荐页是横向书架卡片，没有可切换的列表布局。
-                          // 不显示无实际作用的按钮，分类和最新页仍可切换。
-                          if (_section != _DiscoverSection.recommended)
-                            Align(
-                              alignment: Alignment.centerRight,
-                              child: IconButton.filledTonal(
-                                key: const Key('bookSourceDiscoverLayoutToggle'),
-                                tooltip: _listLayout == _DiscoverListLayout.standard
-                                    ? '切换为紧凑列表'
-                                    : '切换为标准列表',
-                                onPressed: () => unawaited(
-                                  _setListLayout(
-                                    _listLayout == _DiscoverListLayout.standard
-                                        ? _DiscoverListLayout.compact
-                                        : _DiscoverListLayout.standard,
-                                  ),
-                                ),
-                                icon: Icon(
-                                  _listLayout == _DiscoverListLayout.standard
-                                      ? Icons.view_compact_alt_outlined
-                                      : Icons.view_agenda_outlined,
-                                ),
-                              ),
-                            ),
                           if (_sourcesFor(_section).length > 1) ...[
                             const SizedBox(height: 8),
                             _buildSourceScope(_sourcesFor(_section)),
@@ -856,24 +810,18 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
     List<SourcedBook> books, {
     required double bottomPadding,
   }) {
-    final compact = _listLayout == _DiscoverListLayout.compact;
     return SliverPadding(
       padding: EdgeInsets.fromLTRB(16, 0, 16, bottomPadding),
       sliver: SliverList.separated(
         itemCount: books.length,
-        separatorBuilder: (_, _) => SizedBox(height: compact ? 6 : 10),
+        separatorBuilder: (_, _) => const SizedBox(height: 10),
         itemBuilder: (context, index) {
           final result = books[index];
           return _centerSectionChild(
-            compact
-                ? SourcedBookCompactTile(
-                    result: result,
-                    onTap: () => _actions.showBookDetails(result),
-                  )
-                : SourcedBookListTile(
-                    result: result,
-                    onTap: () => _actions.showBookDetails(result),
-                  ),
+            SourcedBookListTile(
+              result: result,
+              onTap: () => _actions.showBookDetails(result),
+            ),
           );
         },
       ),
@@ -994,8 +942,6 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
 }
 
 enum _DiscoverSection { recommended, categories, latest }
-
-enum _DiscoverListLayout { standard, compact }
 
 /// 一个 Tab 的缓存态：loading / error / 三种内容之一。
 class _SectionCache {

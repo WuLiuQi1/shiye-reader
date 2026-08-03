@@ -4097,6 +4097,17 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
   int _completed = 0;
   bool _loading = true;
 
+  /// Book-source rules occasionally return a page title, navigation text or
+  /// whole page body in place of a book title. Source switching only needs a
+  /// short visual identifier; preserve the original value in the model for
+  /// matching and selection, but never let it expand a sheet row.
+  static String _displayTitle(String value) {
+    final normalized = value.replaceAll(RegExp(r'\s+'), ' ').trim();
+    const maxLength = 20;
+    if (normalized.length <= maxLength) return normalized;
+    return '${normalized.substring(0, maxLength)}…';
+  }
+
   @override
   void initState() {
     super.initState();
@@ -4238,7 +4249,7 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
                 Text(
                   _loading
                       ? '正在搜索其他书源（$_completed/${widget.sources.length}）'
-                      : '为《${widget.title}》找到 ${_items.length} 个候选',
+                      : '为《${_displayTitle(widget.title)}》找到 ${_items.length} 个候选',
                 ),
               ],
             ),
@@ -4259,7 +4270,11 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
                         key: ValueKey(
                           'change-source-${item.source.id}-${item.book.id}',
                         ),
-                        title: Text(item.book.title),
+                        title: Text(
+                          _displayTitle(item.book.title),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                         subtitle: Text(
                           [
                             if (item.book.author.isNotEmpty) item.book.author,
