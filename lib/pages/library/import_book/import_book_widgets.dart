@@ -57,34 +57,32 @@ class ImportSourcePanel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
-    return Card(
-      margin: EdgeInsets.zero,
-      elevation: 0,
-      color: scheme.surfaceContainerLow,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(22),
-        side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.6)),
+    return DecoratedBox(
+      decoration: BoxDecoration(
+        color: scheme.surface,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: scheme.outlineVariant.withValues(alpha: 0.72)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              width: 44,
-              height: 44,
-              decoration: BoxDecoration(
-                color: scheme.primaryContainer,
-                borderRadius: BorderRadius.circular(14),
-              ),
-              child: Icon(
-                Icons.library_add_rounded,
-                color: scheme.onPrimaryContainer,
-              ),
+            Row(
+              children: [
+                Icon(Icons.book_outlined, color: scheme.primary, size: 22),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    title,
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
+                ),
+              ],
             ),
-            const SizedBox(height: 16),
-            Text(title, style: Theme.of(context).textTheme.titleLarge),
-            const SizedBox(height: 6),
+            const SizedBox(height: 8),
             Text(
               description,
               style: Theme.of(context).textTheme.bodyMedium?.copyWith(
@@ -92,7 +90,7 @@ class ImportSourcePanel extends StatelessWidget {
                 height: 1.45,
               ),
             ),
-            const SizedBox(height: 18),
+            const SizedBox(height: 16),
             for (var index = 0; index < actions.length; index++) ...[
               SizedBox(
                 width: double.infinity,
@@ -124,10 +122,10 @@ class ImportSourcePanel extends StatelessWidget {
             if (folderEntries.isNotEmpty) ...[
               const SizedBox(height: 18),
               for (final entry in folderEntries) ...[
-                Container(
+                DecoratedBox(
                   decoration: BoxDecoration(
-                    color: scheme.surface,
-                    borderRadius: BorderRadius.circular(14),
+                    color: scheme.surfaceContainerLowest,
+                    borderRadius: BorderRadius.circular(10),
                     border: Border.all(
                       color: entry.available
                           ? scheme.outlineVariant
@@ -198,16 +196,14 @@ class ImportQueueCard extends StatelessWidget {
 
     return Semantics(
       label: '${item.source.displayName}, $statusLabel',
-      child: Card(
-        margin: EdgeInsets.zero,
-        elevation: 0,
-        color: scheme.surfaceContainerLow,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(18),
-          side: BorderSide(
+      child: DecoratedBox(
+        decoration: BoxDecoration(
+          color: scheme.surface,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(
             color: item.status == ImportQueueItemStatus.failed
-                ? scheme.error.withValues(alpha: 0.35)
-                : scheme.outlineVariant.withValues(alpha: 0.55),
+                ? scheme.error.withValues(alpha: 0.42)
+                : scheme.outlineVariant.withValues(alpha: 0.72),
           ),
         ),
         child: Padding(

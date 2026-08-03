@@ -4,7 +4,10 @@ import 'package:xxread/models/book.dart';
 class LibraryGridBookDetails extends StatelessWidget {
   const LibraryGridBookDetails({super.key, required this.book});
 
-  static const double height = 40;
+  // Keep room for a two-line title and a quiet reading-progress line.  The
+  // library should read as a shelf of books first, rather than a dense data
+  // grid.
+  static const double height = 54;
 
   final Book book;
 
@@ -19,23 +22,23 @@ class LibraryGridBookDetails extends StatelessWidget {
     return SizedBox(
       height: height,
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(2, 8, 2, 2),
+        padding: const EdgeInsets.fromLTRB(2, 9, 2, 2),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               book.title,
               key: const ValueKey('library-grid-title'),
-              softWrap: false,
-              maxLines: 1,
+              softWrap: true,
+              maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: Theme.of(context).textTheme.bodySmall?.copyWith(
                 fontSize: 13,
-                height: 1.15,
-                fontWeight: FontWeight.w600,
+                height: 1.18,
+                fontWeight: FontWeight.w700,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 5),
             Row(
               children: [
                 Expanded(
@@ -44,8 +47,8 @@ class LibraryGridBookDetails extends StatelessWidget {
                     child: LinearProgressIndicator(
                       key: const ValueKey('library-grid-progress'),
                       value: progress,
-                      minHeight: 3,
-                      backgroundColor: scheme.primary.withValues(alpha: 0.12),
+                    minHeight: 2.5,
+                    backgroundColor: scheme.onSurface.withValues(alpha: 0.10),
                       valueColor: AlwaysStoppedAnimation(scheme.primary),
                     ),
                   ),
@@ -54,8 +57,8 @@ class LibraryGridBookDetails extends StatelessWidget {
                 Text(
                   '$percent%',
                   style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                    color: scheme.onSurfaceVariant,
-                    fontSize: 10,
+                    color: scheme.onSurfaceVariant.withValues(alpha: 0.72),
+                    fontSize: 10.5,
                     height: 1,
                     fontFeatures: const [FontFeature.tabularFigures()],
                   ),

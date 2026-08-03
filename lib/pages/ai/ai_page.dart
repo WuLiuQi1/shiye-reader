@@ -450,10 +450,8 @@ class _AiPageState extends State<AiPage> {
         ? 10.0
         : topPadding + 10.0;
 
-    return Container(
-      decoration: BoxDecoration(
-        gradient: PageStyleHelper.backgroundGradient(context),
-      ),
+    return ColoredBox(
+      color: scheme.surface,
       child: SafeArea(
         top: useRailNavigation,
         bottom: false,
@@ -737,7 +735,7 @@ class _AiPageState extends State<AiPage> {
         color: isMaterial3Style
             ? scheme.surfaceContainerHigh
             : GlassEffectConfig.chromeSurfaceColor(context),
-        borderRadius: BorderRadius.circular(26),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(
           color: scheme.outline.withValues(
             alpha: isMaterial3Style ? 0.18 : 0.12,
@@ -800,17 +798,10 @@ class _AiPageState extends State<AiPage> {
     // 与悬浮导航栏同参数的玻璃模糊；阴影放在裁剪层外侧避免被裁掉。
     return DecoratedBox(
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(26),
-        boxShadow: [
-          BoxShadow(
-            color: scheme.shadow.withValues(alpha: 0.16),
-            blurRadius: 22,
-            offset: const Offset(0, 9),
-          ),
-        ],
+        borderRadius: BorderRadius.circular(16),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(26),
+        borderRadius: BorderRadius.circular(16),
         child: blurEnabled
             ? BackdropFilter(
                 filter: ui.ImageFilter.blur(

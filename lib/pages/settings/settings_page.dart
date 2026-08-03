@@ -688,29 +688,24 @@ class _SettingsPageState extends State<SettingsPage> {
     required List<Widget> children,
   }) {
     final palette = PageStyleHelper.palette(context);
-    final scheme = Theme.of(context).colorScheme;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.fromLTRB(4, 0, 4, 10),
-          child: Row(
-            children: [
-              Icon(icon, color: scheme.primary, size: 18),
-              const SizedBox(width: 9),
-              Text(
-                title,
-                style: Theme.of(
-                  context,
-                ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
-              ),
-            ],
+          padding: const EdgeInsets.fromLTRB(16, 0, 8, 7),
+          child: Text(
+            title.toUpperCase(),
+            style: Theme.of(context).textTheme.labelMedium?.copyWith(
+              color: palette.textMuted,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.25,
+            ),
           ),
         ),
         Container(
           decoration: BoxDecoration(
             color: palette.card,
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(12),
             border: Border.all(color: palette.border),
           ),
           clipBehavior: Clip.antiAlias,
@@ -758,7 +753,7 @@ class _SettingsPageState extends State<SettingsPage> {
         child: InkWell(
           onTap: () => _showAccentColorModal(themeNotifier),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
             child: Row(
               children: [
                 Container(
@@ -1756,24 +1751,15 @@ class _SettingsPageState extends State<SettingsPage> {
                 }
               : null,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
             child: Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.secondary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Icon(
-                    icon,
-                    size: 16,
-                    color: Theme.of(context).colorScheme.secondary,
-                  ),
+                Icon(
+                  icon,
+                  size: 19,
+                  color: Theme.of(context).colorScheme.primary,
                 ),
-                const SizedBox(width: 12),
+                const SizedBox(width: 13),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -1781,7 +1767,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       Text(
                         title,
                         style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          fontWeight: FontWeight.w500,
+                          fontWeight: FontWeight.w600,
                         ),
                       ),
                       Text(
@@ -2115,24 +2101,11 @@ class _SettingsPageState extends State<SettingsPage> {
         child: InkWell(
           onTap: onTap,
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
             child: Row(
               children: [
-                Container(
-                  padding: const EdgeInsets.all(6),
-                  decoration: BoxDecoration(
-                    color: Theme.of(
-                      context,
-                    ).colorScheme.tertiary.withValues(alpha: 0.1),
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  child: Icon(
-                    icon,
-                    size: 16,
-                    color: Theme.of(context).colorScheme.tertiary,
-                  ),
-                ),
-                const SizedBox(width: 12),
+                Icon(icon, size: 19, color: Theme.of(context).colorScheme.primary),
+                const SizedBox(width: 13),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -2145,7 +2118,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           Text(
                             title,
                             style: Theme.of(context).textTheme.bodyLarge
-                                ?.copyWith(fontWeight: FontWeight.w500),
+                                ?.copyWith(fontWeight: FontWeight.w600),
                           ),
                           if (badge != null)
                             Container(

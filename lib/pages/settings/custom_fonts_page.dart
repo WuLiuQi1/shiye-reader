@@ -9,7 +9,6 @@ import 'package:provider/provider.dart';
 import 'package:xxread/services/core/core_services.dart';
 import 'package:xxread/utils/font_catalog_helper.dart';
 import 'package:xxread/utils/localization_extension.dart';
-import 'package:xxread/utils/page_style_helper.dart';
 import 'package:xxread/widgets/side_toast.dart';
 
 enum _CustomFontAction { app, reader, both, rename, delete }
@@ -35,11 +34,7 @@ class CustomFontsPage extends StatelessWidget {
           ),
         ],
       ),
-      body: DecoratedBox(
-        decoration: BoxDecoration(
-          gradient: PageStyleHelper.backgroundGradient(context),
-        ),
-        child: Consumer<AppSettingsNotifier>(
+      body: Consumer<AppSettingsNotifier>(
           builder: (context, settings, _) {
             final fonts = settings.customFonts;
             if (fonts.isEmpty) {
@@ -49,7 +44,7 @@ class CustomFontsPage extends StatelessWidget {
               );
             }
             return ListView(
-              padding: const EdgeInsets.fromLTRB(16, 12, 16, 32),
+              padding: const EdgeInsets.fromLTRB(20, 12, 20, 32),
               children: [
                 Text(
                   l10n.customFontsLocalOnly,
@@ -58,29 +53,29 @@ class CustomFontsPage extends StatelessWidget {
                     height: 1.4,
                   ),
                 ),
-                const SizedBox(height: 14),
-                for (final font in fonts)
-                  _CustomFontCard(
-                    font: font,
-                    appInUse: settings.isAppFont(font.id),
-                    readerInUse: settings.isReaderFont(font.id),
-                    onAction: (action) => unawaited(
-                      _handleAction(context, settings, font, action),
-                    ),
+                const SizedBox(height: 12),
+                DecoratedBox(
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).colorScheme.surfaceContainerLowest,
+                    borderRadius: BorderRadius.circular(14),
                   ),
+                  child: Column(
+                    children: [
+                      for (var index = 0; index < fonts.length; index++) ...[
+                        _CustomFontCard(
+                          font: fonts[index],
+                          appInUse: settings.isAppFont(fonts[index].id),
+                          readerInUse: settings.isReaderFont(fonts[index].id),
+                          onAction: (action) => unawaited(_handleAction(context, settings, fonts[index], action)),
+                        ),
+                        if (index != fonts.length - 1) const Divider(height: 1, indent: 16),
+                      ],
+                    ],
+                  ),
+                ),
               ],
             );
           },
-        ),
-      ),
-      floatingActionButton: Consumer<AppSettingsNotifier>(
-        builder: (context, settings, _) => FloatingActionButton.extended(
-          onPressed: settings.customFontImportSupported
-              ? () => unawaited(_importFont(context, settings))
-              : null,
-          icon: const Icon(Icons.file_download_outlined),
-          label: Text(l10n.importFont),
-        ),
       ),
     );
   }
@@ -302,9 +297,7 @@ class _CustomFontCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = context.l10n;
     final colorScheme = Theme.of(context).colorScheme;
-    return Card(
-      margin: const EdgeInsets.only(bottom: 12),
-      child: Padding(
+    return Padding(
         padding: const EdgeInsets.fromLTRB(16, 14, 8, 14),
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -394,7 +387,6 @@ class _CustomFontCard extends StatelessWidget {
             ),
           ],
         ),
-      ),
     );
   }
 

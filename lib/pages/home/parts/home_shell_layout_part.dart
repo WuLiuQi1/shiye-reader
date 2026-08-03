@@ -217,8 +217,6 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
   /// - 两者通过 `_selectedIndex` + `_pageController` 保持同步。
   Widget _buildBottomNavigation({required bool showNavigationLabels}) {
     final mediaQuery = MediaQuery.of(context);
-    final scheme = Theme.of(context).colorScheme;
-    final isLightTheme = scheme.brightness == Brightness.light;
     final stableSystemInsets = _mobileSystemInsets.resolve(
       mediaQuery,
       lockForReaderTransition: BookOpenTransition.hasActiveReaderActivity,
@@ -226,11 +224,6 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
     final metrics = HomeMobileChromeMetrics.fromMediaQuery(
       mediaQuery,
       systemInsets: stableSystemInsets,
-    );
-    final navigationCount = _navigationItems.length;
-    final navWidth = homeMobileFloatingNavWidthFor(
-      screenWidth: mediaQuery.size.width,
-      itemCount: navigationCount,
     );
     // 键盘可见性必须在 Scaffold 外层读取：resizeToAvoidBottomInset 会把
     // 键盘 inset 从子树 MediaQuery 中消费掉，Scaffold 内读到的恒为 0。
@@ -242,9 +235,6 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
               _navigationItems.length - 1,
             )]
             .destination;
-    final navBorderRadius = BorderRadius.circular(
-      metrics.floatingNavHeight / 2,
-    );
 
     return Scaffold(
       extendBody: true, // 让body延伸到底部导航栏后面
@@ -294,8 +284,7 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
               ),
             ),
             _buildMobileTopBarOverlay(),
-            // 悬浮药丸导航栏（RepaintBoundary 隔离：避免 PageView 滑动时
-            // 连带重绘毛玻璃导航栏，降低切页动画的每帧绘制成本）
+            // Books 式固定底部栏：内容向下延展，标签和图标随安全区固定。
             Positioned(
               left: 0,
               right: 0,
@@ -312,115 +301,36 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
                     child: AnimatedSlide(
                       key: const ValueKey('home-floating-navigation-motion'),
                       offset: hidden ? const Offset(0, 1.15) : Offset.zero,
-                      duration: reduceMotion
-                          ? Duration.zero
-                          : hidden
-                          ? const Duration(milliseconds: 180)
-                          : const Duration(milliseconds: 360),
-                      curve: hidden ? Curves.easeOutCubic : Curves.easeOutBack,
+                      duration: reduceMotion ? Duration.zero : const Duration(milliseconds: 220),
+                      curve: Curves.easeOutCubic,
                       child: navigationBar!,
                     ),
                   );
                 },
                 child: RepaintBoundary(
-                  child: SizedBox(
+                  child: Container(
                     height: metrics.navContainerHeight,
-                    child: Center(
-                      child: Padding(
-                        padding: EdgeInsets.only(
-                          bottom: metrics.navBottomInset,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).navigationBarTheme.backgroundColor,
+                      border: Border(
+                        top: BorderSide(
+                          color: Theme.of(context).dividerTheme.color ?? Colors.transparent,
+                          width: 0.5,
                         ),
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            borderRadius: navBorderRadius,
-                            boxShadow: [
-                              BoxShadow(
-                                color: _isMaterial3Style
-                                    ? scheme.shadow.withValues(alpha: 0.1)
-                                    : GlassEffectConfig.chromeShadowColor(
-                                        source: scheme.shadow,
-                                        brightness: scheme.brightness,
-                                        darkOpacity: 0.16,
-                                      ),
-                                blurRadius: _isMaterial3Style
-                                    ? 18
-                                    : (isLightTheme ? 24 : 32),
-                                offset: const Offset(0, 9),
-                              ),
-                              if (!_isMaterial3Style && !isLightTheme)
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.08),
-                                  blurRadius: 48,
-                                  offset: const Offset(0, 16),
-                                ),
-                            ],
-                          ),
-                          child: ClipRRect(
-                            borderRadius: navBorderRadius,
-                            child: (() {
-                              final navBar = Container(
-                                width: navWidth,
-                                height: metrics.floatingNavHeight,
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal:
-                                      kHomeMobileFloatingNavHorizontalPadding,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: _isMaterial3Style
-                                      ? scheme.surfaceContainerHigh
-                                      : GlassEffectConfig.chromeSurfaceColor(
-                                          context,
-                                        ),
-                                  borderRadius: navBorderRadius,
-                                  border: Border.all(
-                                    color: scheme.outline.withValues(
-                                      alpha: _isMaterial3Style
-                                          ? 0.18
-                                          : (isLightTheme ? 0.08 : 0.14),
-                                    ),
-                                    width: 0.6,
-                                  ),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.max,
-                                  mainAxisAlignment: MainAxisAlignment.center,
-                                  children: _navigationItems
-                                      .asMap()
-                                      .entries
-                                      .map((entry) {
-                                        final index = entry.key;
-                                        final item = entry.value;
-                                        final isSelected =
-                                            visualSelectedIndex == index;
-
-                                        return Expanded(
-                                          child: HomeBounceNavigationItem(
-                                            item: item,
-                                            isSelected: isSelected,
-                                            showLabel: showNavigationLabels,
-                                            onTap: () => _switchToTab(index),
-                                          ),
-                                        );
-                                      })
-                                      .toList(),
-                                ),
-                              );
-
-                              if (_disableShellBlur) {
-                                return navBar;
-                              }
-                              return BackdropFilter(
-                                enabled: !_disableShellBlur,
-                                filter: ImageFilter.blur(
-                                  sigmaX: GlassEffectConfig.navigationBarBlur,
-                                  sigmaY: GlassEffectConfig.navigationBarBlur,
-                                ),
-                                child: navBar,
-                              );
-                            })(),
-                          ),
-                        ),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: EdgeInsets.only(bottom: metrics.systemBottomInset),
+                      child: NavigationBar(
+                        selectedIndex: visualSelectedIndex,
+                        labelBehavior:
+                            NavigationDestinationLabelBehavior.alwaysShow,
+                        onDestinationSelected: _switchToTab,
+                        destinations: _navigationItems.map((item) => NavigationDestination(
+                          icon: Icon(item.icon),
+                          selectedIcon: Icon(item.selectedIcon),
+                          label: item.label,
+                        )).toList(growable: false),
                       ),
                     ),
                   ),

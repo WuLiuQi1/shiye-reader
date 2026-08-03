@@ -906,22 +906,26 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
   }) {
     final isDark = brightness == Brightness.dark;
     final isMaterial3Style = uiStyle == AppUiStyle.material3;
-    final systemBarColor = isMaterial3Style
-        ? colorScheme.surface
-        : Colors.transparent;
+    // The app uses a restrained, iOS-reading-app-like surface hierarchy:
+    // warm paper in light mode, true black in dark mode, and no coloured
+    // Material surface tinting.
+    final systemBarColor = colorScheme.surface;
+    final dividerColor = isDark
+        ? const Color(0xFF38383A)
+        : const Color(0x1F3C3C43);
 
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colorScheme.surface,
-      cardColor: isMaterial3Style
-          ? colorScheme.surfaceContainerLow
-          : colorScheme.surface.withValues(alpha: isDark ? 0.82 : 0.9),
+      cardColor: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFFFFFFF),
       dialogTheme: DialogThemeData(
-        backgroundColor: isMaterial3Style
-            ? colorScheme.surfaceContainerHigh
-            : colorScheme.surface.withValues(alpha: isDark ? 0.9 : 0.96),
+        backgroundColor: isDark
+            ? const Color(0xFF1C1C1E)
+            : const Color(0xFFF2F2F7),
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
       ),
       fontFamily: appFontFamily,
       fontFamilyFallback: FontCatalog.appFallbacks(appFontFamily),
@@ -943,11 +947,39 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
           systemNavigationBarContrastEnforced: false,
         ),
       ),
-      dividerTheme: DividerThemeData(
-        color: colorScheme.outline.withValues(
-          alpha: isMaterial3Style ? 0.32 : 0.18,
+      bottomSheetTheme: BottomSheetThemeData(
+        backgroundColor: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7),
+        surfaceTintColor: Colors.transparent,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
         ),
-        thickness: 0.7,
+      ),
+      navigationBarTheme: NavigationBarThemeData(
+        height: 64,
+        backgroundColor: isDark ? const Color(0xF20C0C0E) : const Color(0xF7FFFFFF),
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        indicatorColor: Colors.transparent,
+        labelTextStyle: WidgetStateProperty.resolveWith((states) => TextStyle(
+          fontSize: 10,
+          height: 1.2,
+          fontWeight: states.contains(WidgetState.selected)
+              ? FontWeight.w600
+              : FontWeight.w400,
+          color: states.contains(WidgetState.selected)
+              ? colorScheme.primary
+              : colorScheme.onSurfaceVariant,
+        )),
+        iconTheme: WidgetStateProperty.resolveWith((states) => IconThemeData(
+          size: 24,
+          color: states.contains(WidgetState.selected)
+              ? colorScheme.primary
+              : colorScheme.onSurfaceVariant,
+        )),
+      ),
+      dividerTheme: DividerThemeData(
+        color: dividerColor,
+        thickness: 0.5,
       ),
       extensions: <ThemeExtension<dynamic>>[
         UiStyleThemeExtension(style: uiStyle),

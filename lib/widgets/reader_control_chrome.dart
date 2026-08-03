@@ -151,22 +151,22 @@ class ReaderChromeOverlay extends StatelessWidget {
           ),
         AnimatedPositioned(
           key: topKey,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOutBack,
-          left: 20,
-          right: 20,
-          top: visible ? 10 : -130,
+          duration: const Duration(milliseconds: 260),
+          curve: Curves.easeOutQuart,
+          left: 0,
+          right: 0,
+          top: visible ? 0 : -130,
           child: SafeArea(
             bottom: false,
             child: ReaderControlBar(
               palette: palette,
               isTopBar: true,
               child: SizedBox(
-                height: 58,
+                height: 50,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(
-                    horizontal: 7,
-                    vertical: 7,
+                    horizontal: 12,
+                    vertical: 5,
                   ),
                   child: Row(
                     children: [
@@ -176,16 +176,15 @@ class ReaderChromeOverlay extends StatelessWidget {
                         tooltip: backTooltip,
                         icon: Icons.arrow_back_rounded,
                       ),
-                      const SizedBox(width: 10),
+                      const SizedBox(width: 6),
                       Expanded(
                         child: Text(
                           title,
                           textAlign: TextAlign.center,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: textTheme.titleMedium?.copyWith(
+                          style: textTheme.titleSmall?.copyWith(
                             fontWeight: FontWeight.w600,
-                            letterSpacing: 0.1,
                             color: palette.text,
                           ),
                         ),
@@ -207,23 +206,20 @@ class ReaderChromeOverlay extends StatelessWidget {
         ),
         AnimatedPositioned(
           key: bottomKey,
-          duration: const Duration(milliseconds: 300),
-          curve: Curves.easeOutBack,
-          left: 22,
-          right: 22,
-          bottom: visible ? 16 : -110,
+          duration: const Duration(milliseconds: 260),
+          curve: Curves.easeOutQuart,
+          left: 0,
+          right: 0,
+          bottom: visible ? 0 : -110,
           child: SafeArea(
             top: false,
             child: ReaderControlBar(
               palette: palette,
               isTopBar: false,
               child: SizedBox(
-                height: 64,
+                height: 54,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 9,
-                    vertical: 9,
-                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 5),
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
@@ -289,7 +285,9 @@ class ReaderControlBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final borderRadius = BorderRadius.circular(999);
+    // A reader toolbar is edge-to-edge and visually quiet. This deliberately
+    // avoids the generic Flutter floating-card treatment.
+    final borderRadius = BorderRadius.zero;
     final blurEnabled = !GlassEffectConfig.shouldDisableBlur;
     // 不叠加预设，直接使用与悬浮导航栏/首页顶栏一致的标准玻璃参数
     final config = GlassEffectHelper.getReadingControlConfig(
@@ -314,35 +312,16 @@ class ReaderControlBar extends StatelessWidget {
     final panel = DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: borderRadius,
-        gradient: LinearGradient(
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-          colors: [
-            highlight.withValues(
-              alpha: (surfaceOpacity + (blurEnabled ? 0.08 : 0.0)).clamp(
-                0.0,
-                1.0,
-              ),
-            ),
-            cleanSurface.withValues(
-              alpha: (surfaceOpacity - (blurEnabled ? 0.02 : 0.0)).clamp(
-                0.0,
-                1.0,
-              ),
-            ),
-          ],
+        color: highlight.withValues(
+          alpha: (surfaceOpacity + (blurEnabled ? 0.04 : 0.0)).clamp(0.0, 1.0),
         ),
-        border: Border.all(
-          color: blurEnabled
-              ? Color.lerp(
-                  palette.border,
-                  Colors.white,
-                  palette.brightness == Brightness.dark ? 0.16 : 0.14,
-                )!.withValues(
-                  alpha: palette.brightness == Brightness.light ? 0.28 : 0.54,
-                )
-              : palette.border,
-          width: 1,
+        border: Border(
+          bottom: isTopBar
+              ? BorderSide(color: palette.border.withValues(alpha: 0.36), width: 0.5)
+              : BorderSide.none,
+          top: isTopBar
+              ? BorderSide.none
+              : BorderSide(color: palette.border.withValues(alpha: 0.36), width: 0.5),
         ),
       ),
       child: Material(color: Colors.transparent, child: child),
@@ -353,30 +332,10 @@ class ReaderControlBar extends StatelessWidget {
         borderRadius: borderRadius,
         boxShadow: [
           BoxShadow(
-            color: blurEnabled
-                ? GlassEffectConfig.chromeShadowColor(
-                    source: palette.shadow,
-                    brightness: palette.brightness,
-                    darkOpacity: 0.46,
-                  )
-                : palette.shadow.withValues(
-                    alpha: palette.brightness == Brightness.dark ? 0.46 : 0.22,
-                  ),
-            blurRadius: blurEnabled && palette.brightness == Brightness.light
-                ? 24
-                : 32,
-            spreadRadius: -5,
-            offset: Offset(
-              0,
-              blurEnabled && palette.brightness == Brightness.light ? 8 : 16,
-            ),
+            color: palette.shadow.withValues(alpha: 0.045),
+            blurRadius: 6,
+            offset: Offset(0, isTopBar ? 3 : -3),
           ),
-          if (!blurEnabled || palette.brightness == Brightness.dark)
-            BoxShadow(
-              color: palette.shadow.withValues(alpha: 0.10),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
-            ),
         ],
       ),
       child: ClipRRect(
@@ -430,8 +389,8 @@ class ReaderControlIconButton extends StatelessWidget {
               ? (palette.brightness == Brightness.light ? 0.76 : 0.58)
               : 1.0,
         ),
-        minimumSize: const Size.square(44),
-        maximumSize: const Size.square(44),
+        minimumSize: const Size.square(42),
+        maximumSize: const Size.square(42),
         padding: EdgeInsets.zero,
         side: BorderSide(
           color: glassEnabled

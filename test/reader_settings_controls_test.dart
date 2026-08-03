@@ -142,11 +142,12 @@ void main() {
       initialLetterSpacing.onChanged!(0.8);
       await tester.pump();
       tester.widget<Slider>(letterSpacingFinder).onChangeEnd!(0.8);
-      tester
-          .widget<SegmentedButton<ReaderTextAlignment>>(
-            find.byKey(const ValueKey('reader-text-alignment-control')),
-          )
-          .onSelectionChanged!({ReaderTextAlignment.justified});
+      await tester.tap(
+        find.descendant(
+          of: find.byKey(const ValueKey('reader-text-alignment-control')),
+          matching: find.text('Justified'),
+        ),
+      );
       await tester.pump();
 
       expect(changedIndent, 4);

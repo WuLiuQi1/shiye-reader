@@ -49,24 +49,36 @@ class _ContentFilterRulesPageState extends State<ContentFilterRulesPage> {
         ),
       ],
     ),
-    floatingActionButton: FloatingActionButton.extended(
-      onPressed: () => _editRule(),
-      icon: const Icon(Icons.add_rounded),
-      label: const Text('添加规则'),
-    ),
     body: _loading
         ? const Center(child: CircularProgressIndicator())
         : _rules.isEmpty
-        ? const Center(child: Text('还没有过滤规则'))
+        ? _EmptyRules(onAdd: () => _editRule())
         : ListView.separated(
-            padding: const EdgeInsets.fromLTRB(12, 12, 12, 96),
-            itemCount: _rules.length,
-            separatorBuilder: (_, _) => const SizedBox(height: 6),
+            padding: const EdgeInsets.fromLTRB(20, 12, 20, 36),
+            itemCount: _rules.length + 1,
+            separatorBuilder: (_, _) => const Divider(height: 1, indent: 16),
             itemBuilder: (_, index) {
+              if (index == _rules.length) {
+                return ListTile(
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16),
+                  leading: const Icon(Icons.add_circle_outline_rounded),
+                  title: const Text('添加过滤规则'),
+                  onTap: () => _editRule(),
+                );
+              }
               final rule = _rules[index];
-              return Card(
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerLowest,
+                  borderRadius: index == 0
+                      ? const BorderRadius.vertical(top: Radius.circular(12))
+                      : index == _rules.length - 1
+                      ? const BorderRadius.vertical(bottom: Radius.circular(12))
+                      : null,
+                ),
                 child: ListTile(
-                  leading: Switch(
+                  contentPadding: const EdgeInsets.fromLTRB(16, 6, 8, 6),
+                  leading: Switch.adaptive(
                     value: rule.enabled,
                     onChanged: (value) {
                       final next = [..._rules];
@@ -113,6 +125,7 @@ class _ContentFilterRulesPageState extends State<ContentFilterRulesPage> {
       context: context,
       builder: (context) => StatefulBuilder(
         builder: (context, setDialogState) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
           title: Text(current == null ? '添加过滤规则' : '编辑过滤规则'),
           content: SingleChildScrollView(
             child: Column(
@@ -189,4 +202,28 @@ class _ContentFilterRulesPageState extends State<ContentFilterRulesPage> {
     }
     await _save(next);
   }
+}
+
+class _EmptyRules extends StatelessWidget {
+  const _EmptyRules({required this.onAdd});
+  final VoidCallback onAdd;
+
+  @override
+  Widget build(BuildContext context) => Center(
+    child: Padding(
+      padding: const EdgeInsets.all(32),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(Icons.filter_alt_outlined, size: 46, color: Theme.of(context).colorScheme.primary),
+          const SizedBox(height: 14),
+          const Text('还没有过滤规则'),
+          const SizedBox(height: 8),
+          Text('添加规则后，阅读内容会自动按你的设置处理。', textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant)),
+          const SizedBox(height: 18),
+          TextButton.icon(onPressed: onAdd, icon: const Icon(Icons.add_rounded), label: const Text('添加规则')),
+        ],
+      ),
+    ),
+  );
 }

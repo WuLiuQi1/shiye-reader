@@ -1,6 +1,7 @@
 // 文件说明：后台任务页，Tab 一为在线书籍下载队列，Tab 二为 AI 预处理队列。
 // 技术要点：DefaultTabController、DownloadTaskController、AiPreprocessTaskController。
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:xxread/reader_core/ai/ai_error_translator.dart';
@@ -10,34 +11,63 @@ import 'package:xxread/services/books/book_text_extraction_service.dart';
 import 'package:xxread/services/library/download_task_controller.dart';
 import 'package:xxread/utils/localization_extension.dart';
 
-class DownloadTasksPage extends StatelessWidget {
+class DownloadTasksPage extends StatefulWidget {
   const DownloadTasksPage({super.key});
+
+  @override
+  State<DownloadTasksPage> createState() => _DownloadTasksPageState();
+}
+
+class _DownloadTasksPageState extends State<DownloadTasksPage> {
+  int _selectedTab = 0;
 
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
-    return DefaultTabController(
-      length: 2,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(l10n.downloadTasksTitle),
-          bottom: TabBar(
-            tabs: [
-              Tab(text: l10n.downloadTasksTabDownloads),
-              Tab(text: l10n.libraryAiPreprocess),
-            ],
+    return Scaffold(
+      appBar: AppBar(title: Text(l10n.downloadTasksTitle)),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+            child: SizedBox(
+              width: double.infinity,
+              child: CupertinoSlidingSegmentedControl<int>(
+                groupValue: _selectedTab,
+                children: {
+                  0: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Text(l10n.downloadTasksTabDownloads),
+                  ),
+                  1: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8),
+                    child: Text(l10n.libraryAiPreprocess),
+                  ),
+                },
+                onValueChanged: (value) {
+                  if (value != null) setState(() => _selectedTab = value);
+                },
+              ),
+            ),
           ),
-        ),
-        body: const TabBarView(
-          children: [_DownloadTaskList(), _AiPreprocessTaskList()],
-        ),
+          Expanded(
+            child: AnimatedSwitcher(
+              duration: const Duration(milliseconds: 180),
+              child: _selectedTab == 0
+                  ? const _DownloadTaskList(key: ValueKey('download-tasks'))
+                  : const _AiPreprocessTaskList(
+                      key: ValueKey('ai-preprocess-tasks'),
+                    ),
+            ),
+          ),
+        ],
       ),
     );
   }
 }
 
 class _DownloadTaskList extends StatelessWidget {
-  const _DownloadTaskList();
+  const _DownloadTaskList({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -60,7 +90,7 @@ class _DownloadTaskList extends StatelessWidget {
           DownloadTaskState.cancelled => context.l10n.downloadTaskCancelled,
         };
         return ListTile(
-          contentPadding: const EdgeInsets.symmetric(vertical: 8),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
           leading: Icon(switch (task.state) {
             DownloadTaskState.queued => Icons.schedule_rounded,
             DownloadTaskState.downloading => Icons.downloading_rounded,
@@ -93,6 +123,11 @@ class _DownloadTaskList extends StatelessWidget {
               ],
             ],
           ),
+          shape: Border(
+            bottom: BorderSide(
+              color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.62),
+            ),
+          ),
           trailing:
               task.state == DownloadTaskState.queued ||
                   task.state == DownloadTaskState.downloading
@@ -111,7 +146,7 @@ class _DownloadTaskList extends StatelessWidget {
 }
 
 class _AiPreprocessTaskList extends StatelessWidget {
-  const _AiPreprocessTaskList();
+  const _AiPreprocessTaskList({super.key});
 
   String _statusText(BuildContext context, AiPreprocessTask task) {
     final l10n = context.l10n;
@@ -169,7 +204,7 @@ class _AiPreprocessTaskList extends StatelessWidget {
             }
             final task = tasks[index];
             return ListTile(
-              contentPadding: const EdgeInsets.symmetric(vertical: 8),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               leading: Icon(switch (task.state) {
                 AiPreprocessTaskState.queued => Icons.schedule_rounded,
                 AiPreprocessTaskState.running => Icons.auto_awesome_rounded,
@@ -205,6 +240,11 @@ class _AiPreprocessTaskList extends StatelessWidget {
                     ),
                   ],
                 ],
+              ),
+              shape: Border(
+                bottom: BorderSide(
+                  color: Theme.of(context).colorScheme.outlineVariant.withValues(alpha: 0.62),
+                ),
               ),
               trailing: task.isActive
                   ? IconButton(

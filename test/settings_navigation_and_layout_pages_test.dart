@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
@@ -139,10 +140,11 @@ void main() {
       findsNothing,
     );
 
-    final layoutSelector = tester.widget<SegmentedButton<LibraryLayoutMode>>(
+    final layoutSelector =
+        tester.widget<CupertinoSlidingSegmentedControl<LibraryLayoutMode>>(
       find.byKey(const ValueKey('settings-library-layout-selector')),
     );
-    layoutSelector.onSelectionChanged!({LibraryLayoutMode.grid});
+    layoutSelector.onValueChanged!(LibraryLayoutMode.grid);
     await tester.pump();
 
     expect(settings.libraryLayoutMode, LibraryLayoutMode.grid);

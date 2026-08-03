@@ -33,14 +33,10 @@ class _StatsPalette {
     final scheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
     return _StatsPalette(
-      pageStart: Color.alphaBlend(
-        scheme.primary.withValues(alpha: isDark ? 0.18 : 0.07),
-        scheme.surface,
-      ),
-      pageMiddle: Color.alphaBlend(
-        scheme.primaryContainer.withValues(alpha: isDark ? 0.16 : 0.05),
-        scheme.surface,
-      ),
+      // Keep statistics visually tied to the library: hierarchy comes from
+      // type, covers, and progress instead of a dashboard-style gradient.
+      pageStart: scheme.surface,
+      pageMiddle: scheme.surface,
       pageEnd: scheme.surface,
       card: isDark
           ? scheme.surfaceContainerLow.withValues(alpha: 0.96)
@@ -55,8 +51,8 @@ class _StatsPalette {
               scheme.surface,
             ),
       hero: Color.alphaBlend(
-        scheme.primary.withValues(alpha: isDark ? 0.34 : 0.24),
-        isDark ? scheme.surfaceContainerHigh : const Color(0xFFD7E9FF),
+        scheme.primary.withValues(alpha: isDark ? 0.22 : 0.09),
+        scheme.surface,
       ),
       ink: scheme.onSurface,
       mutedInk: scheme.onSurfaceVariant.withValues(alpha: isDark ? 0.88 : 0.76),
@@ -66,7 +62,7 @@ class _StatsPalette {
         scheme.surface,
       ),
       border: scheme.outline.withValues(alpha: isDark ? 0.24 : 0.12),
-      shadow: Colors.black.withValues(alpha: isDark ? 0.18 : 0.055),
+      shadow: Colors.transparent,
     );
   }
 }
@@ -83,15 +79,8 @@ extension _DetailedStatsSharedView on _DetailedStatsPageState {
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: palette.cardStrong,
-        borderRadius: BorderRadius.circular(26),
+        borderRadius: BorderRadius.circular(16),
         border: Border.all(color: palette.border),
-        boxShadow: [
-          BoxShadow(
-            color: palette.shadow,
-            blurRadius: 20,
-            offset: const Offset(0, 9),
-          ),
-        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +92,7 @@ extension _DetailedStatsSharedView on _DetailedStatsPageState {
                 height: 36,
                 decoration: BoxDecoration(
                   color: palette.softAccent,
-                  borderRadius: BorderRadius.circular(12),
+                  borderRadius: BorderRadius.circular(9),
                 ),
                 child: Icon(icon, color: palette.accent, size: 19),
               ),

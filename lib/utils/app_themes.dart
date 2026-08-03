@@ -16,7 +16,9 @@ class AppTheme {
 }
 
 class AppThemes {
-  static const Color defaultAccentColor = Color(0xFF1976D2);
+  /// Books-style warm orange.  This remains an app accent rather than using
+  /// any Apple artwork or brand asset.
+  static const Color defaultAccentColor = Color(0xFFFF9500);
 
   /// 设置页中的快捷强调色。任意颜色仍可通过色盘或十六进制输入选择。
   static const List<Color> accentColors = [
@@ -67,10 +69,14 @@ class AppThemes {
       lightColorScheme: ColorScheme.fromSeed(
         seedColor: seedColor,
         brightness: Brightness.light,
+        surface: const Color(0xFFFFFBFF),
+        onSurface: const Color(0xFF1C1B1F),
       ),
       darkColorScheme: ColorScheme.fromSeed(
         seedColor: seedColor,
         brightness: Brightness.dark,
+        surface: const Color(0xFF000000),
+        onSurface: const Color(0xFFF5F5F7),
       ),
     );
   }

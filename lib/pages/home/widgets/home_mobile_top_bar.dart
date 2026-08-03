@@ -6,11 +6,10 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'package:xxread/utils/glass_config.dart';
-import 'package:xxread/utils/ui_style.dart';
 
 import '../home_mobile_chrome.dart';
 
-/// 手机首页顶部毛玻璃标题栏。
+/// 手机首页顶部标题栏。使用 iOS 阅读应用常见的大标题和半透明分隔层级。
 ///
 /// 只负责显示标题和视觉样式，不处理页面业务逻辑。
 class HomeMobileTopBar extends StatelessWidget {
@@ -33,34 +32,23 @@ class HomeMobileTopBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final metrics = HomeMobileChromeScope.of(context);
-    final isMaterial3Style =
-        Theme.of(
-          context,
-        ).extension<UiStyleThemeExtension>()?.isMaterial3Style ??
-        false;
-    final useBlur = !isMaterial3Style && !GlassEffectConfig.shouldDisableBlur;
+    final isDark = scheme.brightness == Brightness.dark;
+    final useBlur = !GlassEffectConfig.shouldDisableBlur;
     final content = Container(
       height: metrics.topBarHeight,
       decoration: BoxDecoration(
-        color: isMaterial3Style
-            ? scheme.surfaceContainerHigh
-            : GlassEffectConfig.chromeSurfaceColor(context),
+        color: (isDark ? const Color(0xE6000000) : const Color(0xF7FFFFFF)),
         border: Border(
           bottom: BorderSide(
-            color: (isMaterial3Style ? scheme.outline : scheme.primary)
-                .withValues(
-                  alpha: isMaterial3Style
-                      ? 0.24
-                      : (scheme.brightness == Brightness.light ? 0.08 : 0.12),
-                ),
-            width: isMaterial3Style ? 0.7 : 0.5,
+            color: isDark ? const Color(0xFF38383A) : const Color(0x1F3C3C43),
+            width: 0.5,
           ),
         ),
       ),
       child: Padding(
         padding: EdgeInsets.fromLTRB(
           horizontalPadding,
-          metrics.systemTopInset + 8,
+          metrics.systemTopInset + 7,
           horizontalPadding,
           8,
         ),
@@ -71,7 +59,7 @@ class HomeMobileTopBar extends StatelessWidget {
                 title,
                 style: TextStyle(
                   fontSize: titleFontSize,
-                  fontWeight: titleFontWeight,
+                  fontWeight: FontWeight.w700,
                   color: scheme.onSurface,
                   height: 1.0,
                 ),

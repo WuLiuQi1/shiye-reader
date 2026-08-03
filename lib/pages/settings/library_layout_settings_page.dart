@@ -3,6 +3,7 @@
 
 import 'dart:async';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -40,28 +41,22 @@ class LibraryLayoutSettingsPage extends StatelessWidget {
                   children: [
                     SizedBox(
                       width: double.infinity,
-                      child: SegmentedButton<LibraryLayoutMode>(
+                      child: CupertinoSlidingSegmentedControl<LibraryLayoutMode>(
                         key: const ValueKey('settings-library-layout-selector'),
-                        showSelectedIcon: false,
-                        expandedInsets: EdgeInsets.zero,
-                        segments: [
-                          ButtonSegment(
-                            value: LibraryLayoutMode.card,
-                            icon: const Icon(Icons.view_agenda_outlined),
-                            label: Text(l10n.settingsLibraryLayoutCard),
+                        groupValue: settings.libraryLayoutMode,
+                        children: {
+                          LibraryLayoutMode.card: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Text(l10n.settingsLibraryLayoutCard),
                           ),
-                          ButtonSegment(
-                            value: LibraryLayoutMode.grid,
-                            icon: const Icon(Icons.grid_view_rounded),
-                            label: Text(l10n.settingsLibraryLayoutGrid),
+                          LibraryLayoutMode.grid: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 8),
+                            child: Text(l10n.settingsLibraryLayoutGrid),
                           ),
-                        ],
-                        selected: {settings.libraryLayoutMode},
-                        onSelectionChanged: (selection) {
-                          if (selection.isEmpty) return;
-                          unawaited(
-                            settings.setLibraryLayoutMode(selection.first),
-                          );
+                        },
+                        onValueChanged: (value) {
+                          if (value == null) return;
+                          unawaited(settings.setLibraryLayoutMode(value));
                         },
                       ),
                     ),
@@ -77,28 +72,22 @@ class LibraryLayoutSettingsPage extends StatelessWidget {
                       const SizedBox(height: 10),
                       SizedBox(
                         width: double.infinity,
-                        child: SegmentedButton<int>(
+                        child: CupertinoSlidingSegmentedControl<int>(
                           key: const ValueKey('settings-library-grid-columns'),
-                          showSelectedIcon: false,
-                          expandedInsets: EdgeInsets.zero,
-                          segments: [
-                            ButtonSegment(
-                              value: 2,
-                              icon: const Icon(Icons.view_column_outlined),
-                              label: Text(l10n.settingsLibraryGridTwoColumns),
+                          groupValue: settings.libraryGridColumns,
+                          children: {
+                            2: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Text(l10n.settingsLibraryGridTwoColumns),
                             ),
-                            ButtonSegment(
-                              value: 3,
-                              icon: const Icon(Icons.view_week_outlined),
-                              label: Text(l10n.settingsLibraryGridThreeColumns),
+                            3: Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 8),
+                              child: Text(l10n.settingsLibraryGridThreeColumns),
                             ),
-                          ],
-                          selected: {settings.libraryGridColumns},
-                          onSelectionChanged: (selection) {
-                            if (selection.isEmpty) return;
-                            unawaited(
-                              settings.setLibraryGridColumns(selection.first),
-                            );
+                          },
+                          onValueChanged: (value) {
+                            if (value == null) return;
+                            unawaited(settings.setLibraryGridColumns(value));
                           },
                         ),
                       ),
@@ -142,10 +131,10 @@ class _SettingsSurface extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Material(
-      color: scheme.surfaceContainerLow,
+      color: scheme.surface,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(18),
-        side: BorderSide(color: scheme.outlineVariant),
+        borderRadius: BorderRadius.circular(14),
+        side: BorderSide(color: scheme.outlineVariant.withValues(alpha: 0.72)),
       ),
       child: Padding(padding: const EdgeInsets.all(16), child: child),
     );
