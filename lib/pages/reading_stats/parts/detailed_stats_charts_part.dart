@@ -30,8 +30,15 @@ extension _DetailedStatsChartsView on _DetailedStatsPageState {
       padding: const EdgeInsets.all(4),
       decoration: BoxDecoration(
         color: palette.cardStrong,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(color: palette.border),
+        boxShadow: [
+          BoxShadow(
+            color: palette.shadow,
+            blurRadius: 16,
+            offset: const Offset(0, 7),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -49,10 +56,10 @@ extension _DetailedStatsChartsView on _DetailedStatsPageState {
     return Expanded(
       child: Material(
         color: selected ? palette.softAccent : Colors.transparent,
-        borderRadius: BorderRadius.circular(9),
+        borderRadius: BorderRadius.circular(14),
         child: InkWell(
           onTap: () => _selectStatType(index),
-          borderRadius: BorderRadius.circular(9),
+          borderRadius: BorderRadius.circular(14),
           child: Padding(
             padding: const EdgeInsets.symmetric(vertical: 11),
             child: Text(

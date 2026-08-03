@@ -173,17 +173,31 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
         children: [
           Text(widget.title, style: theme.textTheme.titleLarge),
           const SizedBox(height: 12),
-          ReaderSegmentedControl<_ReaderSettingsTab>(
+          SegmentedButton<_ReaderSettingsTab>(
             key: const ValueKey('reader-settings-tab-bar'),
-            value: _tab,
-            palette: palette,
-            items: [
-              (_ReaderSettingsTab.theme, widget.tabThemeLabel),
-              (_ReaderSettingsTab.text, widget.tabTextLabel),
-              (_ReaderSettingsTab.layout, widget.tabLayoutLabel),
-              (_ReaderSettingsTab.paging, widget.tabPagingLabel),
+            expandedInsets: EdgeInsets.zero,
+            showSelectedIcon: false,
+            segments: [
+              ButtonSegment(
+                value: _ReaderSettingsTab.theme,
+                label: Text(widget.tabThemeLabel),
+              ),
+              ButtonSegment(
+                value: _ReaderSettingsTab.text,
+                label: Text(widget.tabTextLabel),
+              ),
+              ButtonSegment(
+                value: _ReaderSettingsTab.layout,
+                label: Text(widget.tabLayoutLabel),
+              ),
+              ButtonSegment(
+                value: _ReaderSettingsTab.paging,
+                label: Text(widget.tabPagingLabel),
+              ),
             ],
-            onChanged: (value) => setState(() => _tab = value),
+            selected: {_tab},
+            onSelectionChanged: (selection) =>
+                setState(() => _tab = selection.first),
           ),
           const SizedBox(height: 16),
           ...switch (_tab) {
@@ -230,18 +244,22 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
             ).textTheme.titleSmall?.copyWith(fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
-          ReaderSegmentedControl<ReaderTextAlignment>(
+          SegmentedButton<ReaderTextAlignment>(
             key: const ValueKey('reader-text-alignment-control'),
-            value: _textAlignment,
-            palette: ReaderThemes.byId(
-              _themeId,
-              platformBrightness: MediaQuery.platformBrightnessOf(context),
-            ),
-            items: [
-              (ReaderTextAlignment.natural, widget.textAlignmentNaturalLabel),
-              (ReaderTextAlignment.justified, widget.textAlignmentJustifiedLabel),
+            expandedInsets: EdgeInsets.zero,
+            segments: [
+              ButtonSegment(
+                value: ReaderTextAlignment.natural,
+                label: Text(widget.textAlignmentNaturalLabel),
+              ),
+              ButtonSegment(
+                value: ReaderTextAlignment.justified,
+                label: Text(widget.textAlignmentJustifiedLabel),
+              ),
             ],
-            onChanged: (value) {
+            selected: {_textAlignment},
+            onSelectionChanged: (selection) {
+              final value = selection.first;
               setState(() => _textAlignment = value);
               widget.onTextAlignmentChanged(value);
             },
@@ -411,105 +429,6 @@ class _ReaderSettingsSheetState extends State<ReaderSettingsSheet> {
 }
 
 enum _ReaderSettingsTab { theme, text, layout, paging }
-
-/// An iOS-style segmented control used throughout reader sheets.  Keeping it
-/// local to the reader prevents Material's outlined-button visual language
-/// from leaking into the reading surface.
-class ReaderSegmentedControl<T> extends StatelessWidget {
-  const ReaderSegmentedControl({
-    super.key,
-    required this.value,
-    required this.palette,
-    required this.items,
-    required this.onChanged,
-  });
-
-  final T value;
-  final ReaderThemePalette palette;
-  final List<(T, String)> items;
-  final ValueChanged<T> onChanged;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 34,
-      padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        color: palette.controlBar.withValues(alpha: 0.88),
-        borderRadius: BorderRadius.circular(9),
-      ),
-      child: Row(
-        children: [
-          for (final item in items)
-            Expanded(
-              child: _ReaderSegmentItem<T>(
-                value: item.$1,
-                label: item.$2,
-                selected: item.$1 == value,
-                palette: palette,
-                onTap: onChanged,
-              ),
-            ),
-        ],
-      ),
-    );
-  }
-}
-
-class _ReaderSegmentItem<T> extends StatelessWidget {
-  const _ReaderSegmentItem({
-    required this.value,
-    required this.label,
-    required this.selected,
-    required this.palette,
-    required this.onTap,
-  });
-
-  final T value;
-  final String label;
-  final bool selected;
-  final ReaderThemePalette palette;
-  final ValueChanged<T> onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    return Semantics(
-      button: true,
-      selected: selected,
-      child: InkWell(
-        borderRadius: BorderRadius.circular(7),
-        onTap: () => onTap(value),
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 160),
-          curve: Curves.easeOutCubic,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            color: selected ? palette.controlFill : Colors.transparent,
-            borderRadius: BorderRadius.circular(7),
-            boxShadow: selected
-                ? [
-                    BoxShadow(
-                      color: palette.shadow.withValues(alpha: 0.12),
-                      blurRadius: 2,
-                      offset: const Offset(0, 1),
-                    ),
-                  ]
-                : null,
-          ),
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: selected ? palette.text : palette.secondaryText,
-              fontWeight: selected ? FontWeight.w600 : FontWeight.w500,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
 
 class ReaderTopBarStyleSheet extends StatelessWidget {
   const ReaderTopBarStyleSheet({
@@ -762,12 +681,12 @@ class ReaderSettingsSheetFrame extends StatelessWidget {
       child: Material(
         color: palette.surface,
         surfaceTintColor: Colors.transparent,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
         clipBehavior: Clip.antiAlias,
         child: SafeArea(
           child: ConstrainedBox(
             constraints: BoxConstraints(
-              maxHeight: MediaQuery.sizeOf(context).height * 0.68,
+              maxHeight: MediaQuery.sizeOf(context).height * 0.5,
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,

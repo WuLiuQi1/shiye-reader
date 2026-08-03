@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:xxread/services/ai/ai_chat_history_store.dart';
 import 'package:xxread/utils/localization_extension.dart';
+import 'package:xxread/utils/page_style_helper.dart';
 
 String _formatSessionTime(BuildContext context, DateTime time) {
   final locale = Localizations.localeOf(context).toString();
@@ -68,8 +69,10 @@ class _AiHistoryPageState extends State<AiHistoryPage> {
           ),
         ],
       ),
-      body: ColoredBox(
-        color: Theme.of(context).colorScheme.surface,
+      body: DecoratedBox(
+        decoration: BoxDecoration(
+          gradient: PageStyleHelper.backgroundGradient(context),
+        ),
         child: ListenableBuilder(
           listenable: _store,
           builder: (context, _) {
@@ -81,7 +84,7 @@ class _AiHistoryPageState extends State<AiHistoryPage> {
               child: ConstrainedBox(
                 constraints: const BoxConstraints(maxWidth: 860),
                 child: ListView.builder(
-                  padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
+                  padding: const EdgeInsets.fromLTRB(16, 14, 16, 28),
                   itemCount: sessions.length,
                   itemBuilder: (context, index) =>
                       _buildSessionTile(context, sessions[index]),
@@ -143,23 +146,21 @@ class _AiHistoryPageState extends State<AiHistoryPage> {
           padding: const EdgeInsets.only(right: 22),
           decoration: BoxDecoration(
             color: scheme.errorContainer,
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(18),
           ),
           child: Icon(Icons.delete_outline, color: scheme.onErrorContainer),
         ),
         child: Material(
           color: scheme.surfaceContainerLow,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(18),
           child: InkWell(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(18),
             onTap: () => Navigator.of(context).pop(session),
             child: Container(
               padding: const EdgeInsets.fromLTRB(16, 13, 16, 13),
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: scheme.outlineVariant.withValues(alpha: 0.7),
-                ),
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(color: scheme.outlineVariant),
               ),
               child: Row(
                 children: [

@@ -62,12 +62,7 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     return Scaffold(
-      appBar: AppBar(
-        title: Text(context.l10n.bookSourceManagementTitle),
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
-      ),
+      appBar: AppBar(title: Text(context.l10n.bookSourceManagementTitle)),
       body: Container(
         decoration: BoxDecoration(
           gradient: PageStyleHelper.backgroundGradient(context),
@@ -75,7 +70,7 @@ class _BookSourceManagementPageState extends State<BookSourceManagementPage> {
         child: SafeArea(
           top: false,
           child: ListView(
-            padding: const EdgeInsets.fromLTRB(16, 12, 16, 36),
+            padding: const EdgeInsets.fromLTRB(16, 16, 16, 36),
             children: [
               Center(
                 child: ConstrainedBox(

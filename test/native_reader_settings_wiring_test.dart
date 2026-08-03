@@ -115,11 +115,12 @@ void main() {
         expect(tester.widget<Slider>(spacingFinder).value, 1);
         expect(tester.widget<Slider>(letterSpacingFinder).value, 0.4);
         expect(
-          find.descendant(
-            of: find.byKey(const ValueKey('reader-text-alignment-control')),
-            matching: find.text('Justified'),
-          ),
-          findsOneWidget,
+          tester
+              .widget<SegmentedButton<ReaderTextAlignment>>(
+                find.byKey(const ValueKey('reader-text-alignment-control')),
+              )
+              .selected,
+          {ReaderTextAlignment.justified},
         );
 
         tester.widget<Slider>(indentFinder).onChanged!(4);
@@ -131,12 +132,11 @@ void main() {
         tester.widget<Slider>(letterSpacingFinder).onChanged!(0.8);
         await tester.pump();
         tester.widget<Slider>(letterSpacingFinder).onChangeEnd!(0.8);
-        await tester.tap(
-          find.descendant(
-            of: find.byKey(const ValueKey('reader-text-alignment-control')),
-            matching: find.text('Natural'),
-          ),
-        );
+        tester
+            .widget<SegmentedButton<ReaderTextAlignment>>(
+              find.byKey(const ValueKey('reader-text-alignment-control')),
+            )
+            .onSelectionChanged!({ReaderTextAlignment.natural});
         await tester.pumpAndSettle();
 
         final prefs = await SharedPreferences.getInstance();

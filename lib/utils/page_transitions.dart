@@ -8,9 +8,8 @@ enum ReaderPageTransitionOrigin { standard, home, discoverSheet }
 /// 自定义页面过渡动画
 /// 提供流畅的页面进入和退出动画效果
 class CustomPageTransitions {
-  /// Create a restrained platform-like horizontal transition for utility
-  /// pages.  The old large scale/slide treatment made every settings page
-  /// look like a Material card instead of part of one reading application.
+  /// 创建滑动缩放过渡路由
+  /// 用于阅读页面的进入和退出，提供流畅的视觉体验
   static Route<T> createSlideScaleRoute<T extends Object?>(
     Widget page, {
     Duration duration = const Duration(milliseconds: 350),
@@ -23,29 +22,43 @@ class CustomPageTransitions {
       transitionDuration: duration,
       reverseTransitionDuration: reverseDuration,
       transitionsBuilder: (context, animation, secondaryAnimation, child) {
-        final reduceMotion = MediaQuery.disableAnimationsOf(context);
-        // A small horizontal parallax preserves hierarchy without looking like
-        // a modal presentation.
-        final begin = reduceMotion ? Offset.zero : const Offset(0.08, 0.0);
+        // 进入动画：从右滑入并逐渐放大
+        const begin = Offset(1.0, 0.0);
         const end = Offset.zero;
         final slideTween = Tween<Offset>(begin: begin, end: end);
         final slideAnimation = animation.drive(
           slideTween.chain(CurveTween(curve: curve)),
         );
 
-        // The previous route stays almost stationary; this avoids the heavy
-        // shrinking-card effect during navigation.
+        // 缩放动画：从0.9倍逐渐放大到1.0倍
+        final scaleTween = Tween<double>(begin: 0.95, end: 1.0);
+        final scaleAnimation = animation.drive(
+          scaleTween.chain(CurveTween(curve: curve)),
+        );
+
+        // 退出动画：当前页面逐渐缩小和左移
         final exitSlideTween = Tween<Offset>(
           begin: Offset.zero,
-          end: reduceMotion ? Offset.zero : const Offset(-0.025, 0.0),
+          end: const Offset(-0.3, 0.0),
         );
         final exitSlideAnimation = secondaryAnimation.drive(
           exitSlideTween.chain(CurveTween(curve: reverseCurve)),
         );
 
+        final exitScaleTween = Tween<double>(begin: 1.0, end: 0.95);
+        final exitScaleAnimation = secondaryAnimation.drive(
+          exitScaleTween.chain(CurveTween(curve: reverseCurve)),
+        );
+
         return SlideTransition(
           position: exitSlideAnimation,
-          child: SlideTransition(position: slideAnimation, child: child),
+          child: ScaleTransition(
+            scale: exitScaleAnimation,
+            child: SlideTransition(
+              position: slideAnimation,
+              child: ScaleTransition(scale: scaleAnimation, child: child),
+            ),
+          ),
         );
       },
     );
@@ -71,9 +84,9 @@ class CustomPageTransitions {
         // 缩放动画
         final scaleAnimation = animation.drive(
           Tween<double>(
-            begin: MediaQuery.disableAnimationsOf(context) ? 1.0 : 0.98,
+            begin: 0.9,
             end: 1.0,
-          ).chain(CurveTween(curve: Curves.easeOutCubic)),
+          ).chain(CurveTween(curve: Curves.easeOutBack)),
         );
 
         return FadeTransition(

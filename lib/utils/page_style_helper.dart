@@ -87,11 +87,9 @@ class PageStyleHelper {
   static LinearGradient backgroundGradient(BuildContext context) {
     final p = palette(context);
     return LinearGradient(
-      // Keep reading and settings surfaces quiet. A strong diagonal gradient
-      // competes with book covers and feels unlike a native reading app.
-      begin: Alignment.topCenter,
+      begin: Alignment.topLeft,
       end: Alignment.bottomCenter,
-      colors: [p.backgroundEnd, p.backgroundEnd, p.backgroundEnd],
+      colors: [p.backgroundStart, p.backgroundMiddle, p.backgroundEnd],
     );
   }
 }

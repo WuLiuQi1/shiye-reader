@@ -480,29 +480,33 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
 
   Widget _buildSectionTabs() {
     final scheme = Theme.of(context).colorScheme;
-    final items = <(_DiscoverSection, String)>[
-      (_DiscoverSection.recommended, context.l10n.discoverRecommended),
-      (_DiscoverSection.categories, context.l10n.discoverCategories),
-      (_DiscoverSection.latest, context.l10n.discoverLatest),
-    ];
-    return Container(
-      height: 36,
-      padding: const EdgeInsets.all(2),
-      decoration: BoxDecoration(
-        color: scheme.onSurface.withValues(alpha: 0.075),
-        borderRadius: BorderRadius.circular(9),
-      ),
-      child: Row(
-        children: [
-          for (final item in items)
-            Expanded(
-              child: _DiscoverSegment(
-                label: item.$2,
-                selected: item.$1 == _section,
-                onTap: () => unawaited(_changeSection(item.$1)),
-              ),
-            ),
-        ],
+    return SegmentedButton<_DiscoverSection>(
+      showSelectedIcon: false,
+      segments: [
+        ButtonSegment(
+          value: _DiscoverSection.recommended,
+          icon: const Icon(Icons.auto_awesome_outlined),
+          label: Text(context.l10n.discoverRecommended),
+        ),
+        ButtonSegment(
+          value: _DiscoverSection.categories,
+          icon: const Icon(Icons.category_outlined),
+          label: Text(context.l10n.discoverCategories),
+        ),
+        ButtonSegment(
+          value: _DiscoverSection.latest,
+          icon: const Icon(Icons.update_rounded),
+          label: Text(context.l10n.discoverLatest),
+        ),
+      ],
+      selected: {_section},
+      onSelectionChanged: (selection) {
+        if (selection.isEmpty) return;
+        unawaited(_changeSection(selection.first));
+      },
+      style: ButtonStyle(
+        minimumSize: const WidgetStatePropertyAll(Size(44, 48)),
+        side: WidgetStatePropertyAll(BorderSide(color: scheme.outlineVariant)),
       ),
     );
   }
@@ -859,42 +863,6 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
           color: scheme.onSecondaryContainer,
           fontSize: 11,
           fontWeight: FontWeight.w600,
-        ),
-      ),
-    );
-  }
-}
-
-class _DiscoverSegment extends StatelessWidget {
-  const _DiscoverSegment({
-    required this.label,
-    required this.selected,
-    required this.onTap,
-  });
-
-  final String label;
-  final bool selected;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final scheme = Theme.of(context).colorScheme;
-    return Material(
-      color: selected ? scheme.surface : Colors.transparent,
-      borderRadius: BorderRadius.circular(7),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(7),
-        onTap: selected ? null : onTap,
-        child: Center(
-          child: Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              fontWeight: selected ? FontWeight.w700 : FontWeight.w500,
-              color: selected ? scheme.onSurface : scheme.onSurfaceVariant,
-            ),
-          ),
         ),
       ),
     );

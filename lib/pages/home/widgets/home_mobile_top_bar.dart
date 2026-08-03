@@ -6,10 +6,11 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 import 'package:xxread/utils/glass_config.dart';
+import 'package:xxread/utils/ui_style.dart';
 
 import '../home_mobile_chrome.dart';
 
-/// 手机首页顶部标题栏。使用 iOS 阅读应用常见的大标题和半透明分隔层级。
+/// 手机首页顶部毛玻璃标题栏。
 ///
 /// 只负责显示标题和视觉样式，不处理页面业务逻辑。
 class HomeMobileTopBar extends StatelessWidget {
@@ -23,28 +24,43 @@ class HomeMobileTopBar extends StatelessWidget {
     super.key,
     required this.title,
     this.trailing,
-    this.titleFontSize = 40,
-    this.titleFontWeight = FontWeight.w800,
-    this.horizontalPadding = 24,
+    this.titleFontSize = 34,
+    this.titleFontWeight = FontWeight.w700,
+    this.horizontalPadding = 16,
   });
 
   @override
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final metrics = HomeMobileChromeScope.of(context);
-    final isDark = scheme.brightness == Brightness.dark;
-    final useBlur = !GlassEffectConfig.shouldDisableBlur;
+    final isMaterial3Style =
+        Theme.of(
+          context,
+        ).extension<UiStyleThemeExtension>()?.isMaterial3Style ??
+        false;
+    final useBlur = !isMaterial3Style && !GlassEffectConfig.shouldDisableBlur;
     final content = Container(
       height: metrics.topBarHeight,
       decoration: BoxDecoration(
-        // The screenshot's header is visually part of the page rather than a
-        // separate Material app bar.  Keep it clean; sheets provide borders.
-        color: (isDark ? const Color(0xF2000000) : const Color(0xF2FFFFFF)),
+        color: isMaterial3Style
+            ? scheme.surfaceContainerHigh
+            : GlassEffectConfig.chromeSurfaceColor(context),
+        border: Border(
+          bottom: BorderSide(
+            color: (isMaterial3Style ? scheme.outline : scheme.primary)
+                .withValues(
+                  alpha: isMaterial3Style
+                      ? 0.24
+                      : (scheme.brightness == Brightness.light ? 0.08 : 0.12),
+                ),
+            width: isMaterial3Style ? 0.7 : 0.5,
+          ),
+        ),
       ),
       child: Padding(
         padding: EdgeInsets.fromLTRB(
           horizontalPadding,
-          metrics.systemTopInset + 12,
+          metrics.systemTopInset + 8,
           horizontalPadding,
           8,
         ),
@@ -55,10 +71,9 @@ class HomeMobileTopBar extends StatelessWidget {
                 title,
                 style: TextStyle(
                   fontSize: titleFontSize,
-                  fontWeight: FontWeight.w700,
+                  fontWeight: titleFontWeight,
                   color: scheme.onSurface,
-                  height: 1.05,
-                  letterSpacing: -1.4,
+                  height: 1.0,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

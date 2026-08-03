@@ -35,6 +35,7 @@ import 'package:xxread/utils/page_style_helper.dart';
 import 'package:xxread/utils/reader_themes.dart';
 import 'package:xxread/utils/system_ui_helper.dart';
 import 'package:xxread/utils/ui_style.dart';
+import 'package:xxread/widgets/app_brand_icon.dart';
 import 'package:xxread/widgets/generated_book_cover.dart';
 import 'package:xxread/widgets/scrolling_text.dart';
 import 'package:xxread/widgets/side_toast.dart';
@@ -408,14 +409,16 @@ class _LibraryPageState extends State<LibraryPage> {
     final mobileChrome = HomeMobileChromeScope.of(context);
     // 手机模式：内容从屏幕顶端开始、滚动时穿过毛玻璃顶栏，
     // 顶栏的模糊层才有真实内容可以取样；用内边距避开首屏遮挡。
-    final listTopPadding = 8.0;
+    final mobileTopInset = mobileChrome.pageTopPadding;
+    final listTopPadding = useRailNavigation
+        ? 8.0
+        : (_searchBarVisible ? 10.0 : mobileTopInset);
     final content = Column(
       children: [
-        _buildTopBar(),
-        const SizedBox(height: 10),
+        if (useRailNavigation) ...[_buildTopBar(), const SizedBox(height: 10)],
         if (_searchBarVisible) ...[
+          if (!useRailNavigation) SizedBox(height: mobileTopInset),
           _buildSearchBar(),
-          const SizedBox(height: 8),
         ],
         Expanded(
           child: _isInitialLoading
@@ -748,60 +751,24 @@ class _LibraryPageState extends State<LibraryPage> {
   }
 
   Widget _buildEmptyLibrary() {
-    final scheme = Theme.of(context).colorScheme;
     return Center(
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 42),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 66,
-              height: 82,
-              alignment: Alignment.center,
-              decoration: BoxDecoration(
-                color: scheme.primary.withValues(alpha: 0.09),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Icon(
-                Icons.menu_book_outlined,
-                size: 32,
-                color: scheme.primary,
-              ),
-            ),
-            const SizedBox(height: 22),
-            Text(
-              context.l10n.libraryNoBooks,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            const SizedBox(height: 7),
-            Text(
-              context.l10n.importBooks,
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                color: scheme.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 18),
-            TextButton(
-              onPressed: () async {
-                await Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => const ImportBookPage()),
-                );
-                _loadBooks();
-              },
-              style: TextButton.styleFrom(
-                foregroundColor: scheme.primary,
-                textStyle: const TextStyle(fontWeight: FontWeight.w700),
-              ),
-              child: Text(context.l10n.importBooks),
-            ),
-          ],
-        ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const AppBrandIcon(size: 56, borderRadius: 14),
+          const SizedBox(height: 16),
+          TextButton.icon(
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ImportBookPage()),
+              );
+              _loadBooks();
+            },
+            icon: const Icon(Icons.add),
+            label: Text(context.l10n.importBooks),
+          ),
+        ],
       ),
     );
   }
@@ -846,10 +813,8 @@ class _LibraryPageState extends State<LibraryPage> {
   }) {
     final useRail =
         LayoutHelper.getNavigationType(context) == NavigationType.rail;
-    // Books-style shelves leave intentional white space around each cover;
-    // the cover is the primary target and the metadata stays subordinate.
-    final spacing = useRail ? 22.0 : 18.0;
-    final horizontalPadding = useRail ? 24.0 : 18.0;
+    final spacing = useRail ? 14.0 : 10.0;
+    final horizontalPadding = useRail ? 16.0 : 12.0;
     final bottomPadding = useRail
         ? MediaQuery.viewPaddingOf(context).bottom + 24
         : HomeMobileChromeScope.of(context).pageBottomPadding;
@@ -865,7 +830,8 @@ class _LibraryPageState extends State<LibraryPage> {
                 horizontalPadding * 2 -
                 spacing * (crossAxisCount - 1)) /
             crossAxisCount;
-        final itemHeight = itemWidth * 3 / 2 +
+        final itemHeight =
+            itemWidth * 3 / 2 +
             (showDetails ? LibraryGridBookDetails.height : 0);
         return GridView.builder(
           key: const ValueKey('library-cover-grid'),
@@ -882,7 +848,7 @@ class _LibraryPageState extends State<LibraryPage> {
           gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
             crossAxisCount: crossAxisCount,
             crossAxisSpacing: spacing,
-            mainAxisSpacing: spacing + 8,
+            mainAxisSpacing: spacing + 2,
             childAspectRatio: itemWidth / itemHeight,
           ),
           itemCount: books.length,
@@ -898,13 +864,11 @@ class _LibraryPageState extends State<LibraryPage> {
                 child: Material(
                   color: Colors.transparent,
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(5),
-                    splashColor: Theme.of(context).colorScheme.primary.withValues(alpha: 0.10),
-                    highlightColor: Colors.transparent,
+                    borderRadius: BorderRadius.circular(10),
                     onTap: () async {
                       final animation = BookOpenAnimation.fromCoverKey(
                         coverKey,
-                        radius: BorderRadius.circular(5),
+                        radius: BorderRadius.circular(10),
                         coverBuilder: (context) => _gridCoverArt(context, book),
                       );
                       await _openBook(book, animation: animation);
@@ -918,19 +882,18 @@ class _LibraryPageState extends State<LibraryPage> {
                             key: coverKey,
                             child: DecoratedBox(
                               decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(10),
                                 boxShadow: [
                                   BoxShadow(
                                     color: Theme.of(context).colorScheme.shadow
                                         .withValues(alpha: 0.14),
-                                    blurRadius: 10,
-                                    spreadRadius: -2,
-                                    offset: const Offset(0, 5),
+                                    blurRadius: 7,
+                                    offset: const Offset(0, 3),
                                   ),
                                 ],
                               ),
                               child: ClipRRect(
-                                borderRadius: BorderRadius.circular(5),
+                                borderRadius: BorderRadius.circular(10),
                                 child: _gridCoverArt(context, book),
                               ),
                             ),
@@ -984,7 +947,25 @@ class _LibraryPageState extends State<LibraryPage> {
             _BookCoverItem.gap;
         final childAspectRatio = itemWidth > 0 ? itemWidth / itemHeight : 0.75;
 
-        return GridView.builder(
+        return Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              stops: const [0.0, 0.3, 0.7, 1.0],
+              colors: [
+                Theme.of(context).colorScheme.surface.withValues(alpha: 0.0),
+                Theme.of(
+                  context,
+                ).colorScheme.primaryContainer.withValues(alpha: 0.03),
+                Theme.of(
+                  context,
+                ).colorScheme.secondaryContainer.withValues(alpha: 0.03),
+                Theme.of(context).colorScheme.surface.withValues(alpha: 0.0),
+              ],
+            ),
+          ),
+          child: GridView.builder(
             scrollCacheExtent: const ScrollCacheExtent.pixels(720),
             physics: const AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),
@@ -1022,21 +1003,24 @@ class _LibraryPageState extends State<LibraryPage> {
                 ),
               );
             },
-          );
+          ),
+        );
       },
     );
   }
 
   Widget _buildBooksList(List<Book> books, {required double topPadding}) {
+    final theme = Theme.of(context);
+    final scheme = theme.colorScheme;
     return ListView.builder(
       scrollCacheExtent: const ScrollCacheExtent.pixels(720),
       physics: const AlwaysScrollableScrollPhysics(
         parent: BouncingScrollPhysics(),
       ),
       padding: EdgeInsets.fromLTRB(
-        20,
+        16,
         topPadding,
-        20,
+        16,
         HomeMobileChromeScope.of(context).pageBottomPadding,
       ),
       itemCount: books.length,
@@ -1051,13 +1035,27 @@ class _LibraryPageState extends State<LibraryPage> {
         );
 
         return Container(
-          margin: const EdgeInsets.only(bottom: 2),
+          margin: const EdgeInsets.only(bottom: 8),
           child: Material(
-            color: Colors.transparent,
+            color: _isMaterial3Style
+                ? scheme.surfaceContainerLow
+                : scheme.surface.withValues(alpha: 0.86),
             surfaceTintColor: Colors.transparent,
-            elevation: 0,
+            elevation: _isMaterial3Style ? 1 : 0,
+            shadowColor: scheme.shadow.withValues(
+              alpha: _isMaterial3Style ? 0.07 : 0.0,
+            ),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+              side: BorderSide(
+                color: scheme.outline.withValues(
+                  alpha: _isMaterial3Style ? 0.2 : 0.12,
+                ),
+                width: 0.8,
+              ),
+            ),
             child: InkWell(
-              borderRadius: BorderRadius.circular(8),
+              borderRadius: BorderRadius.circular(16),
               onTap: () async {
                 final animation = BookOpenAnimation.fromCoverKey(
                   coverKey,
@@ -1068,7 +1066,7 @@ class _LibraryPageState extends State<LibraryPage> {
               },
               onLongPress: () => _showBookOptions(book),
               child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 12),
+                padding: const EdgeInsets.all(10),
                 child: Row(
                   children: [
                     SizedBox(
@@ -1076,11 +1074,11 @@ class _LibraryPageState extends State<LibraryPage> {
                       width: 64,
                       height: 92,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(4),
+                        borderRadius: BorderRadius.circular(11),
                         child: _buildListCover(context, book),
                       ),
                     ),
-                    const SizedBox(width: 14),
+                    const SizedBox(width: 12),
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -1093,7 +1091,7 @@ class _LibraryPageState extends State<LibraryPage> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: const TextStyle(
-                                    fontSize: 17,
+                                    fontSize: 16,
                                     fontWeight: FontWeight.w700,
                                   ),
                                 ),
@@ -1114,12 +1112,12 @@ class _LibraryPageState extends State<LibraryPage> {
                               ).colorScheme.onSurface.withValues(alpha: 0.58),
                             ),
                           ),
-                          const SizedBox(height: 7),
+                          const SizedBox(height: 6),
                           ClipRRect(
                             borderRadius: BorderRadius.circular(4),
                             child: LinearProgressIndicator(
                               value: progress,
-                              minHeight: 3,
+                              minHeight: 5,
                               backgroundColor: Theme.of(
                                 context,
                               ).colorScheme.primary.withValues(alpha: 0.12),
@@ -1130,6 +1128,13 @@ class _LibraryPageState extends State<LibraryPage> {
                           ),
                         ],
                       ),
+                    ),
+                    const SizedBox(width: 8),
+                    Icon(
+                      Icons.chevron_right_rounded,
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onSurface.withValues(alpha: 0.35),
                     ),
                   ],
                 ),
@@ -1771,43 +1776,28 @@ class _LibraryPageState extends State<LibraryPage> {
   /// 显示书籍详细信息
   void _showBookInfo(Book book) {
     final scheme = Theme.of(context).colorScheme;
-    showModalBottomSheet<void>(
+    final isMaterial3Style = _isMaterial3Style;
+    showDialog(
       context: context,
-      isScrollControlled: true,
-      backgroundColor: Colors.transparent,
-      builder: (sheetContext) => SafeArea(
-        top: false,
-        child: Container(
-          margin: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-          padding: const EdgeInsets.fromLTRB(20, 10, 20, 16),
-          decoration: BoxDecoration(
-            color: scheme.surface,
-            borderRadius: BorderRadius.circular(18),
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Center(
-                child: Container(
-                  width: 36,
-                  height: 4,
-                  decoration: BoxDecoration(
-                    color: scheme.onSurfaceVariant.withValues(alpha: 0.35),
-                    borderRadius: BorderRadius.circular(99),
-                  ),
-                ),
-              ),
-              const SizedBox(height: 18),
-              Center(
-                child: Text(
-                  context.l10n.libraryBookInfo,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ),
-              const SizedBox(height: 20),
+      builder: (context) => AlertDialog(
+        backgroundColor: isMaterial3Style
+            ? scheme.surfaceContainerHigh
+            : scheme.surface.withValues(alpha: 0.95),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+        title: Row(
+          children: [
+            Icon(
+              Icons.info_outline,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            const SizedBox(width: 8),
+            Text(context.l10n.libraryBookInfo),
+          ],
+        ),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
             _buildInfoRow(context.l10n.libraryBookTitle, book.title),
             const SizedBox(height: 12),
             _buildInfoRow(context.l10n.author, book.author),
@@ -1849,17 +1839,14 @@ class _LibraryPageState extends State<LibraryPage> {
               context.l10n.readingProgress,
               '${((book.currentPage / (book.totalPages > 0 ? book.totalPages : 1)) * 100).toStringAsFixed(1)}%',
             ),
-              const SizedBox(height: 18),
-              SizedBox(
-                width: double.infinity,
-                child: TextButton(
-                  onPressed: () => Navigator.pop(sheetContext),
-                  child: Text(context.l10n.libraryClose),
-                ),
-              ),
-            ],
-          ),
+          ],
         ),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(context),
+            child: Text(context.l10n.libraryClose),
+          ),
+        ],
       ),
     );
   }
@@ -1870,14 +1857,14 @@ class _LibraryPageState extends State<LibraryPage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(
-          width: 82,
+          width: 70,
           child: Text(
             label,
             style: TextStyle(
               color: Theme.of(
                 context,
-              ).colorScheme.onSurfaceVariant,
-              fontWeight: FontWeight.w400,
+              ).colorScheme.onSurface.withValues(alpha: 0.6),
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),

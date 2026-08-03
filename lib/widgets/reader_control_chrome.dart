@@ -151,272 +151,128 @@ class ReaderChromeOverlay extends StatelessWidget {
           ),
         AnimatedPositioned(
           key: topKey,
-          duration: const Duration(milliseconds: 260),
-          curve: Curves.easeOutQuart,
-          left: 24,
-          right: 24,
-          top: visible ? 0 : -130,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOutBack,
+          left: 20,
+          right: 20,
+          top: visible ? 10 : -130,
           child: SafeArea(
             bottom: false,
-            child: SizedBox(
-              height: 58,
-              child: Stack(
-                alignment: Alignment.center,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 76),
-                    child: Text(
-                      title,
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: textTheme.labelLarge?.copyWith(
-                        color: palette.secondaryText.withValues(alpha: .72),
-                        fontWeight: FontWeight.w700,
+            child: ReaderControlBar(
+              palette: palette,
+              isTopBar: true,
+              child: SizedBox(
+                height: 58,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 7,
+                    vertical: 7,
+                  ),
+                  child: Row(
+                    children: [
+                      ReaderControlIconButton(
+                        palette: palette,
+                        onPressed: onBack,
+                        tooltip: backTooltip,
+                        icon: Icons.arrow_back_rounded,
                       ),
-                    ),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                          title,
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.w600,
+                            letterSpacing: 0.1,
+                            color: palette.text,
+                          ),
+                        ),
+                      ),
+                      ReaderControlIconButton(
+                        palette: palette,
+                        onPressed: bookmarkBusy ? null : onBookmark,
+                        tooltip: bookmarkTooltip,
+                        icon: bookmarked
+                            ? Icons.bookmark_rounded
+                            : Icons.bookmark_border_rounded,
+                      ),
+                    ],
                   ),
-                  Align(
-                    alignment: Alignment.centerRight,
-                    child: ReaderControlIconButton(
-                      palette: palette,
-                      onPressed: onBack,
-                      tooltip: backTooltip,
-                      icon: Icons.close_rounded,
-                    ),
-                  ),
-                ],
+                ),
               ),
             ),
           ),
         ),
         AnimatedPositioned(
           key: bottomKey,
-          duration: const Duration(milliseconds: 260),
-          curve: Curves.easeOutQuart,
-          right: 24,
-          bottom: visible ? statusBottom + 8 : -180,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOutBack,
+          left: 22,
+          right: 22,
+          bottom: visible ? 16 : -110,
           child: SafeArea(
             top: false,
-            child: _ReaderQuickMenu(
+            child: ReaderControlBar(
               palette: palette,
-              title: title,
-              onTableOfContents: onTableOfContents,
-              onSettings: onSettings,
-              onBookmark: bookmarkBusy ? null : onBookmark,
-              onReadAloud: onReadAloud,
-              onAskAi: onAskAi,
-              onChangeSource: onChangeSource,
-              tableOfContentsTooltip: tableOfContentsTooltip,
-              settingsTooltip: settingsTooltip,
-              bookmarkTooltip: bookmarkTooltip,
-              bookmarked: bookmarked,
+              isTopBar: false,
+              child: SizedBox(
+                height: 64,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 9,
+                    vertical: 9,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      ReaderControlIconButton(
+                        palette: palette,
+                        onPressed: onTableOfContents,
+                        tooltip: tableOfContentsTooltip,
+                        icon: Icons.format_list_bulleted_rounded,
+                      ),
+                      if (onReadAloud != null)
+                        ReaderControlIconButton(
+                          palette: palette,
+                          onPressed: onReadAloud,
+                          tooltip: readAloudTooltip ?? '',
+                          icon: readAloudActive
+                              ? Icons.graphic_eq_rounded
+                              : Icons.headphones_rounded,
+                        ),
+                      if (onAskAi != null)
+                        ReaderControlIconButton(
+                          palette: palette,
+                          onPressed: onAskAi,
+                          tooltip: askAiTooltip ?? '',
+                          icon: Icons.auto_awesome_outlined,
+                        ),
+                      if (onChangeSource != null)
+                        ReaderControlIconButton(
+                          palette: palette,
+                          onPressed: onChangeSource,
+                          tooltip: changeSourceTooltip ?? '',
+                          icon: Icons.swap_horiz_rounded,
+                        ),
+                      if (showSettingsAction)
+                        ReaderControlIconButton(
+                          palette: palette,
+                          onPressed: onSettings,
+                          tooltip: settingsTooltip,
+                          icon: Icons.tune_rounded,
+                        ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ),
         ),
       ],
     );
   }
-}
-
-/// 阅读页只保留一个右下角入口。展开后用逐层上浮的操作卡替代传统底栏，
-/// 让正文始终占据完整页面，交互层级与参考稿一致。
-class _ReaderQuickMenu extends StatefulWidget {
-  const _ReaderQuickMenu({
-    required this.palette,
-    required this.title,
-    required this.onTableOfContents,
-    required this.onSettings,
-    required this.onBookmark,
-    required this.onReadAloud,
-    required this.onAskAi,
-    required this.onChangeSource,
-    required this.tableOfContentsTooltip,
-    required this.settingsTooltip,
-    required this.bookmarkTooltip,
-    required this.bookmarked,
-  });
-
-  final ReaderThemePalette palette;
-  final String title;
-  final VoidCallback? onTableOfContents;
-  final VoidCallback onSettings;
-  final VoidCallback? onBookmark;
-  final VoidCallback? onReadAloud;
-  final VoidCallback? onAskAi;
-  final VoidCallback? onChangeSource;
-  final String tableOfContentsTooltip;
-  final String settingsTooltip;
-  final String bookmarkTooltip;
-  final bool bookmarked;
-
-  @override
-  State<_ReaderQuickMenu> createState() => _ReaderQuickMenuState();
-}
-
-class _ReaderQuickMenuState extends State<_ReaderQuickMenu> {
-  bool _expanded = false;
-
-  void _run(VoidCallback? action) {
-    setState(() => _expanded = false);
-    action?.call();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final panelColor = widget.palette.brightness == Brightness.dark
-        ? const Color(0xED343438)
-        : const Color(0xEE363638);
-    final lightPanel = widget.palette.brightness == Brightness.dark
-        ? const Color(0xE82B2B2F)
-        : const Color(0xEEEEEFF2);
-    return SizedBox(
-      width: 286,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.end,
-        children: [
-          AnimatedSize(
-            duration: const Duration(milliseconds: 260),
-            curve: Curves.easeOutCubic,
-            child: _expanded
-                ? Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      _animatedMenuItem(
-                        index: 0,
-                        child: _menuRow(
-                        color: panelColor,
-                        label: widget.tableOfContentsTooltip,
-                        icon: Icons.format_list_bulleted_rounded,
-                        foreground: Colors.white,
-                        onTap: () => _run(widget.onTableOfContents),
-                      ),
-                      ),
-                      const SizedBox(height: 10),
-                      _animatedMenuItem(
-                        index: 1,
-                        child: _menuRow(
-                        color: lightPanel,
-                        label: '智能阅读助手',
-                        icon: Icons.search_rounded,
-                        foreground: widget.palette.text,
-                        onTap: () => _run(widget.onAskAi),
-                      ),
-                      ),
-                      const SizedBox(height: 10),
-                      _animatedMenuItem(
-                        index: 2,
-                        child: _menuRow(
-                        color: lightPanel,
-                        label: widget.settingsTooltip,
-                        icon: Icons.text_fields_rounded,
-                        foreground: widget.palette.text,
-                        onTap: () => _run(widget.onSettings),
-                      ),
-                      ),
-                      const SizedBox(height: 10),
-                      _animatedMenuItem(
-                        index: 3,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            _smallButton(Icons.ios_share_rounded, widget.onChangeSource),
-                            _smallButton(Icons.headphones_rounded, widget.onReadAloud),
-                            _smallButton(Icons.format_list_bulleted_rounded, widget.onTableOfContents),
-                            _smallButton(
-                              widget.bookmarked ? Icons.bookmark_rounded : Icons.bookmark_border_rounded,
-                              widget.onBookmark,
-                            ),
-                          ],
-                        ),
-                      ),
-                      const SizedBox(height: 12),
-                    ],
-                  )
-                : const SizedBox.shrink(),
-          ),
-          Align(
-            alignment: Alignment.centerRight,
-            child: Semantics(
-              button: true,
-              label: '阅读菜单',
-              child: InkWell(
-                borderRadius: BorderRadius.circular(32),
-                onTap: () => setState(() => _expanded = !_expanded),
-                child: Container(
-                  width: 64,
-                  height: 64,
-                  decoration: BoxDecoration(
-                    color: lightPanel,
-                    shape: BoxShape.circle,
-                    border: Border.all(
-                      color: widget.palette.border.withValues(alpha: .26),
-                    ),
-                  ),
-                  child: Icon(
-                    _expanded ? Icons.close_rounded : Icons.format_list_bulleted_rounded,
-                    color: widget.palette.text,
-                    size: 31,
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-
-  Widget _menuRow({
-    required Color color,
-    required String label,
-    required IconData icon,
-    required Color foreground,
-    required VoidCallback onTap,
-  }) => InkWell(
-    borderRadius: BorderRadius.circular(30),
-    onTap: onTap,
-    child: Container(
-      height: 72,
-      padding: const EdgeInsets.symmetric(horizontal: 22),
-      decoration: BoxDecoration(color: color, borderRadius: BorderRadius.circular(30)),
-      child: Row(
-        children: [
-          Expanded(child: Text(label, style: TextStyle(color: foreground, fontSize: 18, fontWeight: FontWeight.w700))),
-          Icon(icon, color: foreground, size: 29),
-        ],
-      ),
-    ),
-  );
-
-  Widget _animatedMenuItem({required int index, required Widget child}) {
-    return TweenAnimationBuilder<double>(
-      key: ValueKey('reader-menu-item-$index'),
-      duration: Duration(milliseconds: 180 + index * 45),
-      curve: Curves.easeOutCubic,
-      tween: Tween(begin: 0, end: 1),
-      builder: (context, value, child) => Opacity(
-        opacity: value,
-        child: Transform.translate(
-          offset: Offset(0, 14 * (1 - value)),
-          child: child,
-        ),
-      ),
-      child: child,
-    );
-  }
-
-  Widget _smallButton(IconData icon, VoidCallback? onTap) => InkWell(
-    borderRadius: BorderRadius.circular(31),
-    onTap: onTap == null ? null : () => _run(onTap),
-    child: Container(
-      width: 62,
-      height: 62,
-      decoration: BoxDecoration(color: widget.palette.controlFill, shape: BoxShape.circle),
-      child: Icon(icon, color: widget.palette.text, size: 28),
-    ),
-  );
 }
 
 class ReaderControlBar extends StatelessWidget {
@@ -433,9 +289,7 @@ class ReaderControlBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // A reader toolbar is edge-to-edge and visually quiet. This deliberately
-    // avoids the generic Flutter floating-card treatment.
-    final borderRadius = BorderRadius.zero;
+    final borderRadius = BorderRadius.circular(999);
     final blurEnabled = !GlassEffectConfig.shouldDisableBlur;
     // 不叠加预设，直接使用与悬浮导航栏/首页顶栏一致的标准玻璃参数
     final config = GlassEffectHelper.getReadingControlConfig(
@@ -460,16 +314,35 @@ class ReaderControlBar extends StatelessWidget {
     final panel = DecoratedBox(
       decoration: BoxDecoration(
         borderRadius: borderRadius,
-        color: highlight.withValues(
-          alpha: (surfaceOpacity + (blurEnabled ? 0.04 : 0.0)).clamp(0.0, 1.0),
+        gradient: LinearGradient(
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: [
+            highlight.withValues(
+              alpha: (surfaceOpacity + (blurEnabled ? 0.08 : 0.0)).clamp(
+                0.0,
+                1.0,
+              ),
+            ),
+            cleanSurface.withValues(
+              alpha: (surfaceOpacity - (blurEnabled ? 0.02 : 0.0)).clamp(
+                0.0,
+                1.0,
+              ),
+            ),
+          ],
         ),
-        border: Border(
-          bottom: isTopBar
-              ? BorderSide(color: palette.border.withValues(alpha: 0.36), width: 0.5)
-              : BorderSide.none,
-          top: isTopBar
-              ? BorderSide.none
-              : BorderSide(color: palette.border.withValues(alpha: 0.36), width: 0.5),
+        border: Border.all(
+          color: blurEnabled
+              ? Color.lerp(
+                  palette.border,
+                  Colors.white,
+                  palette.brightness == Brightness.dark ? 0.16 : 0.14,
+                )!.withValues(
+                  alpha: palette.brightness == Brightness.light ? 0.28 : 0.54,
+                )
+              : palette.border,
+          width: 1,
         ),
       ),
       child: Material(color: Colors.transparent, child: child),
@@ -480,10 +353,30 @@ class ReaderControlBar extends StatelessWidget {
         borderRadius: borderRadius,
         boxShadow: [
           BoxShadow(
-            color: palette.shadow.withValues(alpha: 0.045),
-            blurRadius: 6,
-            offset: Offset(0, isTopBar ? 3 : -3),
+            color: blurEnabled
+                ? GlassEffectConfig.chromeShadowColor(
+                    source: palette.shadow,
+                    brightness: palette.brightness,
+                    darkOpacity: 0.46,
+                  )
+                : palette.shadow.withValues(
+                    alpha: palette.brightness == Brightness.dark ? 0.46 : 0.22,
+                  ),
+            blurRadius: blurEnabled && palette.brightness == Brightness.light
+                ? 24
+                : 32,
+            spreadRadius: -5,
+            offset: Offset(
+              0,
+              blurEnabled && palette.brightness == Brightness.light ? 8 : 16,
+            ),
           ),
+          if (!blurEnabled || palette.brightness == Brightness.dark)
+            BoxShadow(
+              color: palette.shadow.withValues(alpha: 0.10),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
         ],
       ),
       child: ClipRRect(
@@ -537,8 +430,8 @@ class ReaderControlIconButton extends StatelessWidget {
               ? (palette.brightness == Brightness.light ? 0.76 : 0.58)
               : 1.0,
         ),
-        minimumSize: const Size.square(42),
-        maximumSize: const Size.square(42),
+        minimumSize: const Size.square(44),
+        maximumSize: const Size.square(44),
         padding: EdgeInsets.zero,
         side: BorderSide(
           color: glassEnabled

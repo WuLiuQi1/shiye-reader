@@ -262,9 +262,7 @@ class _ReaderNavigationSheetState extends State<ReaderNavigationSheet>
         builder: (themedContext) => Material(
           color: widget.palette.surface,
           surfaceTintColor: Colors.transparent,
-          // This panel follows the reader's iOS-style sheet hierarchy: broad
-          // rounded top corners, no card shadow, and a quiet full-width surface.
-          borderRadius: const BorderRadius.vertical(top: Radius.circular(22)),
+          borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
           clipBehavior: Clip.antiAlias,
           child: SafeArea(
             top: false,
@@ -307,20 +305,18 @@ class _ReaderNavigationSheetState extends State<ReaderNavigationSheet>
 
   Widget _buildHeader(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 10, 12, 12),
+      padding: const EdgeInsets.fromLTRB(20, 12, 12, 10),
       child: Row(
         children: [
-          const SizedBox(width: 52),
           Expanded(
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   context.l10n.readerNavigationTitle,
-                  textAlign: TextAlign.center,
                   style: Theme.of(
                     context,
-                  ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
+                  ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
                 ),
                 const SizedBox(height: 2),
                 Text(
@@ -337,12 +333,6 @@ class _ReaderNavigationSheetState extends State<ReaderNavigationSheet>
           ),
           TextButton(
             onPressed: () => Navigator.of(context).pop(),
-            style: TextButton.styleFrom(
-              foregroundColor: widget.palette.accent,
-              minimumSize: const Size(52, 36),
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-            ),
             child: Text(MaterialLocalizations.of(context).closeButtonTooltip),
           ),
         ],
@@ -354,10 +344,13 @@ class _ReaderNavigationSheetState extends State<ReaderNavigationSheet>
     return Padding(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 12),
       child: Container(
-        padding: const EdgeInsets.all(2),
+        padding: const EdgeInsets.all(4),
         decoration: BoxDecoration(
-          color: widget.palette.controlBar.withValues(alpha: 0.88),
-          borderRadius: BorderRadius.circular(9),
+          color: widget.palette.controlBar,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: widget.palette.border.withValues(alpha: 0.72),
+          ),
         ),
         child: TabBar(
           controller: _tabController,
@@ -365,22 +358,22 @@ class _ReaderNavigationSheetState extends State<ReaderNavigationSheet>
           indicatorSize: TabBarIndicatorSize.tab,
           indicator: BoxDecoration(
             color: widget.palette.controlFill,
-            borderRadius: BorderRadius.circular(7),
+            borderRadius: BorderRadius.circular(12),
             boxShadow: [
               BoxShadow(
                 color: widget.palette.shadow.withValues(alpha: 0.08),
-                blurRadius: 2,
-                offset: const Offset(0, 1),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
               ),
             ],
           ),
           tabs: [
             Tab(
-              height: 34,
+              height: 42,
               child: _tabLabel(label: context.l10n.readerToolbarTOC),
             ),
-            Tab(height: 34, child: _tabLabel(label: context.l10n.bookmarks)),
-            Tab(height: 34, child: _tabLabel(label: context.l10n.notes)),
+            Tab(height: 42, child: _tabLabel(label: context.l10n.bookmarks)),
+            Tab(height: 42, child: _tabLabel(label: context.l10n.notes)),
           ],
         ),
       ),
@@ -421,7 +414,7 @@ class _ReaderNavigationSheetState extends State<ReaderNavigationSheet>
                       vertical: 14,
                     ),
                     border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
+                      borderRadius: BorderRadius.circular(15),
                       borderSide: BorderSide.none,
                     ),
                   ),
@@ -430,18 +423,19 @@ class _ReaderNavigationSheetState extends State<ReaderNavigationSheet>
               const SizedBox(width: 10),
               Tooltip(
                 message: context.l10n.readerBackToCurrentChapter,
-                child: IconButton(
+                child: TextButton(
                   key: const ValueKey(
                     'reader-navigation-current-chapter-button',
                   ),
                   onPressed: _scrollToCurrent,
-                  style: IconButton.styleFrom(
-                    minimumSize: const Size(44, 44),
-                    backgroundColor: widget.palette.controlBar,
-                    foregroundColor: widget.palette.accent,
-                    shape: const CircleBorder(),
+                  style: TextButton.styleFrom(
+                    minimumSize: const Size(60, 48),
+                    backgroundColor: widget.palette.controlFill,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
                   ),
-                  icon: const Icon(Icons.my_location_rounded, size: 19),
+                  child: Text(context.l10n.readerCurrentChapter),
                 ),
               ),
             ],

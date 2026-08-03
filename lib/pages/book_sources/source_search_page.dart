@@ -340,13 +340,7 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
         .where((source) => source.enabled)
         .toList(growable: false);
     return Scaffold(
-      appBar: AppBar(
-        titleSpacing: 0,
-        elevation: 0,
-        scrolledUnderElevation: 0,
-        surfaceTintColor: Colors.transparent,
-        title: _buildQueryField(enabledSources),
-      ),
+      appBar: AppBar(titleSpacing: 0, title: _buildQueryField(enabledSources)),
       body: Container(
         decoration: BoxDecoration(
           gradient: PageStyleHelper.backgroundGradient(context),
@@ -367,42 +361,30 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
 
   Widget _buildQueryField(List<RegisteredBookSource> enabledSources) {
     final canSearch = enabledSources.isNotEmpty && !_searching;
-    final scheme = Theme.of(context).colorScheme;
     return Padding(
-      padding: const EdgeInsets.only(right: 12, top: 5, bottom: 5),
-      child: Container(
-        decoration: BoxDecoration(
-          color: scheme.onSurface.withValues(alpha: 0.075),
-          borderRadius: BorderRadius.circular(10),
+      padding: const EdgeInsets.only(right: 12),
+      child: TextField(
+        key: const Key('bookSourceQueryControl'),
+        controller: _queryController,
+        focusNode: _queryFocus,
+        enabled: canSearch,
+        textInputAction: TextInputAction.search,
+        onSubmitted: (_) => _search(),
+        decoration: InputDecoration(
+          hintText: context.l10n.bookSourcesSearchHint,
+          border: InputBorder.none,
+          suffixIcon: _queryController.text.isEmpty
+              ? null
+              : IconButton(
+                  key: const Key('bookSourceSearchClearButton'),
+                  tooltip: MaterialLocalizations.of(
+                    context,
+                  ).deleteButtonTooltip,
+                  icon: const Icon(Icons.close_rounded),
+                  onPressed: _clearSearch,
+                ),
         ),
-        child: TextField(
-          key: const Key('bookSourceQueryControl'),
-          controller: _queryController,
-          focusNode: _queryFocus,
-          enabled: canSearch,
-          textInputAction: TextInputAction.search,
-          onSubmitted: (_) => _search(),
-          decoration: InputDecoration(
-            prefixIcon: Icon(
-              Icons.search_rounded,
-              color: scheme.onSurfaceVariant,
-            ),
-            hintText: context.l10n.bookSourcesSearchHint,
-            border: InputBorder.none,
-            contentPadding: const EdgeInsets.symmetric(vertical: 10),
-            suffixIcon: _queryController.text.isEmpty
-                ? null
-                : IconButton(
-                    key: const Key('bookSourceSearchClearButton'),
-                    tooltip: MaterialLocalizations.of(
-                      context,
-                    ).deleteButtonTooltip,
-                    icon: const Icon(Icons.close_rounded),
-                    onPressed: _clearSearch,
-                  ),
-          ),
-          onChanged: (_) => setState(() {}),
-        ),
+        onChanged: (_) => setState(() {}),
       ),
     );
   }

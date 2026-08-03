@@ -32,8 +32,15 @@ extension _DetailedStatsBooksView on _DetailedStatsPageState {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: palette.hero,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: palette.border),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.58)),
+        boxShadow: [
+          BoxShadow(
+            color: palette.shadow,
+            blurRadius: 24,
+            offset: const Offset(0, 11),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,

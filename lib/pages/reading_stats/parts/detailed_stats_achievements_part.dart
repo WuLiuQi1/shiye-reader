@@ -26,8 +26,15 @@ extension _DetailedStatsAchievementsView on _DetailedStatsPageState {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: palette.hero,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: palette.border),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.58)),
+        boxShadow: [
+          BoxShadow(
+            color: palette.shadow,
+            blurRadius: 24,
+            offset: const Offset(0, 11),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -183,12 +190,19 @@ extension _DetailedStatsAchievementsView on _DetailedStatsPageState {
       padding: const EdgeInsets.all(17),
       decoration: BoxDecoration(
         color: palette.cardStrong,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(
           color: item.achieved
               ? item.color.withValues(alpha: 0.26)
               : palette.border,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: palette.shadow,
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Row(
         children: [
@@ -197,7 +211,7 @@ extension _DetailedStatsAchievementsView on _DetailedStatsPageState {
             height: 58,
             decoration: BoxDecoration(
               color: item.color.withValues(alpha: item.achieved ? 0.15 : 0.07),
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(18),
             ),
             child: Icon(
               item.icon,

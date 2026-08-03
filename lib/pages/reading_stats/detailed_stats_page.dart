@@ -328,8 +328,15 @@ class _DetailedStatsPageState extends State<DetailedStatsPage>
     final palette = _palette;
     return Scaffold(
       backgroundColor: palette.pageEnd,
-      body: ColoredBox(
-        color: palette.pageEnd,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            stops: const [0, 0.34, 1],
+            colors: [palette.pageStart, palette.pageMiddle, palette.pageEnd],
+          ),
+        ),
         child: SafeArea(
           bottom: false,
           child: Column(
@@ -385,9 +392,10 @@ class _DetailedStatsPageState extends State<DetailedStatsPage>
             child: Row(
               children: [
                 Material(
-                  color: Colors.transparent,
+                  color: palette.cardStrong,
+                  borderRadius: BorderRadius.circular(999),
                   child: InkWell(
-                    borderRadius: BorderRadius.circular(10),
+                    borderRadius: BorderRadius.circular(999),
                     onTap: () => Navigator.of(context).pop(),
                     child: SizedBox(
                       width: 46,
@@ -437,7 +445,7 @@ class _DetailedStatsPageState extends State<DetailedStatsPage>
           padding: EdgeInsets.symmetric(horizontal: compact ? 11 : 13),
           decoration: BoxDecoration(
             color: palette.softAccent,
-            borderRadius: BorderRadius.circular(10),
+            borderRadius: BorderRadius.circular(999),
             border: Border.all(color: palette.border),
           ),
           child: Row(
@@ -537,8 +545,15 @@ class _DetailedStatsPageState extends State<DetailedStatsPage>
             padding: const EdgeInsets.all(4),
             decoration: BoxDecoration(
               color: palette.card,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(18),
               border: Border.all(color: palette.border),
+              boxShadow: [
+                BoxShadow(
+                  color: palette.shadow,
+                  blurRadius: 18,
+                  offset: const Offset(0, 8),
+                ),
+              ],
             ),
             child: TabBar(
               controller: _tabController,
@@ -548,7 +563,7 @@ class _DetailedStatsPageState extends State<DetailedStatsPage>
               indicatorSize: TabBarIndicatorSize.tab,
               indicator: BoxDecoration(
                 color: palette.softAccent,
-                borderRadius: BorderRadius.circular(9),
+                borderRadius: BorderRadius.circular(14),
               ),
               labelColor: palette.accent,
               unselectedLabelColor: palette.mutedInk,

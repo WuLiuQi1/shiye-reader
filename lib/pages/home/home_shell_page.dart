@@ -35,6 +35,7 @@ import 'package:xxread/widgets/app_brand_icon.dart';
 import 'home_dashboard_page.dart';
 import 'home_mobile_chrome.dart';
 import 'home_mobile_dashboard_page.dart';
+import 'widgets/home_bounce_navigation_item.dart';
 import 'widgets/home_mobile_top_bar.dart';
 import 'widgets/home_navigation_item.dart';
 import 'widgets/home_page_wrappers.dart';

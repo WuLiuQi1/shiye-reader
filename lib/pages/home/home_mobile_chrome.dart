@@ -10,15 +10,12 @@ import 'package:flutter/widgets.dart';
 /// 2) 让 HomeShell 与移动端首页内容页共享同一套尺寸基准
 /// 3) 后续改动时只改这一处
 const double kHomeMobileTopBarContentHeight = 60.0;
-// The reference uses a full-width, system-style tab bar rather than a
-// floating Material capsule.  These metrics are shared by every tab so its
-// content never jumps when switching between Home, Library and Settings.
-const double kHomeMobileFloatingNavHeight = 54.0;
-const double kHomeMobileFloatingNavBottomGap = 0.0;
-const double kHomeMobileFloatingNavScreenGap = 0.0;
-const double kHomeMobileFloatingNavHorizontalPadding = 0.0;
-const double kHomeMobileFloatingNavDesiredItemWidth = 120.0;
-const double kHomeMobileFloatingNavExtraWidth = 0.0;
+const double kHomeMobileFloatingNavHeight = 56.0;
+const double kHomeMobileFloatingNavBottomGap = 10.0;
+const double kHomeMobileFloatingNavScreenGap = 36.0;
+const double kHomeMobileFloatingNavHorizontalPadding = 4.0;
+const double kHomeMobileFloatingNavDesiredItemWidth = 90.0;
+const double kHomeMobileFloatingNavExtraWidth = 8.0;
 const double kHomeMobileContentTopExtra = 8.0;
 const double kHomeMobileContentBottomExtra = 10.0;
 const double kHomeMobileFloatingActionExtra = 15.0;
@@ -28,11 +25,15 @@ double homeMobileFloatingNavWidthFor({
   required int itemCount,
 }) {
   if (screenWidth <= 0 || itemCount <= 0) return 0;
+  final desiredWidth =
+      itemCount * kHomeMobileFloatingNavDesiredItemWidth +
+      kHomeMobileFloatingNavExtraWidth;
   final maxWidth = (screenWidth - kHomeMobileFloatingNavScreenGap)
       .clamp(0.0, double.infinity)
       .toDouble();
-  // Mobile tab bars always span the available width.
-  return maxWidth;
+  final minWidth = itemCount >= 4 ? 280.0 : 220.0;
+  if (maxWidth <= minWidth) return maxWidth;
+  return desiredWidth.clamp(minWidth, maxWidth).toDouble();
 }
 
 double homeMobileFloatingNavItemWidthFor({

@@ -68,16 +68,24 @@ class _HomePalette {
     final scheme = theme.colorScheme;
     final isDark = theme.brightness == Brightness.dark;
     return _HomePalette(
-      backgroundStart: scheme.surface,
+      backgroundStart: Color.alphaBlend(
+        scheme.primary.withValues(alpha: isDark ? 0.10 : 0.045),
+        scheme.surface,
+      ),
       backgroundEnd: scheme.surface,
-      cardColor: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFFFFFFF),
-      heroColor: isDark ? const Color(0xFF2C2C2E) : const Color(0xFFF2F2F7),
+      cardColor: scheme.surfaceContainerLow,
+      heroColor: Color.alphaBlend(
+        scheme.primary.withValues(alpha: isDark ? 0.16 : 0.085),
+        scheme.surfaceContainerLow,
+      ),
       primaryTextColor: scheme.onSurface,
       secondaryTextColor: scheme.onSurfaceVariant,
       accentColor: scheme.primary,
-      outlineColor: isDark ? const Color(0xFF38383A) : const Color(0x1F3C3C43),
-      mutedColor: isDark ? const Color(0xFF2C2C2E) : const Color(0xFFF2F2F7),
-      shadowColor: scheme.shadow.withValues(alpha: 0.04),
+      outlineColor: scheme.outlineVariant.withValues(
+        alpha: isDark ? 0.56 : 0.7,
+      ),
+      mutedColor: scheme.surfaceContainerHighest,
+      shadowColor: scheme.shadow.withValues(alpha: isDark ? 0.18 : 0.055),
     );
   }
 }

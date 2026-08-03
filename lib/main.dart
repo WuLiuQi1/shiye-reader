@@ -906,40 +906,22 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
   }) {
     final isDark = brightness == Brightness.dark;
     final isMaterial3Style = uiStyle == AppUiStyle.material3;
-    // The app uses a restrained, iOS-reading-app-like surface hierarchy:
-    // warm paper in light mode, true black in dark mode, and no coloured
-    // Material surface tinting.
-    final systemBarColor = colorScheme.surface;
-    final dividerColor = isDark
-        ? const Color(0xFF38383A)
-        : const Color(0x1F3C3C43);
+    final systemBarColor = isMaterial3Style
+        ? colorScheme.surface
+        : Colors.transparent;
 
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
       colorScheme: colorScheme,
       scaffoldBackgroundColor: colorScheme.surface,
-      cardColor: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFFFFFFF),
-      cardTheme: CardThemeData(
-        color: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFFFFFFF),
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        margin: EdgeInsets.zero,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      ),
-      listTileTheme: ListTileThemeData(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16),
-        minVerticalPadding: 10,
-        iconColor: colorScheme.onSurfaceVariant,
-        textColor: colorScheme.onSurface,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      ),
+      cardColor: isMaterial3Style
+          ? colorScheme.surfaceContainerLow
+          : colorScheme.surface.withValues(alpha: isDark ? 0.82 : 0.9),
       dialogTheme: DialogThemeData(
-        backgroundColor: isDark
-            ? const Color(0xFF1C1C1E)
-            : const Color(0xFFF2F2F7),
-        surfaceTintColor: Colors.transparent,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+        backgroundColor: isMaterial3Style
+            ? colorScheme.surfaceContainerHigh
+            : colorScheme.surface.withValues(alpha: isDark ? 0.9 : 0.96),
       ),
       fontFamily: appFontFamily,
       fontFamilyFallback: FontCatalog.appFallbacks(appFontFamily),
@@ -961,82 +943,11 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
           systemNavigationBarContrastEnforced: false,
         ),
       ),
-      bottomSheetTheme: BottomSheetThemeData(
-        backgroundColor: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7),
-        surfaceTintColor: Colors.transparent,
-        shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(14)),
-        ),
-      ),
-      navigationBarTheme: NavigationBarThemeData(
-        height: 64,
-        backgroundColor: isDark ? const Color(0xF20C0C0E) : const Color(0xF7FFFFFF),
-        surfaceTintColor: Colors.transparent,
-        elevation: 0,
-        indicatorColor: Colors.transparent,
-        labelTextStyle: WidgetStateProperty.resolveWith((states) => TextStyle(
-          fontSize: 10,
-          height: 1.2,
-          fontWeight: states.contains(WidgetState.selected)
-              ? FontWeight.w600
-              : FontWeight.w400,
-          color: states.contains(WidgetState.selected)
-              ? colorScheme.primary
-              : colorScheme.onSurfaceVariant,
-        )),
-        iconTheme: WidgetStateProperty.resolveWith((states) => IconThemeData(
-          size: 24,
-          color: states.contains(WidgetState.selected)
-              ? colorScheme.primary
-              : colorScheme.onSurfaceVariant,
-        )),
-      ),
-      switchTheme: SwitchThemeData(
-        thumbColor: WidgetStateProperty.resolveWith(
-          (states) => states.contains(WidgetState.selected)
-              ? Colors.white
-              : (isDark ? const Color(0xFF8E8E93) : const Color(0xFFFFFFFF)),
-        ),
-        trackColor: WidgetStateProperty.resolveWith(
-          (states) => states.contains(WidgetState.selected)
-              ? const Color(0xFF34C759)
-              : (isDark ? const Color(0xFF3A3A3C) : const Color(0xFF787880)),
-        ),
-      ),
-      sliderTheme: SliderThemeData(
-        trackHeight: 3,
-        activeTrackColor: colorScheme.primary,
-        inactiveTrackColor: colorScheme.primary.withValues(alpha: 0.18),
-        thumbColor: colorScheme.primary,
-        overlayColor: colorScheme.primary.withValues(alpha: 0.12),
-        thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 8),
-      ),
-      inputDecorationTheme: InputDecorationTheme(
-        filled: true,
-        fillColor: isDark ? const Color(0xFF1C1C1E) : const Color(0xFFF2F2F7),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        enabledBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide.none,
-        ),
-        focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10),
-          borderSide: BorderSide(color: colorScheme.primary, width: 1.5),
-        ),
-      ),
-      popupMenuTheme: PopupMenuThemeData(
-        color: isDark ? const Color(0xFF2C2C2E) : const Color(0xFFFFFFFF),
-        surfaceTintColor: Colors.transparent,
-        elevation: 8,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-      ),
       dividerTheme: DividerThemeData(
-        color: dividerColor,
-        thickness: 0.5,
+        color: colorScheme.outline.withValues(
+          alpha: isMaterial3Style ? 0.32 : 0.18,
+        ),
+        thickness: 0.7,
       ),
       extensions: <ThemeExtension<dynamic>>[
         UiStyleThemeExtension(style: uiStyle),

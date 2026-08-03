@@ -52,8 +52,15 @@ extension _DetailedStatsOverviewView on _DetailedStatsPageState {
       padding: const EdgeInsets.fromLTRB(20, 18, 20, 20),
       decoration: BoxDecoration(
         color: palette.hero,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: palette.border),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.58)),
+        boxShadow: [
+          BoxShadow(
+            color: palette.shadow,
+            blurRadius: 28,
+            offset: const Offset(0, 14),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -65,7 +72,7 @@ extension _DetailedStatsOverviewView on _DetailedStatsPageState {
                 height: 38,
                 decoration: BoxDecoration(
                   color: palette.card.withValues(alpha: 0.64),
-                  borderRadius: BorderRadius.circular(9),
+                  borderRadius: BorderRadius.circular(13),
                 ),
                 child: Icon(
                   Icons.auto_stories_rounded,
@@ -241,8 +248,15 @@ extension _DetailedStatsOverviewView on _DetailedStatsPageState {
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: palette.cardStrong,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(24),
         border: Border.all(color: palette.border),
+        boxShadow: [
+          BoxShadow(
+            color: palette.shadow,
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -254,7 +268,7 @@ extension _DetailedStatsOverviewView on _DetailedStatsPageState {
                 height: 34,
                 decoration: BoxDecoration(
                   color: accent.withValues(alpha: 0.12),
-                  borderRadius: BorderRadius.circular(9),
+                  borderRadius: BorderRadius.circular(11),
                 ),
                 child: Icon(icon, size: 18, color: accent),
               ),
