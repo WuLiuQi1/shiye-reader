@@ -307,11 +307,13 @@ class LegadoRuleClient {
   }
 
   static String _normalizeText(String value) {
-    final withoutMarkup = value.contains('<')
-        ? html_parser
-              .parseFragment(value.replaceAll(RegExp(r'<[^>]*>'), ' '))
-              .text
-        : value;
+    var withoutMarkup = value;
+    if (value.contains('<')) {
+      final fragment = html_parser.parseFragment(
+        value.replaceAll(RegExp(r'<[^>]*>'), ' '),
+      );
+      withoutMarkup = fragment.text ?? '';
+    }
     return withoutMarkup
         .replaceAll(RegExp(r'[\u0000-\u001f\u007f]'), ' ')
         .replaceAll(RegExp(r'\s+'), ' ')

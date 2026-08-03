@@ -200,7 +200,7 @@ class BookSourceClient {
       lifetime: discoveryCacheLifetime,
       loader: () async {
         if (source.legadoConfig != null) {
-          final categories = _legadoClient.exploreEntries(
+          final categories = LegadoRuleClient.exploreEntries(
             source.legadoConfig!['exploreUrl'],
           );
           final firstCategory = categories.isEmpty ? null : categories.first;
@@ -249,7 +249,7 @@ class BookSourceClient {
       loader: () async {
         if (source.legadoConfig != null) {
           return List<BookSourceCategory>.unmodifiable([
-            for (final entry in _legadoClient.exploreEntries(
+            for (final entry in LegadoRuleClient.exploreEntries(
               source.legadoConfig!['exploreUrl'],
             ))
               BookSourceCategory(id: entry.id, name: entry.name),
@@ -363,7 +363,7 @@ class BookSourceClient {
   String _metadataKey(RegisteredBookSource source, String resource) =>
       '${source.id}|${source.apiBaseUrl}|$resource';
 
-  Future<T> _cachedMetadata<T>(
+  Future<T> _cachedMetadata<T extends Object>(
     String key, {
     required Duration lifetime,
     required Future<T> Function() loader,
