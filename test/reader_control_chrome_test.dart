@@ -6,8 +6,13 @@ import 'package:xxread/utils/reader_themes.dart';
 import 'package:xxread/widgets/reader_control_chrome.dart';
 
 void main() {
+  setUp(() {
+    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
+  });
+
   tearDown(() {
     GlassEffectConfig.setDisableAllGlassEffects(false);
+    debugDefaultTargetPlatformOverride = null;
   });
 
   testWidgets('reader chrome follows the global glass effect switch', (
