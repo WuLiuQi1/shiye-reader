@@ -369,7 +369,8 @@ class BookSourceClient {
     required Future<T> Function() loader,
   }) {
     final cached = _metadataCache[key];
-    if (cached != null && DateTime.now().difference(cached.cachedAt) < lifetime) {
+    if (cached != null &&
+        DateTime.now().difference(cached.cachedAt) < lifetime) {
       return Future<T>.value(cached.value as T);
     }
     final pending = _metadataInFlight[key];
@@ -379,11 +380,13 @@ class BookSourceClient {
       return value;
     });
     _metadataInFlight[key] = request;
-    return request.whenComplete(() {
-      if (identical(_metadataInFlight[key], request)) {
-        _metadataInFlight.remove(key);
-      }
-    }).then((value) => value as T);
+    return request
+        .whenComplete(() {
+          if (identical(_metadataInFlight[key], request)) {
+            _metadataInFlight.remove(key);
+          }
+        })
+        .then((value) => value as T);
   }
 
   Future<List<BookSourceChapter>> getChapters(

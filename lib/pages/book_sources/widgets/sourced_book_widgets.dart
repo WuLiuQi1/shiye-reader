@@ -152,91 +152,91 @@ class SourcedBookListTile extends StatelessWidget {
           decoration: bookSourcePanelDecoration(context, radius: 18),
           clipBehavior: Clip.hardEdge,
           child: Row(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _BookCoverThumb(book: book),
-            const SizedBox(width: 14),
-            Expanded(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    book.title,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _BookCoverThumb(book: book),
+              const SizedBox(width: 14),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      book.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16,
+                      ),
                     ),
-                  ),
-                  if (_bookMetadata(book).isNotEmpty) ...[
-                    const SizedBox(height: 6),
-                    Wrap(
-                      spacing: 6,
-                      runSpacing: 4,
-                      children: [
-                        for (final item in _bookMetadata(book))
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 7,
-                              vertical: 3,
-                            ),
-                            decoration: BoxDecoration(
-                              color: scheme.primaryContainer.withValues(
-                                alpha: 0.55,
+                    if (_bookMetadata(book).isNotEmpty) ...[
+                      const SizedBox(height: 6),
+                      Wrap(
+                        spacing: 6,
+                        runSpacing: 4,
+                        children: [
+                          for (final item in _bookMetadata(book))
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 7,
+                                vertical: 3,
                               ),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Text(
-                              item,
-                              style: TextStyle(
-                                color: scheme.onPrimaryContainer,
-                                fontSize: 11,
-                                fontWeight: FontWeight.w600,
+                              decoration: BoxDecoration(
+                                color: scheme.primaryContainer.withValues(
+                                  alpha: 0.55,
+                                ),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              child: Text(
+                                item,
+                                style: TextStyle(
+                                  color: scheme.onPrimaryContainer,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
-                          ),
-                      ],
+                        ],
+                      ),
+                    ],
+                    const SizedBox(height: 3),
+                    Text(
+                      [
+                        book.author,
+                        result.source.name,
+                      ].where((item) => item.isNotEmpty).join(' · '),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: scheme.primary,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
-                  ],
-                  const SizedBox(height: 3),
-                  Text(
-                    [
-                      book.author,
-                      result.source.name,
-                    ].where((item) => item.isNotEmpty).join(' · '),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                      color: scheme.primary,
-                      fontSize: 12,
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                  if (summary.isNotEmpty) ...[
-                    const SizedBox(height: 7),
-                    ConstrainedBox(
-                      constraints: const BoxConstraints(maxHeight: 36),
-                      child: ClipRect(
-                        child: Text(
-                          summary,
-                          maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            color: scheme.onSurfaceVariant,
-                            fontSize: 13,
-                            height: 1.35,
+                    if (summary.isNotEmpty) ...[
+                      const SizedBox(height: 7),
+                      ConstrainedBox(
+                        constraints: const BoxConstraints(maxHeight: 36),
+                        child: ClipRect(
+                          child: Text(
+                            summary,
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              color: scheme.onSurfaceVariant,
+                              fontSize: 13,
+                              height: 1.35,
+                            ),
                           ),
                         ),
                       ),
-                    ),
+                    ],
                   ],
-                ],
+                ),
               ),
-            ),
-            const SizedBox(width: 6),
-            const Icon(Icons.chevron_right_rounded),
-          ],
+              const SizedBox(width: 6),
+              const Icon(Icons.chevron_right_rounded),
+            ],
           ),
         ),
       ),
@@ -249,9 +249,7 @@ class SourcedBookListTile extends StatelessWidget {
     // These navigation labels together identify an incorrectly scraped page
     // rather than a book synopsis (as seen with some converted sources).
     const pageNavigation = ['返回', '首页', '小说信息', '搜索', '登录', '注册'];
-    final navigationHits = pageNavigation
-        .where(normalized.contains)
-        .length;
+    final navigationHits = pageNavigation.where(normalized.contains).length;
     if (navigationHits >= 3) return '';
     const maxLength = 220;
     return normalized.length <= maxLength
@@ -299,9 +297,10 @@ class SourcedBookCompactTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    [book.author, result.source.name]
-                        .where((item) => item.isNotEmpty)
-                        .join(' · '),
+                    [
+                      book.author,
+                      result.source.name,
+                    ].where((item) => item.isNotEmpty).join(' · '),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(

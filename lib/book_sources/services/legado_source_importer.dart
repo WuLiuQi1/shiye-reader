@@ -70,7 +70,9 @@ class LegadoSourceImporter {
             if ('${json['exploreUrl'] ?? ''}'.trim().isNotEmpty) ...{
               'discover',
               'browse',
-              if (LegadoRuleClient.exploreEntries(json['exploreUrl']).isNotEmpty)
+              if (LegadoRuleClient.exploreEntries(
+                json['exploreUrl'],
+              ).isNotEmpty)
                 'categories',
             },
           },

@@ -4101,11 +4101,14 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
   /// whole page body in place of a book title. Source switching only needs a
   /// short visual identifier; preserve the original value in the model for
   /// matching and selection, but never let it expand a sheet row.
-  static String _displayTitle(String value) {
+  static String _displaySourceField(String value) {
     final normalized = value.replaceAll(RegExp(r'\s+'), ' ').trim();
     const maxLength = 20;
     if (normalized.length <= maxLength) return normalized;
-    return '${normalized.substring(0, maxLength)}…';
+    // This is deliberately a hard 20-character display limit. Do not append
+    // a source-provided suffix: malformed rules have returned a whole web page
+    // in title, author and status fields.
+    return normalized.substring(0, maxLength);
   }
 
   @override
@@ -4130,10 +4133,7 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
               List<BookSourceChapter> chapters = const [];
               try {
                 final detail = await widget.client.getBook(source, book.id);
-                chapters = await widget.client.getChapters(
-                  source,
-                  book.id,
-                );
+                chapters = await widget.client.getChapters(source, book.id);
                 enriched = BookSourceBook(
                   id: book.id,
                   title: detail.title.isEmpty ? book.title : detail.title,
@@ -4200,7 +4200,9 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
         ? chapters.first
         : chapters.firstWhere(
             (item) =>
-                _BookSourceReaderPageState._normalizedChapterTitle(item.title) ==
+                _BookSourceReaderPageState._normalizedChapterTitle(
+                  item.title,
+                ) ==
                 normalized,
             orElse: () => chapters.first,
           );
@@ -4249,7 +4251,7 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
                 Text(
                   _loading
                       ? '正在搜索其他书源（$_completed/${widget.sources.length}）'
-                      : '为《${_displayTitle(widget.title)}》找到 ${_items.length} 个候选',
+                      : '为《${_displaySourceField(widget.title)}》找到 ${_items.length} 个候选',
                 ),
               ],
             ),
@@ -4266,24 +4268,28 @@ class _BookSourceSwitchSheetState extends State<_BookSourceSwitchSheet> {
                     separatorBuilder: (_, __) => const Divider(height: 1),
                     itemBuilder: (context, index) {
                       final item = _items[index];
+                      final details = [
+                        if (item.book.author.isNotEmpty)
+                          _displaySourceField(item.book.author),
+                        _displaySourceField(item.source.name),
+                        if ((item.book.status ?? '').trim().isNotEmpty)
+                          _displaySourceField(item.book.status!.trim()),
+                        if (item.book.chapterCount != null)
+                          '${item.book.chapterCount}章',
+                      ];
                       return ListTile(
                         key: ValueKey(
                           'change-source-${item.source.id}-${item.book.id}',
                         ),
                         title: Text(
-                          _displayTitle(item.book.title),
+                          _displaySourceField(item.book.title),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                         subtitle: Text(
-                          [
-                            if (item.book.author.isNotEmpty) item.book.author,
-                            item.source.name,
-                            if ((item.book.status ?? '').trim().isNotEmpty)
-                              item.book.status!.trim(),
-                            if (item.book.chapterCount != null)
-                              '${item.book.chapterCount}章',
-                          ].join(' · '),
+                          details.join(' · '),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                         trailing: const Icon(Icons.chevron_right_rounded),
                         onTap: () => unawaited(

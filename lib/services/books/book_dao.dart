@@ -123,7 +123,10 @@ class BookDao implements BookImportStore {
       for (final row in rows)
         if (row['id'] is int) row['id'] as int: Book.fromMap(row),
     };
-    return [for (final id in ids) if (byId[id] case final book?) book];
+    return [
+      for (final id in ids)
+        if (byId[id] case final book?) book,
+    ];
   }
 
   Future<Book?> getBookBySource({
