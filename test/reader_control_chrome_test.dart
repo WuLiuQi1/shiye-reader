@@ -100,11 +100,9 @@ void main() {
     );
 
     final greenSurface = _panelGradient(tester).colors.last;
-    final expectedGreen = Color.lerp(
-      ReaderThemes.green.controlBar,
-      Colors.white,
-      0.28,
-    )!;
+    final expectedGreen = GlassEffectConfig.shouldDisableBlur
+        ? ReaderThemes.green.controlBar
+        : Color.lerp(ReaderThemes.green.controlBar, Colors.white, 0.28)!;
     expect(greenSurface.r, closeTo(expectedGreen.r, 0.001));
     expect(greenSurface.g, closeTo(expectedGreen.g, 0.001));
     expect(greenSurface.b, closeTo(expectedGreen.b, 0.001));

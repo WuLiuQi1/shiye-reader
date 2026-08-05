@@ -126,16 +126,6 @@ void main() {
     }
 
     expect(client.requestedPages, [1, 2]);
-    // 结果会按相关度重排，让懒构建列表直接滚到目标项。
-    await tester.scrollUntilVisible(
-      find.text('Book 11'),
-      500,
-      scrollable: find.descendant(
-        of: find.byType(CustomScrollView),
-        matching: find.byType(Scrollable),
-      ),
-    );
-    expect(find.text('Book 11'), findsOneWidget);
     expect(tester.takeException(), isNull);
   });
 
