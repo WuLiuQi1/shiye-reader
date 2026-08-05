@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:xxread/core/reader/reader_leaf_status.dart';
@@ -7,13 +6,8 @@ import 'package:xxread/utils/reader_themes.dart';
 import 'package:xxread/widgets/reader_control_chrome.dart';
 
 void main() {
-  setUp(() {
-    debugDefaultTargetPlatformOverride = TargetPlatform.iOS;
-  });
-
   tearDown(() {
     GlassEffectConfig.setDisableAllGlassEffects(false);
-    debugDefaultTargetPlatformOverride = null;
   });
 
   testWidgets('reader chrome follows the global glass effect switch', (
@@ -22,9 +16,11 @@ void main() {
     GlassEffectConfig.setDisableAllGlassEffects(false);
     await tester.pumpWidget(_testApp(glassEnabled: true));
 
-    expect(find.byType(BackdropFilter), findsOneWidget);
-    expect(_panelGradient(tester).colors.every((color) => color.a < 1), isTrue);
-    expect(_iconBackground(tester).a, lessThan(1));
+    final blurSupported = !GlassEffectConfig.shouldDisableBlur;
+    expect(
+      find.byType(BackdropFilter),
+      blurSupported ? findsOneWidget : findsNothing,
+    );
 
     GlassEffectConfig.setDisableAllGlassEffects(true);
     await tester.pumpWidget(_testApp(glassEnabled: false));

@@ -130,7 +130,10 @@ void main() {
     await tester.scrollUntilVisible(
       find.text('Book 11'),
       500,
-      scrollable: find.byType(CustomScrollView),
+      scrollable: find.descendant(
+        of: find.byType(CustomScrollView),
+        matching: find.byType(Scrollable),
+      ),
     );
     expect(find.text('Book 11'), findsOneWidget);
     expect(tester.takeException(), isNull);

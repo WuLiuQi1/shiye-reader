@@ -30,7 +30,10 @@ void main() {
     );
 
     final expected = Color.lerp(surface, primary, 0.08)!;
-    expect(surfaceColor.a, closeTo(0.60, 0.01));
+    expect(
+      surfaceColor.a,
+      closeTo(GlassEffectConfig.effectiveOpacity(0.60), 0.01),
+    );
     expect(surfaceColor.r, closeTo(expected.r, 0.001));
     expect(surfaceColor.g, closeTo(expected.g, 0.001));
     expect(surfaceColor.b, closeTo(expected.b, 0.001));
@@ -79,7 +82,10 @@ void main() {
       brightness: Brightness.light,
     );
 
-    expect(appBar['opacity'], closeTo(0.60, 0.001));
+    expect(
+      appBar['opacity'],
+      closeTo(GlassEffectConfig.effectiveOpacity(0.60), 0.001),
+    );
     expect(navigation['opacity'], appBar['opacity']);
     expect(reader['opacity'], appBar['opacity']);
   });
