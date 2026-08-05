@@ -8,7 +8,6 @@ import android.view.WindowInsets
 import android.view.WindowInsetsController
 import android.view.KeyEvent
 import android.view.WindowManager
-import android.view.Surface
 import androidx.core.view.WindowCompat
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
@@ -293,15 +292,8 @@ class MainActivity : FlutterActivity() {
                 attrs.preferredDisplayModeId = bestMode.modeId
                 window.attributes = attrs
             }
-            // Some OEMs ignore preferredDisplayModeId for Flutter windows
-            // unless a frame-rate range is also requested. API 30+ exposes a
-            // direct request; older releases continue to use the mode id.
-            if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.R) {
-                window.setFrameRate(
-                    bestMode.refreshRate,
-                    Surface.FRAME_RATE_COMPATIBILITY_FIXED_SOURCE,
-                )
-            }
+            // `Window` has no setFrameRate API. preferredDisplayModeId is the
+            // supported window-level request and remains compatible from API 23.
         } catch (e: Exception) {
             Log.w("xxread", "enableHighRefreshRate failed: ${e.message}")
         }
