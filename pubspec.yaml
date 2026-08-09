@@ -33,7 +33,7 @@ dependencies:
     sdk: flutter
 
   # 文件处理和存储
-  file_picker: ^11.0.2
+  file_picker: ^11.0.3
   shared_preferences: ^2.5.5
   package_info_plus: ^9.0.1
   sqflite: ^2.4.3 # 移动平台数据库
@@ -64,7 +64,7 @@ dependencies:
   flutter_tts: ^4.2.5
 
   # 网络请求（AI 与封面检索）
-  dio: ^5.10.0
+  dio: ^5.11.0
 
   # 高亮笔记
   uuid: ^4.6.0
