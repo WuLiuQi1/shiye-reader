@@ -32,7 +32,6 @@ class AppStateService {
   // 应用状态数据
   AppStateData? _currentState;
   bool _isInitialized = false;
-  bool _isAppActive = true;
 
   // 状态保存定时器
   Timer? _stateSaveTimer;
@@ -57,8 +56,10 @@ class AppStateService {
       // 恢复应用状态
       await _restoreAppState();
 
+      // 启动状态保存定时器
+      _startStateSaveTimer();
+
       _isInitialized = true;
-      if (_isAppActive) _startStateSaveTimer();
       _emitStateEvent(AppStateEvent.initialized(_currentState!));
 
       debugPrint('✅ 应用状态服务初始化成功');
@@ -97,18 +98,6 @@ class AppStateService {
     } catch (e) {
       debugPrint('❌ 应用状态服务销毁失败: $e');
     }
-  }
-
-  /// 后台暂停轮询保存，并在暂停前合并落盘一次。
-  Future<void> setAppActive(bool active) async {
-    if (_isAppActive == active) return;
-    _isAppActive = active;
-    if (!active) {
-      _stateSaveTimer?.cancel();
-      if (_changedSections.isNotEmpty) await _saveAppState();
-      return;
-    }
-    if (_isInitialized) _startStateSaveTimer();
   }
 
   /// 更新阅读状态

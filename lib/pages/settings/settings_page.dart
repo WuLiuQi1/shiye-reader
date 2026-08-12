@@ -20,11 +20,9 @@ import 'package:xxread/pages/settings/about/changelog_page.dart';
 import 'package:xxread/pages/settings/about/open_source_licenses_page.dart';
 import 'package:xxread/pages/settings/ai_settings_page.dart';
 import 'package:xxread/pages/settings/cache_management_page.dart';
-import 'package:xxread/pages/settings/content_filter_rules_page.dart';
 import 'package:xxread/pages/settings/floating_navigation_settings_page.dart';
 import 'package:xxread/pages/settings/library_layout_settings_page.dart';
 import 'package:xxread/pages/settings/sync/webdav_sync_page.dart';
-import 'package:xxread/pages/settings/sync/icloud_backup_page.dart';
 import 'package:xxread/reader_core/ai/ai_service.dart';
 import 'package:xxread/services/core/core_services.dart';
 import 'package:xxread/services/core/online_font_models.dart';
@@ -32,19 +30,19 @@ import 'package:xxread/services/reading/reading_resume_service.dart';
 import 'package:xxread/services/sync/sync_models.dart';
 import 'package:xxread/services/sync/webdav_sync_controller.dart';
 import 'package:xxread/utils/app_themes.dart';
-import 'package:xxread/utils/book_open_transition.dart';
 import 'package:xxread/utils/app_themes_translator.dart';
 import 'package:xxread/utils/font_catalog_helper.dart';
 import 'package:xxread/utils/localization_extension.dart';
 import 'package:xxread/utils/page_style_helper.dart';
-import 'package:xxread/utils/page_transitions.dart';
 import 'package:xxread/utils/reader_themes.dart';
 import 'package:xxread/utils/system_ui_helper.dart';
 import 'package:xxread/utils/ui_style.dart';
 import 'package:xxread/widgets/app_brand_icon.dart';
 import 'package:xxread/widgets/accent_color_picker_sheet.dart';
+import 'package:xxread/widgets/contributors_view.dart';
 import 'package:xxread/widgets/reader_settings_controls.dart';
 import 'package:xxread/widgets/side_toast.dart';
+import 'package:xxread/widgets/update_check_gate.dart';
 
 import 'custom_fonts_page.dart';
 
@@ -97,7 +95,55 @@ class _GithubMarkPainter extends CustomPainter {
   bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
 }
 
-class SettingsPageController extends ChangeNotifier {}
+class _QqMark extends StatelessWidget {
+  const _QqMark();
+
+  @override
+  Widget build(BuildContext context) {
+    return CustomPaint(painter: _QqMarkPainter());
+  }
+}
+
+class _QqMarkPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    final white = Paint()..color = Colors.white;
+    final blue = Paint()..color = const Color(0xFF1677FF);
+    canvas.save();
+    canvas.scale(size.width / 24, size.height / 24);
+
+    canvas.drawOval(const Rect.fromLTWH(6.6, 2.2, 10.8, 17.8), white);
+    canvas.drawOval(const Rect.fromLTWH(4.2, 9.0, 4.6, 8.3), white);
+    canvas.drawOval(const Rect.fromLTWH(15.2, 9.0, 4.6, 8.3), white);
+    canvas.drawOval(const Rect.fromLTWH(5.0, 18.0, 6.8, 3.2), white);
+    canvas.drawOval(const Rect.fromLTWH(12.2, 18.0, 6.8, 3.2), white);
+    canvas.drawOval(const Rect.fromLTWH(8.8, 6.2, 2.1, 2.8), blue);
+    canvas.drawOval(const Rect.fromLTWH(13.1, 6.2, 2.1, 2.8), blue);
+    canvas.drawOval(const Rect.fromLTWH(10.3, 9.1, 3.4, 2.0), blue);
+    canvas.drawRRect(
+      RRect.fromRectAndRadius(
+        const Rect.fromLTWH(6.0, 13.1, 12.0, 2.25),
+        const Radius.circular(1.1),
+      ),
+      blue,
+    );
+    canvas.restore();
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) => false;
+}
+
+class SettingsPageController extends ChangeNotifier {
+  int _supportRevealRequest = 0;
+
+  int get supportRevealRequest => _supportRevealRequest;
+
+  void revealSupportSection() {
+    _supportRevealRequest += 1;
+    notifyListeners();
+  }
+}
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key, this.controller, this.cacheManager});
@@ -112,6 +158,7 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final ReaderHttpAIService _aiService = ReaderHttpAIService();
   final ScrollController _scrollController = ScrollController();
+  final GlobalKey _supportSectionKey = GlobalKey();
   late final AppCacheManager _cacheManager;
 
   bool _enableAutoSave = true;
@@ -122,7 +169,6 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _enableVolumeKeyTurn = true;
   bool _autoResumeReading = false;
   ReaderTopBarStyle _readerTopBarStyle = ReaderTopBarStyle.reader;
-  BookOpenStyle _bookOpenStyle = BookOpenStyle.fade;
 
   bool _enableAutoExtractCover = true;
 
@@ -136,7 +182,9 @@ class _SettingsPageState extends State<SettingsPage> {
   bool _enableMemoryStats = false;
   bool _showFPS = false;
   String _appVersion = '0.9.1';
+  bool _isCheckingForUpdates = false;
   AIProviderSettings? _activeAiSettings;
+  int _lastSupportRevealRequest = 0;
   AppCacheUsage? _cacheUsage;
   bool _loadingCacheUsage = true;
 
@@ -147,11 +195,63 @@ class _SettingsPageState extends State<SettingsPage> {
     unawaited(_loadAppVersion());
     unawaited(_refreshCacheUsage());
     _loadSettings();
+    _attachSettingsController(widget.controller);
     // 状态栏设置现在由_SettingsPageWrapper处理
   }
 
   @override
+  void didUpdateWidget(covariant SettingsPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.controller == widget.controller) return;
+    oldWidget.controller?.removeListener(_handleSupportRevealRequest);
+    _attachSettingsController(widget.controller);
+  }
+
+  void _attachSettingsController(SettingsPageController? controller) {
+    _lastSupportRevealRequest = controller?.supportRevealRequest ?? 0;
+    controller?.addListener(_handleSupportRevealRequest);
+    if (_lastSupportRevealRequest > 0) {
+      _scheduleSupportSectionReveal();
+    }
+  }
+
+  void _handleSupportRevealRequest() {
+    final request = widget.controller?.supportRevealRequest ?? 0;
+    if (request == _lastSupportRevealRequest) return;
+    _lastSupportRevealRequest = request;
+    _scheduleSupportSectionReveal();
+  }
+
+  void _scheduleSupportSectionReveal() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final sectionContext = _supportSectionKey.currentContext;
+      if (sectionContext == null) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          if (mounted) _revealSupportSection();
+        });
+        return;
+      }
+      _revealSupportSection();
+    });
+  }
+
+  void _revealSupportSection() {
+    final sectionContext = _supportSectionKey.currentContext;
+    if (sectionContext == null) return;
+    unawaited(
+      Scrollable.ensureVisible(
+        sectionContext,
+        alignment: 0.12,
+        duration: const Duration(milliseconds: 620),
+        curve: Curves.easeInOutCubic,
+      ),
+    );
+  }
+
+  @override
   void dispose() {
+    widget.controller?.removeListener(_handleSupportRevealRequest);
     _scrollController.dispose();
     super.dispose();
   }
@@ -165,7 +265,6 @@ class _SettingsPageState extends State<SettingsPage> {
   Future<void> _loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     final readerTopBarStyle = await ReaderSystemUiController.loadPreference();
-    await BookOpenStylePreference.load();
     final activeAiSettings = await _aiService.loadSettings();
     if (!mounted) {
       return;
@@ -182,7 +281,6 @@ class _SettingsPageState extends State<SettingsPage> {
       _autoResumeReading =
           prefs.getBool(ReadingResumeService.enabledPreferenceKey) ?? false;
       _readerTopBarStyle = readerTopBarStyle;
-      _bookOpenStyle = BookOpenStylePreference.current;
       // 其他设置
       _enableFullscreen = prefs.getBool('enableFullscreen') ?? false;
 
@@ -322,52 +420,6 @@ class _SettingsPageState extends State<SettingsPage> {
     await ReaderSystemUiController.savePreference(selected);
   }
 
-  String _bookOpenStyleTitle(BookOpenStyle style) => switch (style) {
-    BookOpenStyle.classic => '经典封面展开',
-    BookOpenStyle.fade => '极简淡入',
-    BookOpenStyle.paper => '纸面浮现',
-    BookOpenStyle.side => '侧页推入',
-    BookOpenStyle.doublePage => '双页展开',
-    BookOpenStyle.none => '关闭动画',
-  };
-
-  Future<void> _showBookOpenStylePicker() async {
-    final selected = await showModalBottomSheet<BookOpenStyle>(
-      context: context,
-      showDragHandle: true,
-      builder: (sheetContext) => SafeArea(
-        child: ListView(
-          shrinkWrap: true,
-          padding: const EdgeInsets.only(bottom: 12),
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 4, 20, 10),
-              child: Text(
-                '书籍打开动画',
-                style: Theme.of(context).textTheme.titleLarge,
-              ),
-            ),
-            for (final style in BookOpenStyle.values)
-              RadioListTile<BookOpenStyle>(
-                value: style,
-                groupValue: _bookOpenStyle,
-                title: Text(_bookOpenStyleTitle(style)),
-                subtitle: style == BookOpenStyle.classic
-                    ? const Text('从书架封面展开，效果完整')
-                    : style == BookOpenStyle.fade
-                    ? const Text('默认，轻盈流畅')
-                    : null,
-                onChanged: (value) => Navigator.of(sheetContext).pop(value),
-              ),
-          ],
-        ),
-      ),
-    );
-    if (selected == null || !mounted) return;
-    setState(() => _bookOpenStyle = selected);
-    await BookOpenStylePreference.save(selected);
-  }
-
   @override
   Widget build(BuildContext context) {
     final themeNotifier = Provider.of<ThemeNotifier>(context);
@@ -497,12 +549,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 onTap: _showReaderTopBarStylePicker,
                 icon: Icons.vertical_align_top_rounded,
               ),
-              _buildActionSetting(
-                title: '书籍打开动画',
-                subtitle: _bookOpenStyleTitle(_bookOpenStyle),
-                onTap: _showBookOpenStylePicker,
-                icon: Icons.auto_stories_outlined,
-              ),
             ],
           ),
           const SizedBox(height: 20),
@@ -517,13 +563,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 icon: Icons.travel_explore_outlined,
               ),
               _buildActionSetting(
-                title: '内容过滤规则',
-                subtitle: '屏蔽正文中的网址、乱码和自定义内容',
-                onTap: () =>
-                    _openSettingsSubpage(const ContentFilterRulesPage()),
-                icon: Icons.filter_alt_outlined,
-              ),
-              _buildActionSetting(
                 title: l10n.settingsWebDavSyncTitle,
                 badge: l10n.webDavBetaBadge,
                 subtitle: _webDavSyncSubtitle(webDavSync),
@@ -534,16 +573,6 @@ class _SettingsPageState extends State<SettingsPage> {
                 ),
                 icon: Icons.cloud_outlined,
                 trailing: _webDavSyncTrailing(webDavSync),
-              ),
-              _buildActionSetting(
-                title: 'iCloud 备份',
-                subtitle: '备份书源、书架和阅读进度',
-                onTap: () => Navigator.of(context).push(
-                  MaterialPageRoute<void>(
-                    builder: (_) => const ICloudBackupPage(),
-                  ),
-                ),
-                icon: Icons.cloud_upload_outlined,
               ),
               _buildActionSetting(
                 title: l10n.settingsCacheManagementTitle,
@@ -586,6 +615,20 @@ class _SettingsPageState extends State<SettingsPage> {
                 value: _enableAutoSave,
                 onChanged: (value) => setState(() => _enableAutoSave = value),
                 icon: Icons.save_outlined,
+              ),
+            ],
+          ),
+          const SizedBox(height: 20),
+          _buildSectionCard(
+            title: l10n.settingsSectionAdvancedFeatures,
+            icon: Icons.science_outlined,
+            children: [
+              _buildSwitchSetting(
+                title: l10n.settingsAdditionalSourceProtocolsTitle,
+                subtitle: l10n.settingsAdditionalSourceProtocolsSubtitle,
+                value: appSettings.additionalSourceProtocolsEnabled,
+                onChanged: appSettings.setAdditionalSourceProtocolsEnabled,
+                icon: Icons.extension_outlined,
               ),
             ],
           ),
@@ -641,12 +684,10 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _openBookSourceManagement() {
-    _openSettingsSubpage(const BookSourceManagementPage());
+    Navigator.of(context).push(
+      MaterialPageRoute<void>(builder: (_) => const BookSourceManagementPage()),
+    );
   }
-
-  Future<void> _openSettingsSubpage(Widget page) => Navigator.of(
-    context,
-  ).push(CustomPageTransitions.createSlideScaleRoute<void>(page));
 
   Widget _buildSettingsTopRow(AppLocalizations l10n, bool useRailNavigation) {
     final palette = PageStyleHelper.palette(context);
@@ -1849,7 +1890,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      l10n.settingsAppName,
+                      '拾页',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.3,
@@ -1857,7 +1898,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      l10n.settingsAboutTagline,
+                      '拾起一页，片刻自由',
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: scheme.onSurfaceVariant,
                       ),
@@ -1876,15 +1917,6 @@ class _SettingsPageState extends State<SettingsPage> {
           _buildOpenSourceLicensesLink(),
           const SizedBox(height: 10),
           _buildChangelogLink(),
-          const SizedBox(height: 14),
-          _buildCommunityButton(
-            onPressed: _openGithubRepo,
-            backgroundColor: const Color(0xFF181717),
-            foregroundColor: Colors.white,
-            icon: const _GithubMark(),
-            title: 'GitHub',
-            subtitle: l10n.settingsViewSourceSubtitle,
-          ),
         ],
       ),
     );
@@ -2087,12 +2119,78 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   Future<void> _openGithubRepo() async {
-    final uri = Uri.parse('https://github.com/WuLiuQi1/shiye-reader');
+    final uri = Uri.parse('https://github.com/miloquinn/open-reading');
     final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
     if (!ok && mounted) {
       showSideToast(
         context,
         context.l10n.settingsGithubOpenFailed,
+        icon: Icons.error_outline,
+        kind: SideToastKind.error,
+      );
+    }
+  }
+
+  Future<void> _openOfficialWebsite() async {
+    final ok = await launchUrl(
+      Uri.parse('https://open.xxread.top/'),
+      mode: LaunchMode.externalApplication,
+    );
+    if (!ok && mounted) {
+      showSideToast(
+        context,
+        context.l10n.settingsOfficialWebsiteOpenFailed,
+        icon: Icons.error_outline,
+        kind: SideToastKind.error,
+      );
+    }
+  }
+
+
+  Future<void> _openTelegramChannel() async {
+    final uri = Uri.parse('https://t.me/origoreading');
+    final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!ok && mounted) {
+      showSideToast(
+        context,
+        context.l10n.settingsTelegramOpenFailed,
+        icon: Icons.error_outline,
+        kind: SideToastKind.error,
+      );
+    }
+  }
+
+  Future<void> _openQqChannel() async {
+    final uri = Uri.parse('https://pd.qq.com/s/diin97dya?b=9');
+    final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!ok && mounted) {
+      showSideToast(
+        context,
+        context.l10n.settingsQqChannelOpenFailed,
+        icon: Icons.error_outline,
+        kind: SideToastKind.error,
+      );
+    }
+  }
+
+  Future<void> _checkForUpdates() async {
+    if (_isCheckingForUpdates) return;
+    setState(() => _isCheckingForUpdates = true);
+    await UpdatePromptController.check(context, manual: true);
+    if (mounted) {
+      setState(() => _isCheckingForUpdates = false);
+    }
+  }
+
+  Future<void> _openQqGroup() async {
+    final uri = Uri.parse(
+      'mqqapi://card/show_pslcard?src_type=internal&version=1&uin=1003560209&card_type=group&source=qrcode',
+    );
+    final ok = await launchUrl(uri, mode: LaunchMode.externalApplication);
+    if (!ok && mounted) {
+      showSideToast(
+        context,
+        context.l10n.settingsQqOpenFailed,
         icon: Icons.error_outline,
         kind: SideToastKind.error,
       );

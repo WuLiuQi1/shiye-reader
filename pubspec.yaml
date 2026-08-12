@@ -1,5 +1,5 @@
 name: xxread
-description: "拾页（ShiYe Reader）：基于 Open Reading 修改的开源电子书阅读器。"
+description: "拾页（拾页）：本地优先、跨平台、开放书源的开源电子书阅读器。"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -31,6 +31,8 @@ dependencies:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
+
+  cupertino_icons: ^1.0.9
 
   # 文件处理和存储
   file_picker: ^11.0.2
@@ -106,9 +108,7 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/changelog/changelog.json
-    # Only runtime images belong in the application bundle. Launcher source
-    # artwork and removed donation graphics stay out of release packages.
-    - assets/images/app_icon.png
+    - assets/images/
     - assets/fonts/licenses/
     - assets/icons/
     - LICENSE

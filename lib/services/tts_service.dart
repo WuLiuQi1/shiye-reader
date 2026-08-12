@@ -283,14 +283,14 @@ class TtsService extends ChangeNotifier implements ReaderAloudAdjustableEngine {
 
     if (!kIsWeb && defaultTargetPlatform == TargetPlatform.iOS) {
       await tts.setSharedInstance(true);
-      // Keep the shared AVAudioSession alive while the app is backgrounded or
-      // the display is locked. The reader explicitly stops TTS when listening
-      // ends, so auto-stopping the session here can cut off a long utterance.
-      await tts.autoStopSharedSession(false);
+      await tts.autoStopSharedSession(true);
       await tts.setIosAudioCategory(
         IosTextToSpeechAudioCategory.playback,
-        const [],
-        IosTextToSpeechAudioMode.defaultMode,
+        const [
+          IosTextToSpeechAudioCategoryOptions.mixWithOthers,
+          IosTextToSpeechAudioCategoryOptions.defaultToSpeaker,
+        ],
+        IosTextToSpeechAudioMode.voicePrompt,
       );
     }
   }

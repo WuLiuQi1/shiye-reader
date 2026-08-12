@@ -34,7 +34,6 @@ class ReaderTextPage {
     this.displayStart = 0,
     int? displayEnd,
     this.isChapterTitle = false,
-    this.showsChapterTitle = false,
   }) : endOffset = endOffset ?? startOffset + text.length,
        displayEnd = displayEnd ?? displayStart + text.length;
 
@@ -45,8 +44,7 @@ class ReaderTextPage {
       layout = null,
       displayStart = 0,
       displayEnd = 0,
-      isChapterTitle = true,
-      showsChapterTitle = true;
+      isChapterTitle = true;
 
   /// The complete display-text range owned by this page. It may include folded
   /// leading/trailing blank rows that remain addressable for source coverage.
@@ -59,7 +57,9 @@ class ReaderTextPage {
   final int displayStart;
   final int displayEnd;
   final bool isChapterTitle;
-  final bool showsChapterTitle;
+
+  /// Compatibility name for the former book-source-only page model.
+  bool get showsChapterTitle => isChapterTitle;
 
   /// Maps a UTF-16 offset in the text actually painted by this page back to
   /// the canonical chapter text. Generated indentation and paragraph spacing
@@ -78,6 +78,15 @@ class ReaderTextPage {
     return preferVisibleStart
         ? textLayout.sourceOffsetForVisibleStart(displayOffset)
         : textLayout.sourceOffsetForDisplayOffset(displayOffset);
+  }
+
+  int textOffsetForSourceOffset(int sourceOffset) {
+    final textLayout = layout;
+    if (textLayout == null) {
+      return (sourceOffset - startOffset).clamp(0, text.length);
+    }
+    final displayOffset = textLayout.displayOffsetForSourceOffset(sourceOffset);
+    return (displayOffset - displayStart).clamp(0, displayEnd - displayStart);
   }
 
   TextSpan buildSpan({
@@ -168,7 +177,10 @@ List<ReaderTextPage> _paginateReaderText({
   bool includeChapterTitlePage = false,
   ReaderSourceSpanBuilder? sourceSpanBuilder,
 }) {
-  final pages = <ReaderTextPage>[];
+  final pages = <ReaderTextPage>[
+    if (includeChapterTitlePage)
+      ReaderTextPage.chapterTitle(sourceOffset: sourceOffset),
+  ];
   final layout = ReaderTextLayout.build(
     text,
     sourceOffset: sourceOffset,
@@ -186,7 +198,6 @@ List<ReaderTextPage> _paginateReaderText({
           startOffset: sourceOffset,
           endOffset: sourceOffset + text.length,
           layout: layout,
-          showsChapterTitle: includeChapterTitlePage,
         ),
       );
     }
@@ -201,7 +212,6 @@ List<ReaderTextPage> _paginateReaderText({
         endOffset: sourceOffset + text.length,
         layout: layout,
         displayEnd: layout.text.length,
-        showsChapterTitle: includeChapterTitlePage,
       ),
     );
     return pages;
@@ -231,24 +241,19 @@ List<ReaderTextPage> _paginateReaderText({
       ).paginate(
         text: layout.text,
         spanBuilder: buildSpan,
-        firstPageHeight: includeChapterTitlePage
-            ? ((firstPageHeight ?? maxHeight) - ((style.fontSize ?? 19) * 2.9))
-                  .clamp(1.0, maxHeight)
-            : firstPageHeight,
+        firstPageHeight: firstPageHeight,
       );
   pages.addAll(
-    ranges.indexed.map((entry) {
-      final (index, range) = entry;
-      return ReaderTextPage(
+    ranges.map(
+      (range) => ReaderTextPage(
         text: layout.text.substring(range.start, range.end),
         startOffset: layout.sourceOffsetForDisplayOffset(range.start),
         endOffset: layout.sourceOffsetForDisplayOffset(range.end),
         layout: layout,
         displayStart: range.visibleStart,
         displayEnd: range.visibleEnd,
-        showsChapterTitle: includeChapterTitlePage && index == 0,
-      );
-    }),
+      ),
+    ),
   );
 
   assert(pages.isNotEmpty);

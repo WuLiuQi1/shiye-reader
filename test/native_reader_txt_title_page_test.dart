@@ -17,7 +17,9 @@ import 'package:xxread/utils/book_open_transition.dart';
 import 'package:xxread/utils/font_catalog_helper.dart';
 import 'package:xxread/utils/reader_themes.dart';
 import 'package:xxread/widgets/reader_navigation_sheet.dart';
+import 'package:xxread/widgets/reader_chapter_title_page.dart';
 import 'package:xxread/widgets/reader_paper_page_leaf.dart';
+import 'package:xxread/widgets/reader_theme_background.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -71,9 +73,7 @@ void main() {
     }
   });
 
-  testWidgets('TXT chapter title shares the first page with body text', (
-    tester,
-  ) async {
+  testWidgets('TXT chapter title is a dedicated first page', (tester) async {
     await tester.binding.setSurfaceSize(const Size(400, 800));
     addTearDown(() => tester.binding.setSurfaceSize(null));
 
@@ -100,7 +100,7 @@ void main() {
         await Future<void>.delayed(const Duration(milliseconds: 50));
         await tester.pump();
         if (find
-            .byKey(const ValueKey('native-reader-content'))
+            .byKey(const ValueKey('native-chapter-title-page'))
             .evaluate()
             .isNotEmpty) {
           return;
@@ -110,15 +110,125 @@ void main() {
 
     await _pumpUntilFound(
       tester,
-      find.byKey(const ValueKey('native-reader-content')),
+      find.byKey(const ValueKey('native-chapter-title-page')),
     );
 
-    expect(
+    final title = tester.widget<Text>(
       find.byKey(const ValueKey('native-chapter-title-page')),
-      findsNothing,
     );
-    expect(_richTextContaining('第十二章  风暴将至'), findsWidgets);
-    expect(_richTextContaining('天边压着墨色的云。'), findsWidgets);
+    expect(title.data, '第十二章  风暴将至');
+    expect(title.textAlign, TextAlign.center);
+    expect(title.style?.fontSize, 34);
+    expect(find.text('1 / 2'), findsOneWidget);
+    expect(_richTextContaining('天边压着墨色的云。'), findsNothing);
+  });
+
+  testWidgets('native open failure keeps the seeded reader theme background', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      ReaderSettingsStore.pageModeKey: ReaderPageMode.instantPage.name,
+      ReaderSettingsStore.themeKey: ReaderThemes.night.id,
+    });
+    final brokenFile = File('${temporaryDirectory.path}/broken.epub')
+      ..writeAsBytesSync(const [0, 1, 2, 3]);
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: NativeReaderPage(
+          initialTheme: ReaderThemes.night,
+          book: Book(
+            title: 'Broken EPUB',
+            filePath: brokenFile.path,
+            format: 'epub',
+            fileModifiedTime: brokenFile
+                .lastModifiedSync()
+                .millisecondsSinceEpoch,
+          ),
+        ),
+      ),
+    );
+
+    await tester.runAsync(() async {
+      for (var attempt = 0; attempt < 30; attempt++) {
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        await tester.pump();
+        if (find
+            .byKey(const ValueKey('native-reader-error'))
+            .evaluate()
+            .isNotEmpty) {
+          return;
+        }
+      }
+    });
+    await _pumpUntilFound(
+      tester,
+      find.byKey(const ValueKey('native-reader-error')),
+    );
+
+    final background = tester.widget<ReaderThemeBackground>(
+      find.descendant(
+        of: find.byKey(const ValueKey('native-reader-error')),
+        matching: find.byType(ReaderThemeBackground),
+      ),
+    );
+    expect(background.palette.background, ReaderThemes.night.background);
+    expect(find.textContaining('Broken EPUB'), findsWidgets);
+  });
+
+  testWidgets('disabled TXT title page places the heading above body text', (
+    tester,
+  ) async {
+    SharedPreferences.setMockInitialValues({
+      ReaderSettingsStore.pageModeKey: ReaderPageMode.instantPage.name,
+      ReaderSettingsStore.txtChapterTitlePageKey: false,
+    });
+    await tester.binding.setSurfaceSize(const Size(400, 800));
+    addTearDown(() => tester.binding.setSurfaceSize(null));
+
+    await tester.pumpWidget(
+      MaterialApp(
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        home: NativeReaderPage(
+          book: Book(
+            title: '测试书',
+            filePath: bookFile.path,
+            format: 'txt',
+            textEncoding: 'utf8',
+            fileModifiedTime: bookFile
+                .lastModifiedSync()
+                .millisecondsSinceEpoch,
+          ),
+        ),
+      ),
+    );
+
+    await tester.runAsync(() async {
+      for (var attempt = 0; attempt < 30; attempt++) {
+        await Future<void>.delayed(const Duration(milliseconds: 50));
+        await tester.pump();
+        if (find
+            .byKey(ReaderInlineChapterTitle.contentKey)
+            .evaluate()
+            .isNotEmpty) {
+          return;
+        }
+      }
+    });
+    await _pumpUntilFound(
+      tester,
+      find.byKey(ReaderInlineChapterTitle.contentKey),
+    );
+
+    expect(find.byKey(ReaderChapterTitlePage.contentKey), findsNothing);
+    expect(
+      tester.widget<Text>(find.byKey(ReaderInlineChapterTitle.contentKey)).data,
+      '第十二章  风暴将至',
+    );
+    expect(_richTextContaining('天边压着墨色的云。'), findsOneWidget);
+    expect(find.text('1 / 1'), findsOneWidget);
   });
 
   testWidgets('opening placeholder uses the seeded reader theme', (
@@ -238,62 +348,61 @@ void main() {
     );
   });
 
-  testWidgets('vertical paging keeps the TXT chapter title with body text', (
-    tester,
-  ) async {
-    SharedPreferences.setMockInitialValues({
-      ReaderSettingsStore.pageModeKey: ReaderPageMode.verticalScroll.name,
-    });
-    await tester.binding.setSurfaceSize(const Size(400, 800));
-    addTearDown(() => tester.binding.setSurfaceSize(null));
+  testWidgets(
+    'vertical paging preserves the dedicated TXT chapter title page',
+    (tester) async {
+      SharedPreferences.setMockInitialValues({
+        ReaderSettingsStore.pageModeKey: ReaderPageMode.verticalScroll.name,
+      });
+      await tester.binding.setSurfaceSize(const Size(400, 800));
+      addTearDown(() => tester.binding.setSurfaceSize(null));
 
-    await tester.pumpWidget(
-      MaterialApp(
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
-        home: NativeReaderPage(
-          book: Book(
-            title: 'Vertical title test',
-            filePath: bookFile.path,
-            format: 'txt',
-            textEncoding: 'utf8',
-            fileModifiedTime: bookFile
-                .lastModifiedSync()
-                .millisecondsSinceEpoch,
+      await tester.pumpWidget(
+        MaterialApp(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          home: NativeReaderPage(
+            book: Book(
+              title: 'Vertical title test',
+              filePath: bookFile.path,
+              format: 'txt',
+              textEncoding: 'utf8',
+              fileModifiedTime: bookFile
+                  .lastModifiedSync()
+                  .millisecondsSinceEpoch,
+            ),
           ),
         ),
-      ),
-    );
+      );
 
-    await tester.runAsync(() async {
-      for (var attempt = 0; attempt < 30; attempt++) {
-        await Future<void>.delayed(const Duration(milliseconds: 50));
-        await tester.pump();
-        if (find
-            .byKey(const ValueKey('native-reader-content'))
-            .evaluate()
-            .isNotEmpty) {
-          return;
+      await tester.runAsync(() async {
+        for (var attempt = 0; attempt < 30; attempt++) {
+          await Future<void>.delayed(const Duration(milliseconds: 50));
+          await tester.pump();
+          if (find
+              .byKey(const ValueKey('native-chapter-title-page'))
+              .evaluate()
+              .isNotEmpty) {
+            return;
+          }
         }
-      }
-    });
+      });
 
-    await _pumpUntilFound(
-      tester,
-      find.byKey(const ValueKey('native-reader-content')),
-    );
+      await _pumpUntilFound(
+        tester,
+        find.byKey(const ValueKey('native-chapter-title-page')),
+      );
 
-    expect(
-      find.byKey(const ValueKey('native-chapter-title-page')),
-      findsNothing,
-    );
-    expect(_richTextContaining('第十二章  风暴将至'), findsWidgets);
-    expect(_richTextContaining('天边压着墨色的云。'), findsWidgets);
-    expect(
-      find.byKey(const ValueKey('native-vertical-reading-window')),
-      findsOneWidget,
-    );
-  });
+      expect(
+        find.byKey(const ValueKey('native-chapter-title-page')),
+        findsOneWidget,
+      );
+      expect(
+        find.byKey(const ValueKey('native-vertical-reading-window')),
+        findsOneWidget,
+      );
+    },
+  );
 
   testWidgets(
     'horizontal TOC jump mounts the target title on the first frame and keeps the previous page ready',
@@ -379,10 +488,13 @@ void main() {
       );
       await tester.pump();
       expect(
-        find.byKey(const ValueKey('native-chapter-title-page')),
-        findsNothing,
+        tester
+            .widgetList<Text>(
+              find.byKey(const ValueKey('native-chapter-title-page')),
+            )
+            .any((title) => title.data == '第8章 远方'),
+        isTrue,
       );
-      expect(_richTextContaining('第8章 远方'), findsWidgets);
 
       final titlePage = jumpedController.page!;
       final previous = jumpedController.previousPage(
@@ -474,17 +586,16 @@ void main() {
         await Future<void>.delayed(const Duration(milliseconds: 50));
         await tester.pump();
         if (find
-            .byKey(const ValueKey('native-reader-content'))
+            .byKey(const ValueKey('native-chapter-title-page'))
             .evaluate()
             .isNotEmpty) {
           return;
         }
       }
     });
-    expect(find.byKey(const ValueKey('native-reader-content')), findsOneWidget);
     expect(
       find.byKey(const ValueKey('native-chapter-title-page')),
-      findsNothing,
+      findsOneWidget,
     );
     final readerOpacity = tester.widget<Opacity>(
       find.byKey(const ValueKey('book-open-transition-reader-opacity')),

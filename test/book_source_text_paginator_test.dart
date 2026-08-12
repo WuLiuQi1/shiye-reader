@@ -26,7 +26,8 @@ void main() {
     );
 
     expect(pages.length, greaterThan(1));
-    expect(pages.every((page) => page.text.isNotEmpty), isTrue);
+    expect(pages.first.text, isEmpty);
+    expect(pages.skip(1).every((page) => page.text.isNotEmpty), isTrue);
     expectCanonicalCoverage(pages, text);
     expect(pages.first.showsChapterTitle, isTrue);
     expect(pages.skip(1).every((page) => !page.showsChapterTitle), isTrue);
@@ -150,11 +151,12 @@ void main() {
       textDirection: TextDirection.ltr,
     );
 
-    expect(pages, hasLength(1));
+    expect(pages, hasLength(2));
     expect(pages.first.showsChapterTitle, isTrue);
-    expect(pages.first.text, text);
-    expect(pages.first.startOffset, 0);
-    expect(pages.first.endOffset, text.length);
+    expect(pages.last.text, text);
+    expect(pages.last.showsChapterTitle, isFalse);
+    expect(pages.last.startOffset, 0);
+    expect(pages.last.endOffset, text.length);
   });
 
   testWidgets('preserves long content when continuing page height is invalid', (
@@ -171,11 +173,11 @@ void main() {
       textDirection: TextDirection.ltr,
     );
 
-    expect(pages, hasLength(1));
-    expect(pages.first.showsChapterTitle, isTrue);
-    expect(pages.first.text, text);
-    expect(pages.first.startOffset, 0);
-    expect(pages.first.endOffset, text.length);
+    expect(pages, hasLength(2));
+    expect(pages.first.isChapterTitle, isTrue);
+    expect(pages.last.text, text);
+    expect(pages.last.startOffset, 0);
+    expect(pages.last.endOffset, text.length);
   });
 
   testWidgets('does not strand Chinese closing punctuation at a page start', (
@@ -321,9 +323,9 @@ void main() {
       paragraphSpacing: 2,
     );
 
-    expect(pages, hasLength(1));
-    expect(pages.first.showsChapterTitle, isTrue);
-    expect(pages.first.text, isEmpty);
+    expect(pages, hasLength(2));
+    expect(pages.first.isChapterTitle, isTrue);
+    expect(pages.last.text, isEmpty);
     expectCanonicalCoverage(pages, text);
   });
 }

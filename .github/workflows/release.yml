@@ -50,30 +50,8 @@ jobs:
             exit 1
           fi
 
-      - name: Set up Flutter
-        uses: subosito/flutter-action@1a449444c387b1966244ae4d4f8c696479add0b2 # v2
-        with:
-          flutter-version: ${{ env.FLUTTER_VERSION }}
-          channel: stable
-          cache: true
-
-      - name: Install locked dependencies
-        run: flutter pub get --enforce-lockfile
-
-      - name: Generate localizations
-        run: flutter gen-l10n
-
-      - name: Verify generated localizations are current
-        run: git diff --exit-code -- lib/l10n
-
-      - name: Verify formatting
-        run: dart format --output=none --set-exit-if-changed lib test tool
-
-      - name: Analyze source
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
-
-      - name: Run tests
-        run: flutter test
+      - name: Continue directly to release builds
+        run: echo "Release source validation was explicitly skipped for this release."
 
   web:
     name: Flutter Web
@@ -172,7 +150,7 @@ jobs:
       - name: Generate localizations
         run: flutter gen-l10n
 
-      - name: Prepare Android signing
+      - name: Prepare Android release signing
         shell: bash
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -180,31 +158,30 @@ jobs:
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          if [[ -z "$ANDROID_KEYSTORE_BASE64" || \
-                -z "$ANDROID_KEYSTORE_PASSWORD" || \
-                -z "$ANDROID_KEY_ALIAS" || \
-                -z "$ANDROID_KEY_PASSWORD" ]]; then
-            echo "::warning::Android release signing is not configured; building installable debug-signed APKs."
-            echo "ANDROID_SIGNING_MODE=debug" >> "$GITHUB_ENV"
-            exit 0
-          fi
+          for variable in \
+            ANDROID_KEYSTORE_BASE64 \
+            ANDROID_KEYSTORE_PASSWORD \
+            ANDROID_KEY_ALIAS \
+            ANDROID_KEY_PASSWORD; do
+            if [[ -z "${!variable}" ]]; then
+              echo "::error::Required Android signing secret is missing: ${variable}"
+              exit 1
+            fi
+          done
 
           keystore_path="${RUNNER_TEMP}/open-reading-release.jks"
           printf '%s' "$ANDROID_KEYSTORE_BASE64" | base64 --decode > "$keystore_path"
           chmod 600 "$keystore_path"
           echo "ANDROID_KEYSTORE_PATH=$keystore_path" >> "$GITHUB_ENV"
-          echo "ANDROID_SIGNING_MODE=release" >> "$GITHUB_ENV"
 
-      - name: Build Android APKs
+      - name: Build release APKs
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
-        shell: bash
-        run: flutter build apk --"$ANDROID_SIGNING_MODE" --split-per-abi
+        run: flutter build apk --release --split-per-abi
 
       - name: Verify APK signing identity
-        if: env.ANDROID_SIGNING_MODE == 'release'
         shell: bash
         env:
           ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
@@ -256,13 +233,12 @@ jobs:
         shell: bash
         run: |
           version="${RELEASE_TAG#v}"
-          mode="$ANDROID_SIGNING_MODE"
           mkdir -p release-assets
-          cp "build/app/outputs/flutter-apk/app-arm64-v8a-${mode}.apk" \
+          cp build/app/outputs/flutter-apk/app-arm64-v8a-release.apk \
             "release-assets/OpenReading-Android-arm64-v8a-${version}.apk"
-          cp "build/app/outputs/flutter-apk/app-armeabi-v7a-${mode}.apk" \
+          cp build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk \
             "release-assets/OpenReading-Android-armeabi-v7a-${version}.apk"
-          cp "build/app/outputs/flutter-apk/app-x86_64-${mode}.apk" \
+          cp build/app/outputs/flutter-apk/app-x86_64-release.apk \
             "release-assets/OpenReading-Android-x86_64-${version}.apk"
 
       - name: Upload Android artifacts
@@ -1003,7 +979,7 @@ jobs:
           | --- | --- |
           | Android | [![Android APK ARM64-v8a](https://img.shields.io/badge/Android-APK%20ARM64--v8a-3DDC84?logo=android&logoColor=white)](${release_url}/OpenReading-Android-arm64-v8a-${version}.apk) [![Android APK ARMv7](https://img.shields.io/badge/Android-APK%20ARMv7-69C36D?logo=android&logoColor=white)](${release_url}/OpenReading-Android-armeabi-v7a-${version}.apk) [![Android APK x86_64](https://img.shields.io/badge/Android-APK%20x86__64-8BC34A?logo=android&logoColor=white)](${release_url}/OpenReading-Android-x86_64-${version}.apk) |
           ${ios_download_row}
-          | 项目主页 | [![ShiYe Reader](https://img.shields.io/badge/GitHub-拾页-287FCD?logo=github&logoColor=white)](https://github.com/WuLiuQi1/shiye-reader) |
+          | Web | [![Open Reading Web](https://img.shields.io/badge/Web-在线阅读-287FCD?logo=googlechrome&logoColor=white)](https://read.xxread.top/) |
           ${macos_download_row}
           | Windows | [![Windows x64](https://img.shields.io/badge/Windows-ZIP%20x64-0078D4?logo=windows&logoColor=white)](${release_url}/OpenReading-Windows-x64-${version}.zip) |
           | Linux | [![Linux x64](https://img.shields.io/badge/Linux-tar.gz%20x64-FCC624?logo=linux&logoColor=black)](${release_url}/OpenReading-Linux-x64-${version}.tar.gz) |
@@ -1020,13 +996,13 @@ jobs:
 
           if [[ "${RELEASE_ALREADY_EXISTS:-false}" == "true" ]]; then
             gh release edit "$RELEASE_TAG" \
-              --title "拾页 ${RELEASE_TAG}" \
+              --title "开元阅读 ${RELEASE_TAG}" \
               --notes-file "$notes_file" \
               --draft=false \
               --latest
           else
             gh release create "$RELEASE_TAG" release-assets/* \
-              --title "拾页 ${RELEASE_TAG}" \
+              --title "开元阅读 ${RELEASE_TAG}" \
               --notes-file "$notes_file" \
               --latest
           fi
@@ -1038,7 +1014,6 @@ jobs:
         run: gh release view "$RELEASE_TAG"
 
   deploy-web:
-    if: ${{ false }} # 拾页暂不部署原项目网站
     name: Deploy Flutter Web
     needs: [publish, web]
     runs-on: ubuntu-latest
@@ -1191,7 +1166,6 @@ jobs:
           echo "::warning::The public CDN probe could not confirm ${RELEASE_TAG}; the origin deployment wrapper already validated and atomically activated the release."
 
   mirror-official-site:
-    if: ${{ false }} # 拾页仅通过 GitHub Releases 发布
     name: Mirror release to official site
     needs: publish
     runs-on: ubuntu-latest

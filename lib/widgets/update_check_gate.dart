@@ -120,7 +120,7 @@ class UpdatePromptController {
     if (defaultTargetPlatform != TargetPlatform.android || kIsWeb) {
       final websiteUrl =
           release.websiteAsset?.websiteUrl ??
-          Uri.parse('https://github.com/WuLiuQi1/shiye-reader/releases');
+          Uri.parse('https://open.xxread.top/download');
       return _openExternal(context, websiteUrl);
     }
 

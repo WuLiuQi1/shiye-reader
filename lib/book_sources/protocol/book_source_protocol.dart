@@ -1,11 +1,11 @@
 import 'dart:convert';
 
 const String openReadingSourceProtocol = 'open-reading-source';
-const String openReadingSourceProtocolVersion = '1.4';
+const String openReadingSourceProtocolVersion = '1.5';
 const String openReadingSourceProtocolRepositoryUrl =
     'https://github.com/miloquinn/open-reading-source-protocol';
 const String openReadingRightsReportUrl =
-    'https://github.com/WuLiuQi1/shiye-reader/issues/new?template=rights_report.yml';
+    'https://github.com/miloquinn/open-reading/issues/new?template=rights_report.yml';
 const String openReadingSourceDiscoveryPath =
     '.well-known/open-reading-source.json';
 
@@ -67,8 +67,9 @@ class BookSourceManifest {
     if (protocol != openReadingSourceProtocol) {
       throw BookSourceProtocolException('Unsupported protocol: $protocol');
     }
-    if (protocolVersion.split('.').first !=
-        openReadingSourceProtocolVersion.split('.').first) {
+    if (!RegExp(r'^\d+\.\d+$').hasMatch(protocolVersion) ||
+        protocolVersion.split('.').first !=
+            openReadingSourceProtocolVersion.split('.').first) {
       throw BookSourceProtocolException(
         'Unsupported protocol version: $protocolVersion',
       );
@@ -229,7 +230,6 @@ class BookSourceBook {
   final List<String> categories;
   final String? status;
   final String? latestChapter;
-  final int? chapterCount;
   final DateTime? updatedAt;
 
   const BookSourceBook({
@@ -241,7 +241,6 @@ class BookSourceBook {
     this.coverUrl,
     this.status,
     this.latestChapter,
-    this.chapterCount,
     this.updatedAt,
   });
 
@@ -256,7 +255,6 @@ class BookSourceBook {
       categories: _stringList(json['categories']),
       status: (json['status'] as String?)?.trim(),
       latestChapter: (json['latestChapter'] as String?)?.trim(),
-      chapterCount: (json['chapterCount'] as num?)?.toInt(),
       updatedAt: updatedAtValue == null
           ? null
           : DateTime.tryParse(updatedAtValue),
@@ -272,7 +270,6 @@ class BookSourceBook {
     'categories': categories,
     if (status != null) 'status': status,
     if (latestChapter != null) 'latestChapter': latestChapter,
-    if (chapterCount != null) 'chapterCount': chapterCount,
     if (updatedAt != null) 'updatedAt': updatedAt!.toIso8601String(),
   };
 }
@@ -428,7 +425,7 @@ Uri _httpUri(String value) {
 int? _catalogPageSizeFromJson(Object? value) {
   if (value is! num) return null;
   final parsed = value.toInt();
-  return parsed > 0 ? parsed : null;
+  return parsed >= 1 && parsed <= 1000 ? parsed : null;
 }
 
 Uri? _optionalHttpUri(Object? value) {

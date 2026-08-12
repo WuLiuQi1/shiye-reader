@@ -35,8 +35,6 @@ class DataCacheService {
 
   // 标记数据是否已修改
   final Set<String> _dirtyKeys = {};
-  bool _isInitialized = false;
-  bool _isAppActive = true;
 
   // 自动保存间隔
   static const Duration _autoSaveInterval = Duration(seconds: 30);
@@ -54,11 +52,8 @@ class DataCacheService {
       await _restoreCacheData();
 
       // 启动定时器
-      _isInitialized = true;
-      if (_isAppActive) {
-        _startAutoSaveTimer();
-        _startDataSyncTimer();
-      }
+      _startAutoSaveTimer();
+      _startDataSyncTimer();
 
       debugPrint('✅ 数据缓存服务初始化成功');
     } catch (e) {
@@ -85,27 +80,10 @@ class DataCacheService {
       _cache.clear();
       _cacheTimestamp.clear();
       _dirtyKeys.clear();
-      _isInitialized = false;
 
       debugPrint('✅ 数据缓存服务销毁完成');
     } catch (e) {
       debugPrint('❌ 数据缓存服务销毁失败: $e');
-    }
-  }
-
-  /// 后台不保留周期唤醒；切回前台时再恢复定时保存和同步。
-  Future<void> setAppActive(bool active) async {
-    if (_isAppActive == active) return;
-    _isAppActive = active;
-    if (!active) {
-      _autoSaveTimer?.cancel();
-      _dataSyncTimer?.cancel();
-      await _saveAllDirtyData();
-      return;
-    }
-    if (_isInitialized) {
-      _startAutoSaveTimer();
-      _startDataSyncTimer();
     }
   }
 

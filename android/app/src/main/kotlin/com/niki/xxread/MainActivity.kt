@@ -292,8 +292,6 @@ class MainActivity : FlutterActivity() {
                 attrs.preferredDisplayModeId = bestMode.modeId
                 window.attributes = attrs
             }
-            // `Window` has no setFrameRate API. preferredDisplayModeId is the
-            // supported window-level request and remains compatible from API 23.
         } catch (e: Exception) {
             Log.w("xxread", "enableHighRefreshRate failed: ${e.message}")
         }

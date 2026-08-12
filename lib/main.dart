@@ -46,9 +46,6 @@ import 'widgets/update_check_gate.dart';
 void main(List<String> arguments) async {
   // 确保可以在 runApp 前安全调用 SystemChrome
   WidgetsFlutterBinding.ensureInitialized();
-  // Preferences that only affect a later navigation transition should not
-  // delay the first frame.
-  unawaited(BookOpenStylePreference.load());
 
   // 🚀 启用高刷新率支持
   if (!kIsWeb && (Platform.isAndroid || Platform.isIOS)) {
@@ -56,7 +53,7 @@ void main(List<String> arguments) async {
     SystemChrome.setApplicationSwitcherDescription(
       const ApplicationSwitcherDescription(
         label: '拾页',
-        primaryColor: 0xFF134C37,
+        primaryColor: 0xFF1976D2,
       ),
     );
     if (Platform.isAndroid) {
@@ -481,9 +478,6 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
 
   @override
   void didChangeAppLifecycleState(AppLifecycleState state) {
-    final active = state == AppLifecycleState.resumed;
-    unawaited(DataCacheService().setAppActive(active));
-    unawaited(AppStateService().setAppActive(active));
     if (state == AppLifecycleState.resumed) {
       unawaited(_runAutomaticWebDavSyncIfNeeded());
     }
@@ -676,7 +670,6 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
             book: shelfService.sourceBookFrom(book),
             client: client,
             shelfService: shelfService,
-            initialShelfBookId: book.id,
           ),
           waitForReaderReady: true,
         );
@@ -713,11 +706,10 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
                 navigatorKey: _navigatorKey,
                 onGenerateTitle: (context) => context.l10n.appTitle,
                 debugShowCheckedModeBanner: false,
-                // Keep each platform's native scroll physics. Forcing iOS
-                // bouncing globally made every Android list simulate an extra
-                // overscroll spring, which showed up as app-wide vertical
-                // scrolling jank on mid-range devices.
-                scrollBehavior: const MaterialScrollBehavior(),
+                // 🚀 启用高性能渲染，支持120Hz高刷新率
+                scrollBehavior: const MaterialScrollBehavior().copyWith(
+                  physics: const BouncingScrollPhysics(),
+                ),
                 theme: _buildLightTheme(
                   themeNotifier.currentAppTheme,
                   appFontFamily,
@@ -773,7 +765,9 @@ class _XxReadAppState extends State<XxReadApp> with WidgetsBindingObserver {
     }
 
     // 已同意协议，显示主页面
-    return const UpdateCheckGate(child: HomeShellPage());
+    return const UpdateCheckGate(
+      child: HomeShellPage(),
+    );
   }
 
   Widget _buildBootstrapErrorPage(BuildContext context) {

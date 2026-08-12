@@ -109,7 +109,7 @@ class AppRelease {
       'url',
     ]);
     final websiteUrl = _firstString(payload, ['website_url']).isEmpty
-        ? 'https://github.com/WuLiuQi1/shiye-reader/releases'
+        ? 'https://open.xxread.top/download'
         : _firstString(payload, ['website_url']);
     final sha256 = _string(payload, 'sha256').toLowerCase();
     final fileSize = _integer(payload['file_size'] ?? payload['size']);
@@ -213,35 +213,78 @@ class UpdateTarget {
 }
 
 class UpdateCheckService {
-  UpdateCheckService({Dio? dio})
+  UpdateCheckService({Dio? dio, UpdateTargetResolver? targetResolver})
     : _dio =
           dio ??
           Dio(
             BaseOptions(
               connectTimeout: const Duration(seconds: 8),
               receiveTimeout: const Duration(seconds: 8),
-              headers: {if (!kIsWeb) 'User-Agent': 'ShiYeReader-UpdateCheck'},
+              headers: {if (!kIsWeb) 'User-Agent': 'Shiye-UpdateCheck'},
             ),
-          );
+          ),
+      _targetResolver = targetResolver ?? UpdateTarget.current;
 
   static const githubLatestReleaseUrl =
-      'https://api.github.com/repos/WuLiuQi1/shiye-reader/releases/latest';
+      'https://api.github.com/repos/miloquinn/open-reading/releases/latest';
+  static const websiteLatestReleaseUrl =
+      'https://open.xxread.top/api/v1/releases/latest';
 
   final Dio _dio;
+  final UpdateTargetResolver _targetResolver;
 
   Future<UpdateCheckResult> check({String? currentVersion}) async {
     final installedVersion = normalizeVersion(
       currentVersion ?? (await PackageInfo.fromPlatform()).version,
     );
-    final latest = await _fetchGithubRelease();
-    if (latest == null) {
-      throw const FormatException('No valid update source is available');
+    UpdateTarget? target;
+    try {
+      target = await _targetResolver();
+    } catch (_) {
+      target = null;
     }
+    final releases = await Future.wait<AppRelease?>([
+      target == null
+          ? Future<AppRelease?>.value()
+          : _fetchWebsiteRelease(target),
+      _fetchGithubRelease(),
+    ]);
+    final website = releases[0];
+    final github = releases[1];
+    final latest = selectLatestRelease(website: website, github: github);
 
     return UpdateCheckResult(
       currentVersion: installedVersion,
       latestRelease: latest,
     );
+  }
+
+  Future<AppRelease?> _fetchWebsiteRelease(UpdateTarget target) async {
+    if (target.platform == 'android' && target.architecture == null) {
+      return null;
+    }
+    try {
+      final response = await _dio.get<Map<String, dynamic>>(
+        websiteLatestReleaseUrl,
+        queryParameters: {
+          'platform': target.platform,
+          if (target.architecture case final architecture?)
+            'architecture': architecture,
+          'channel': 'stable',
+        },
+        options: Options(headers: {'Accept': 'application/json'}),
+      );
+      final data = response.data;
+      return data == null
+          ? null
+          : AppRelease.fromWebsiteJson(
+              data,
+              targetPlatform: target.platform,
+              targetArchitecture: target.architecture,
+            );
+    } catch (_) {
+      return null;
+    }
   }
 
   Future<AppRelease?> _fetchGithubRelease() async {
@@ -320,16 +363,15 @@ bool _isAllowedGithubReleaseUrl(String value) {
   return uri != null &&
       uri.scheme == 'https' &&
       uri.host.toLowerCase() == 'github.com' &&
-      (path == '/wuliuqi1/shiye-reader/releases' ||
-          path.startsWith('/wuliuqi1/shiye-reader/releases/'));
+      (path == '/miloquinn/open-reading/releases' ||
+          path.startsWith('/miloquinn/open-reading/releases/'));
 }
 
 bool _isAllowedOfficialUrl(String value) {
   final uri = Uri.tryParse(value);
   return uri != null &&
       uri.scheme == 'https' &&
-      uri.host.toLowerCase() == 'github.com' &&
-      uri.path.toLowerCase().startsWith('/wuliuqi1/shiye-reader/releases');
+      uri.host.toLowerCase() == 'open.xxread.top';
 }
 
 bool _isValidVersion(String value) => RegExp(

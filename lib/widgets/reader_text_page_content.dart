@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../core/reader/native_text_paginator.dart';
 import '../core/reader/reader_text_layout.dart';
 import '../core/reader/reader_text_pagination.dart';
+import 'reader_chapter_title_page.dart';
 
 /// Shared final renderer for local and online flowing-text pages.
 ///
@@ -26,7 +27,10 @@ class ReaderTextPageContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final body = RichText(
+    if (page.isChapterTitle) {
+      return ReaderChapterTitlePage(title: chapterTitle, bodyStyle: bodyStyle);
+    }
+    return RichText(
       text: page.buildSpan(
         style: bodyStyle,
         sourceSpanBuilder: sourceSpanBuilder,
@@ -42,23 +46,6 @@ class ReaderTextPageContent extends StatelessWidget {
       strutStyle: flowStyle.strutStyle,
       textWidthBasis: flowStyle.textWidthBasis,
       textHeightBehavior: flowStyle.textHeightBehavior,
-    );
-    if (!page.showsChapterTitle || chapterTitle.trim().isEmpty) return body;
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        Text(
-          chapterTitle.trim(),
-          textAlign: TextAlign.left,
-          style: bodyStyle.copyWith(
-            fontSize: ((bodyStyle.fontSize ?? 19) * 1.28).clamp(22, 28),
-            fontWeight: FontWeight.w700,
-            height: 1.35,
-          ),
-        ),
-        SizedBox(height: (bodyStyle.fontSize ?? 19) * 1.15),
-        Expanded(child: body),
-      ],
     );
   }
 }

@@ -138,164 +138,31 @@ class SourcedBookListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final book = result.book;
-    final summary = _safeSearchSummary(book.description);
     return InkWell(
       borderRadius: BorderRadius.circular(18),
       onTap: onTap,
-      child: ConstrainedBox(
-        // A broken rule can return a whole HTML page as its introduction.
-        // Keep a single result card bounded even when a third-party source
-        // supplies malformed text or unexpected inline whitespace.
-        constraints: const BoxConstraints(maxHeight: 154),
-        child: Container(
-          padding: const EdgeInsets.all(12),
-          decoration: bookSourcePanelDecoration(context, radius: 18),
-          clipBehavior: Clip.hardEdge,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _BookCoverThumb(book: book),
-              const SizedBox(width: 14),
-              Expanded(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      book.title,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                      ),
-                    ),
-                    if (_bookMetadata(book).isNotEmpty) ...[
-                      const SizedBox(height: 6),
-                      Wrap(
-                        spacing: 6,
-                        runSpacing: 4,
-                        children: [
-                          for (final item in _bookMetadata(book))
-                            Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 7,
-                                vertical: 3,
-                              ),
-                              decoration: BoxDecoration(
-                                color: scheme.primaryContainer.withValues(
-                                  alpha: 0.55,
-                                ),
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                              child: Text(
-                                item,
-                                style: TextStyle(
-                                  color: scheme.onPrimaryContainer,
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                        ],
-                      ),
-                    ],
-                    const SizedBox(height: 3),
-                    Text(
-                      [
-                        book.author,
-                        result.source.name,
-                      ].where((item) => item.isNotEmpty).join(' · '),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: TextStyle(
-                        color: scheme.primary,
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    if (summary.isNotEmpty) ...[
-                      const SizedBox(height: 7),
-                      ConstrainedBox(
-                        constraints: const BoxConstraints(maxHeight: 36),
-                        child: ClipRect(
-                          child: Text(
-                            summary,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: scheme.onSurfaceVariant,
-                              fontSize: 13,
-                              height: 1.35,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
-              ),
-              const SizedBox(width: 6),
-              const Icon(Icons.chevron_right_rounded),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
-  static String _safeSearchSummary(String value) {
-    final normalized = value.replaceAll(RegExp(r'\s+'), ' ').trim();
-    if (normalized.isEmpty) return '';
-    // These navigation labels together identify an incorrectly scraped page
-    // rather than a book synopsis (as seen with some converted sources).
-    const pageNavigation = ['返回', '首页', '小说信息', '搜索', '登录', '注册'];
-    final navigationHits = pageNavigation.where(normalized.contains).length;
-    if (navigationHits >= 3) return '';
-    const maxLength = 220;
-    return normalized.length <= maxLength
-        ? normalized
-        : '${normalized.substring(0, maxLength).trimRight()}…';
-  }
-}
-
-/// Dense alternative for discovery lists. It preserves the same tap target
-/// while avoiding descriptions and metadata chips on long source result sets.
-class SourcedBookCompactTile extends StatelessWidget {
-  const SourcedBookCompactTile({
-    super.key,
-    required this.result,
-    required this.onTap,
-  });
-
-  final SourcedBook result;
-  final VoidCallback onTap;
-
-  @override
-  Widget build(BuildContext context) {
-    final book = result.book;
-    return InkWell(
-      borderRadius: BorderRadius.circular(14),
-      onTap: onTap,
       child: Container(
-        height: 74,
-        padding: const EdgeInsets.all(8),
-        decoration: bookSourcePanelDecoration(context, radius: 14),
+        padding: const EdgeInsets.all(12),
+        decoration: bookSourcePanelDecoration(context, radius: 18),
         child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            _BookCoverThumb(book: book, width: 42, height: 56),
-            const SizedBox(width: 10),
+            _BookCoverThumb(book: book),
+            const SizedBox(width: 14),
             Expanded(
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     book.title,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(fontWeight: FontWeight.w700),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
                   ),
-                  const SizedBox(height: 4),
+                  const SizedBox(height: 3),
                   Text(
                     [
                       book.author,
@@ -304,13 +171,28 @@ class SourcedBookCompactTile extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      color: scheme.primary,
                       fontSize: 12,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
+                  if (book.description.isNotEmpty) ...[
+                    const SizedBox(height: 7),
+                    Text(
+                      book.description,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: scheme.onSurfaceVariant,
+                        fontSize: 13,
+                        height: 1.35,
+                      ),
+                    ),
+                  ],
                 ],
               ),
             ),
+            const SizedBox(width: 6),
             const Icon(Icons.chevron_right_rounded),
           ],
         ),
@@ -319,47 +201,16 @@ class SourcedBookCompactTile extends StatelessWidget {
   }
 }
 
-List<String> _bookMetadata(BookSourceBook book) {
-  final result = <String>[];
-  final rawStatus = book.status?.trim() ?? '';
-  if (rawStatus.isNotEmpty) {
-    final completed = RegExp(r'完结|完本|已完').hasMatch(rawStatus);
-    final ongoing = RegExp(r'连载|更新中|未完').hasMatch(rawStatus);
-    result.add(
-      completed
-          ? '已完结'
-          : ongoing
-          ? '更新中'
-          : rawStatus,
-    );
-  } else {
-    result.add('状态未知');
-  }
-  if (book.chapterCount != null && book.chapterCount! > 0) {
-    result.add('${book.chapterCount}章');
-  }
-  if ((book.latestChapter ?? '').trim().isNotEmpty) {
-    result.add(book.latestChapter!.trim());
-  }
-  return result;
-}
-
 class _BookCoverThumb extends StatelessWidget {
   final BookSourceBook book;
-  final double width;
-  final double height;
 
-  const _BookCoverThumb({
-    required this.book,
-    this.width = 58,
-    this.height = 78,
-  });
+  const _BookCoverThumb({required this.book});
 
   @override
   Widget build(BuildContext context) {
     final fallback = SizedBox(
-      width: width,
-      height: height,
+      width: 58,
+      height: 78,
       child: GeneratedBookCover(title: book.title, author: book.author),
     );
     if (book.coverUrl == null) return fallback;
@@ -367,10 +218,10 @@ class _BookCoverThumb extends StatelessWidget {
       borderRadius: BorderRadius.circular(10),
       child: SourceCoverImage(
         url: book.coverUrl!,
-        width: width,
-        height: height,
+        width: 58,
+        height: 78,
         fit: BoxFit.cover,
-        cacheWidth: (width * MediaQuery.devicePixelRatioOf(context)).round(),
+        cacheWidth: (58 * MediaQuery.devicePixelRatioOf(context)).round(),
         fallback: fallback,
       ),
     );
@@ -406,10 +257,12 @@ class SourcedBookActions {
             media.size.height - media.padding.top - 16,
           ),
         ),
-        builder: (sheetContext) => _SourcedBookDetailsSheet(
+        builder: (sheetContext) => _SourcedBookDetailsLoader(
           result: result,
+          client: client,
           shelfService: shelfService,
-          onRead: () => _openReader(result),
+          onRead: (book) =>
+              _openReader(SourcedBook(source: result.source, book: book)),
           onDownloadContinuesInBackground: () {
             if (!context.mounted) return;
             showSideToast(context, context.l10n.downloadRunningInBackground);
@@ -435,6 +288,60 @@ class SourcedBookActions {
   }
 }
 
+class _SourcedBookDetailsLoader extends StatefulWidget {
+  const _SourcedBookDetailsLoader({
+    required this.result,
+    required this.client,
+    required this.shelfService,
+    required this.onRead,
+    required this.onDownloadContinuesInBackground,
+  });
+
+  final SourcedBook result;
+  final BookSourceClient client;
+  final BookSourceShelfService shelfService;
+  final Future<void> Function(BookSourceBook book) onRead;
+  final VoidCallback onDownloadContinuesInBackground;
+
+  @override
+  State<_SourcedBookDetailsLoader> createState() =>
+      _SourcedBookDetailsLoaderState();
+}
+
+class _SourcedBookDetailsLoaderState extends State<_SourcedBookDetailsLoader> {
+  late BookSourceBook _book = widget.result.book;
+
+  @override
+  void initState() {
+    super.initState();
+    unawaited(_loadDetails());
+  }
+
+  Future<void> _loadDetails() async {
+    try {
+      final book = await widget.client.getBook(
+        widget.result.source,
+        widget.result.book.id,
+      );
+      if (mounted) setState(() => _book = book);
+    } catch (_) {
+      // Search/discovery summaries remain usable when detail is unavailable.
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final result = SourcedBook(source: widget.result.source, book: _book);
+    return _SourcedBookDetailsSheet(
+      key: ValueKey(_book.id),
+      result: result,
+      shelfService: widget.shelfService,
+      onRead: () => widget.onRead(result.book),
+      onDownloadContinuesInBackground: widget.onDownloadContinuesInBackground,
+    );
+  }
+}
+
 enum _BookDetailsSheetStep {
   details,
   shelfOptions,
@@ -448,6 +355,7 @@ enum _BookDetailsSheetStep {
 
 class _SourcedBookDetailsSheet extends StatefulWidget {
   const _SourcedBookDetailsSheet({
+    super.key,
     required this.result,
     required this.shelfService,
     required this.onRead,

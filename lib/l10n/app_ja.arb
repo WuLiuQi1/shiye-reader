@@ -42,7 +42,7 @@
   "bookSourcesSearchPrompt": "ソースを追加して有効化すると、ここでまとめて検索できます",
   "bookSourcesNoResults": "該当する書籍が見つかりません",
   "bookSourcesNoSourcesTitle": "ソースがまだありません",
-  "bookSourcesNoSourcesDescription": "Open Reading Source Protocol に対応したサービスのアドレスを貼り付けて接続します。",
+  "bookSourcesNoSourcesDescription": "拾页 Source Protocol に対応したサービスのアドレスを貼り付けて接続します。",
   "bookSourcesManageTitle": "接続済みのソース",
   "bookSourcesEnabled": "有効",
   "bookSourcesDisabled": "無効",
@@ -51,10 +51,46 @@
   "bookSourcesRemoveMessage": "ソースの設定のみを削除します。ローカルの書籍には影響しません。",
   "bookSourcesCancel": "キャンセル",
   "bookSourcesConfirm": "確認",
-  "bookSourcesAddTitle": "オープンソースを追加",
+  "bookSourcesAddTitle": "ソースを追加",
+  "bookSourcesImportLink": "リンクをインポート",
+  "bookSourcesAnalyze": "ソースを分析",
+  "bookSourcesDetectedOrsp": "検出: ORSP ソース",
+  "bookSourcesDetectedAdditional": "検出: その他のプロトコル",
+  "bookSourcesProtocolGroupOrsp": "ORSP ソース",
+  "bookSourcesProtocolGroupAdditional": "その他のプロトコル",
+  "bookSourcesAdvancedFeatureRequired": "高度な機能で追加のブックソースプロトコルを有効にしてからインポートしてください。",
+  "bookSourcesNoWorkingSources": "実際の検索確認に合格したソースがないため、インポートしませんでした。",
+  "bookSourcesVerificationProgress": "確認済み {completed}/{total}、利用可能 {available}",
+  "@bookSourcesVerificationProgress": {
+    "placeholders": {
+      "completed": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      },
+      "available": {
+        "type": "int"
+      }
+    }
+  },
+  "bookSourcesSelect": "ソースを複数選択",
+  "bookSourcesSelectAll": "すべて選択",
+  "bookSourcesClearSelection": "選択を解除",
+  "bookSourcesEnableSelected": "選択項目を有効化",
+  "bookSourcesDisableSelected": "選択項目を無効化",
+  "bookSourcesDeleteSelected": "選択項目を削除",
+  "bookSourcesDeleteSelectedMessage": "選択した {count} 件のソースを削除しますか？ローカルの本には影響しません。",
+  "@bookSourcesDeleteSelectedMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "bookSourcesUrlLabel": "ソースのアドレス",
   "bookSourcesUrlHint": "https://example.com またはディスカバリードキュメントの URL",
-  "bookSourcesNoOfficialSourcesNotice": "OpenReading は書籍ソースをプリインストールせず、サードパーティサービスを運営、推奨、保証しません。すべてのアドレスはあなたが追加します。",
+  "bookSourcesNoOfficialSourcesNotice": "拾页 は書籍ソースをプリインストールせず、サードパーティサービスを運営、推奨、保証しません。すべてのアドレスはあなたが追加します。",
   "bookSourcesResponsibilityAck": "関連コンテンツへのアクセス権限があり、ログイン、支払い、DRM、その他のアクセス制御を回避するためにソースを使用しないことを確認します。",
   "bookSourcesConnect": "接続して検証",
   "bookSourcesConnecting": "プロトコルを検証中…",
@@ -62,7 +98,7 @@
   "bookSourcesRefresh": "ソースを更新",
   "bookSourcesRefreshed": "ソースを更新しました",
   "bookSourcesRefreshFailed": "このソースを更新できませんでした",
-  "bookSourcesProtocolTitle": "Open Reading Source Protocol",
+  "bookSourcesProtocolTitle": "拾页 Source Protocol",
   "bookSourcesProtocolDescription": "発見・検索・書籍詳細・目次・本文取得を統一したインターフェース。開発者はネイティブソースを構築したり、正規のコンテンツサービス向けにアダプターを作成したりできます。",
   "bookSourcesProtocolDetails": "プロトコルを見る",
   "bookSourcesProtocolRepository": "プロトコルのリポジトリ",
@@ -75,7 +111,7 @@
   "bookSourcesContentLicense": "コンテンツライセンス",
   "bookSourcesRightsStatement": "権利声明",
   "bookSourcesRightsNotProvided": "このソースから提供されていません",
-  "bookSourcesRightsUnverifiedNotice": "これらの情報は独立したソース運営者による自己申告です。OpenReading は透明性のために表示しますが、検証、推奨、保証は行いません。",
+  "bookSourcesRightsUnverifiedNotice": "これらの情報は独立したソース運営者による自己申告です。拾页 は透明性のために表示しますが、検証、推奨、保証は行いません。",
   "bookSourcesContactOperator": "運営者に連絡",
   "bookSourcesRightsReport": "権利侵害を報告",
   "bookSourcesRightsReportOpenFailed": "権利報告フォームを開けませんでした",
@@ -154,12 +190,18 @@
   "fontSerifDescription": "落ち着いた出版物らしいセリフ体で、長時間の読書に適しています。",
   "fontSansSerifDescription": "明瞭なサンセリフ体で、コンパクトな画面と日常の読書に適しています。",
   "fontMonospaceDescription": "コードや技術文書、集中しやすい組版に適した等幅フォントです。",
-  "fontPreviewText": "Open Reading · 自由に読む 開卷有益",
+  "fontPreviewText": "拾页 · 自由に読む 開卷有益",
   "customFonts": "マイフォント",
   "customFontsEmpty": "インポートしたフォントはありません",
   "customFontsEmptyHint": "TTF または OTF を一度インポートすると、アプリ画面や本文に使用できます。",
   "customFontsCount": "{count} 個のフォントをインポート済み",
-  "@customFontsCount": {"placeholders": {"count": {"type": "int"}}},
+  "@customFontsCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "customFontsLocalOnly": "インポートしたフォントはこの端末だけに保存され、自動同期されません。",
   "builtInFonts": "内蔵フォント",
   "importFont": "フォントをインポート",
@@ -182,7 +224,13 @@
   "setAsBothFonts": "両方に使用",
   "renameFont": "フォント名を変更",
   "deleteCustomFontTitle": "「{name}」を削除しますか？",
-  "@deleteCustomFontTitle": {"placeholders": {"name": {"type": "String"}}},
+  "@deleteCustomFontTitle": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
   "deleteCustomFontMessage": "フォントファイルをこの端末から削除します。",
   "deleteCustomFontInUse": "このフォントは使用中です。削除すると影響する設定は初期値に戻ります。",
   "deleteAndReset": "削除して初期値に戻す",
@@ -190,7 +238,7 @@
   "settingsTelegramSubtitle": "Telegram 公式チャンネル",
   "settingsTelegramOpenFailed": "Telegram リンクを開けませんでした",
   "settingsQqChannel": "QQ チャンネル",
-  "settingsQqChannelSubtitle": "開元閱讀 · OpenReading6",
+  "settingsQqChannelSubtitle": "開元閱讀 · 拾页6",
   "settingsQqChannelOpenFailed": "QQ チャンネルの招待リンクを開けませんでした",
   "languageSystem": "システムに従う",
   "languageChinese": "简体中文",
@@ -326,8 +374,12 @@
   "readerNavigationPosition": "第 {current}/{total} 章",
   "@readerNavigationPosition": {
     "placeholders": {
-      "current": {"type": "int"},
-      "total": {"type": "int"}
+      "current": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
     }
   },
   "readerSearchChapters": "章を検索",
@@ -406,7 +458,7 @@
   "agreementTagline": "没入型読書 · AI アシスタント · ローカルファースト",
   "agreementCardTitle": "利用規約",
   "agreementCardSubtitle": "以下の内容をよくお読みください",
-  "agreementWelcomeTitle": "OpenReading へようこそ",
+  "agreementWelcomeTitle": "拾页 へようこそ",
   "agreementWelcomeBody": "安定した読書体験を提供するため、まず以下の規約をお読みのうえ同意してください。",
   "agreementFeatureFormatsTitle": "多形式対応",
   "agreementFeatureFormatsBody": "EPUB、PDF、TXT、MOBI などに対応",
@@ -688,7 +740,13 @@
   "libraryExportOriginalHint": "元のファイルをデバイス上の別の場所へコピーします",
   "libraryExportDownloadedTxtHint": "ダウンロード後に生成された TXT ファイルを書き出します",
   "bookExportSuccess": "{location} に書き出しました",
-  "@bookExportSuccess": {"placeholders": {"location": {"type": "String"}}},
+  "@bookExportSuccess": {
+    "placeholders": {
+      "location": {
+        "type": "String"
+      }
+    }
+  },
   "bookExportSourceMissing": "書籍ファイルが見つからないため書き出せません",
   "bookExportUnsupported": "このプラットフォームでは書籍の書き出しにまだ対応していません",
   "bookExportFailed": "書籍を書き出せませんでした",
@@ -697,7 +755,7 @@
   "incomingBooksNoBookFile": "共有内容に読み込み可能な書籍ファイルがありません",
   "incomingBooksPermissionExpired": "ファイルへのアクセス権が失効しました。もう一度共有または開いてください",
   "incomingBooksUnsupportedFormat": "この書籍形式には対応していません",
-  "incomingBooksFileTooLarge": "ファイルが 100 MB の読み込み上限を超えています",
+  "incomingBooksFileTooLarge": "ファイルが 500 MB の読み込み上限を超えています",
   "incomingBooksTooManyFiles": "一度に共有された書籍が多すぎます。分けて追加してください",
   "incomingBooksSomeFilesSkipped": "一部のファイルを認識できませんでした。残りの書籍を処理します",
   "incomingBooksContentMismatch": "ファイル形式と実際の内容が一致しません",
@@ -762,6 +820,63 @@
   "libraryDeletingCoverImage": "カバー画像を削除中...",
   "libraryCleaningDatabase": "データベースの記録を整理中...",
   "libraryDeleteComplete": "削除が完了しました",
+  "librarySelectMultiple": "複数選択",
+  "librarySelectAll": "すべて選択",
+  "librarySelectedBooks": "{count} 冊を選択",
+  "@librarySelectedBooks": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "libraryDeleteSelected": "{count} 冊を削除",
+  "@libraryDeleteSelected": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "libraryBatchDeleteTitle": "選択した本を削除しますか？",
+  "libraryBatchDeleteMessage": "選択した {count} 冊と、関連するメモ、ブックマーク、ローカルファイルを完全に削除します。この操作は取り消せません。",
+  "@libraryBatchDeleteMessage": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "libraryDeletingSelected": "削除中 {done}/{total}",
+  "@libraryDeletingSelected": {
+    "placeholders": {
+      "done": {
+        "type": "int"
+      },
+      "total": {
+        "type": "int"
+      }
+    }
+  },
+  "libraryBatchDeleteSuccess": "{count} 冊を削除しました",
+  "@libraryBatchDeleteSuccess": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "libraryBatchDeletePartial": "{success} 冊を削除、{failed} 冊は失敗しました",
+  "@libraryBatchDeletePartial": {
+    "placeholders": {
+      "success": {
+        "type": "int"
+      },
+      "failed": {
+        "type": "int"
+      }
+    }
+  },
   "readerPrefaceTitle": "前付",
   "readerModeHorizontalPage": "アニメーションなし",
   "readerModeVerticalScrollHint": "事前に分割したページを縦に送り、左右スワイプで章を切り替え",
@@ -794,6 +909,8 @@
   "readerHorizontalMarginLabel": "左右余白",
   "readerTopMarginLabel": "上余白",
   "readerBottomMarginLabel": "下余白",
+  "readerTxtChapterTitlePageTitle": "章タイトルを独立ページに表示",
+  "readerTxtChapterTitlePageHint": "オフにすると、章タイトルは本文の先頭に表示されます",
   "readerVerticalMarginLabel": "上下余白",
   "readerVerticalMarginValue": "上下余白  {margin}",
   "@readerVerticalMarginValue": {
@@ -913,7 +1030,41 @@
   "settingsSectionAppearanceFonts": "外観とフォント",
   "settingsSectionDataServices": "データとサービス",
   "settingsSectionGeneral": "一般",
-  "settingsSectionAboutSupport": "アプリ情報とサポート",
+  "settingsSectionAdvancedFeatures": "高度な機能",
+  "settingsAdditionalSourceProtocolsTitle": "その他のブックソースプロトコル",
+  "settingsAdditionalSourceProtocolsSubtitle": "有効にすると、追加のブックソースプロトコルを利用できます。",
+  "additionalSourcesImport": "追加プロトコルのソースをインポート",
+  "additionalSourcesImportTitle": "ソース JSON をインポート",
+  "additionalSourcesImportNotice": "インポートしたソースは事前確認され、有効にするまで無効のままです。",
+  "additionalSourcesChooseFile": "JSON ファイルから追加",
+  "additionalSourcesUrlLabel": "ソース JSON URL",
+  "additionalSourcesLoadUrl": "URL から読み込む",
+  "additionalSourcesPreview": "利用可能 {supported}、一部対応 {partial}、未対応 {unsupported}",
+  "@additionalSourcesPreview": {
+    "placeholders": {
+      "supported": {
+        "type": "int"
+      },
+      "partial": {
+        "type": "int"
+      },
+      "unsupported": {
+        "type": "int"
+      }
+    }
+  },
+  "additionalSourcesAvailable": "利用可能",
+  "additionalSourcesPartial": "一部対応",
+  "additionalSourcesUnsupported": "未対応",
+  "additionalSourcesImportConfirm": "無効のままインポート",
+  "additionalSourcesImported": "{count} 件のソースをインポートしました",
+  "@additionalSourcesImported": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "settingsKeepScreenOnTitle": "画面を常にオン",
   "settingsKeepScreenOnSubtitle": "読書中に画面が自動で消えないようにします",
   "settingsAutoSaveTitle": "自動保存",
@@ -952,21 +1103,6 @@
   "settingsAiSaving": "保存中...",
   "settingsAiSaveConfig": "AI 設定を保存",
   "settingsPageIntro": "読書体験に本当に影響する項目だけを残しています。",
-  "settingsSupportDevelopmentTitle": "開発を支援",
-  "firstHomeSupportNow": "今すぐ支援",
-  "firstHomeSupportLater": "また今度",
-  "firstHomeSupportPaperSemanticLabel": "開元閲読の開発者からの任意支援についての手紙",
-  "settingsSupportDevelopmentCardTitle": "継続的な開発を支援",
-  "settingsSupportDevelopmentCardSubtitle": "開発と保守には多くの時間と労力がかかっています。開元閲読が役に立った場合は、任意の寄付で支援いただけます。",
-  "settingsDonationAction": "WeChat で寄付",
-  "settingsAlipayDonationAction": "Alipay で寄付",
-  "settingsDonationDialogTitle": "WeChat で寄付",
-  "settingsDonationDialogHint": "WeChat で QR コードを読み取ってください。継続的な開発へのご支援に感謝します。",
-  "settingsAlipayDonationDialogTitle": "Alipay で寄付",
-  "settingsAlipayDonationDialogHint": "Alipay で QR コードを読み取ってください。継続的な開発へのご支援に感謝します。",
-  "settingsDonationVoluntaryNotice": "寄付は完全に任意です。機能の利用条件ではなく、購入またはサービス契約にも該当しません。",
-  "settingsDonationQrCodeLabel": "WeChat 寄付用 QR コード",
-  "settingsAlipayDonationQrCodeLabel": "Alipay 寄付用 QR コード",
   "settingsAiSwipeHint": "左右にスワイプしてモデルを選択、タップで切替、長押しで編集・削除。",
   "settingsAiLegacyIntro": "プロバイダーとモデルを選び、API Key を入力してください。ほかのパラメーターは既定のままで構いません。",
   "settingsAiModelLabel": "モデル",
@@ -979,14 +1115,14 @@
   "changelogHistorySubtitle": "各バージョンの変更内容を表示",
   "openSourceLicensesTitle": "オープンソースライセンス",
   "openSourceLicensesSubtitle": "アプリ、内蔵フォント、サードパーティ製品のライセンスを表示",
-  "openSourceLicensesIntro": "以下のライセンス文はアプリ内でオフライン表示できます。Open Reading、内蔵フォント、サードパーティソフトウェアには、それぞれのライセンスが適用されます。",
+  "openSourceLicensesIntro": "以下のライセンス文はアプリ内でオフライン表示できます。拾页、内蔵フォント、サードパーティソフトウェアには、それぞれのライセンスが適用されます。",
   "openSourceProjectSection": "プロジェクト",
   "openSourceLegacyLicenseTitle": "旧バージョン",
   "openSourceFontsSection": "内蔵フォント",
   "openSourceDependenciesSection": "サードパーティソフトウェア",
   "openSourceDependenciesTitle": "Flutter / Dart 依存パッケージ",
   "openSourceDependenciesSubtitle": "Flutter が自動収集したサードパーティライセンスを表示",
-  "openSourceLicenseLegalese": "Open Reading とサードパーティコンポーネントには、それぞれのライセンスが適用されます。",
+  "openSourceLicenseLegalese": "拾页 とサードパーティコンポーネントには、それぞれのライセンスが適用されます。",
   "openSourceLicenseLoadFailed": "ライセンス文を読み込めませんでした。",
   "changelogPageTitle": "バージョン更新履歴",
   "changelogCurrentVersion": "現在のバージョン",
@@ -997,7 +1133,7 @@
   "settingsJoinQqGroup": "QQ グループに参加",
   "settingsQqOpenFailed": "QQ を開けませんでした。QQ がインストールされているか確認してください。",
   "contributorsTitle": "コントリビューター",
-  "contributorsSubtitle": "Open Reading をより良くしてくれるすべての人に感謝します",
+  "contributorsSubtitle": "拾页 をより良くしてくれるすべての人に感謝します",
   "contributorsOpenProfileFailed": "コントリビューターのプロフィールを開けませんでした",
   "contributorsEmpty": "表示できるコントリビューターはまだいません",
   "contributorsLoadFailed": "コントリビューターを読み込めませんでした。ネットワークを確認して再試行してください",
@@ -1015,8 +1151,13 @@
   "settingsHideNavigationLabelsTitle": "下部ナビゲーションの文字を隠す",
   "settingsHideNavigationLabelsSubtitle": "オンにすると、モバイルの下部ナビゲーションはアイコンのみ表示します",
   "settingsFloatingNavigationTitle": "フローティングナビゲーション",
-  "settingsFloatingNavigationSubtitle": "表示方法と項目の順序を調整します",
+  "settingsFloatingNavigationSubtitle": "サイズ、表示方法、項目の順序を調整します",
   "floatingNavigationPreviewTitle": "プレビュー",
+  "floatingNavigationSizeTitle": "サイズ",
+  "floatingNavigationSizeAutomatic": "自動調整",
+  "floatingNavigationSizeCustom": "カスタム",
+  "floatingNavigationHeightLabel": "高さ",
+  "floatingNavigationSideMarginLabel": "左右余白",
   "floatingNavigationDisplayModeTitle": "表示方法",
   "floatingNavigationIconsOnly": "アイコンのみ",
   "floatingNavigationIconsAndLabels": "アイコンとラベル",
@@ -1025,8 +1166,8 @@
   "floatingNavigationSyncHint": "順序は横スワイプのページとワイド画面のサイドナビにも反映されます",
   "floatingNavigationResetOrder": "既定の順序に戻す",
   "floatingNavigationResetDone": "既定の順序に戻しました",
-  "settingsLibraryLayoutTitle": "ライブラリの表示",
-  "settingsLibraryLayoutSubtitle": "カードまたはコンパクトなグリッドを選び、グリッド情報を調整できます",
+  "settingsLibraryLayoutTitle": "ライブラリ設定",
+  "settingsLibraryLayoutSubtitle": "ライブラリの表示と本を開く動きを調整します",
   "settingsLibraryLayoutCard": "カード",
   "settingsLibraryLayoutGrid": "グリッド",
   "settingsLibraryGridColumnsTitle": "スマートフォンの1行あたりの表紙数",
@@ -1034,6 +1175,18 @@
   "settingsLibraryGridThreeColumns": "3列",
   "settingsLibraryGridShowDetailsTitle": "タイトルと進捗を表示",
   "settingsLibraryGridShowDetailsSubtitle": "各表紙の下に1行のタイトルとコンパクトな進捗バーを表示します",
+  "settingsLibraryOpenAnimationTitle": "本を開くアニメーション",
+  "settingsLibraryOpenAnimationSubtitle": "ライブラリから本を開くときだけ使用します",
+  "settingsLibraryOpenAnimationClassicCover": "クラシック表紙展開",
+  "settingsLibraryOpenAnimationClassicCoverHint": "元の表紙を全画面まで拡大してから本文を表示します",
+  "settingsLibraryOpenAnimationMinimal": "シンプルなフェード",
+  "settingsLibraryOpenAnimationMinimalHint": "方向移動のない、すばやく安定したフェードです",
+  "settingsLibraryOpenAnimationPaperRise": "紙面の浮上",
+  "settingsLibraryOpenAnimationPaperRiseHint": "読書画面が下から穏やかに所定位置へ移動します",
+  "settingsLibraryOpenAnimationPageSlide": "ページスライド",
+  "settingsLibraryOpenAnimationPageSlideHint": "読書画面が横から短い距離だけ入ります",
+  "settingsLibraryOpenAnimationBookSpread": "見開き展開",
+  "settingsLibraryOpenAnimationBookSpreadHint": "左右の紙面が中央から外側へ開きます",
   "settingsAccentFollowTheme": "アクセントカラー：テーマに従う",
   "settingsAccentValue": "アクセントカラー：{name}",
   "@settingsAccentValue": {
@@ -1077,7 +1230,7 @@
   "settingsNewYearGreeting": "集中と節度を大切にした、自由に改変できるクロスプラットフォームリーダー。",
   "settingsGithubOpenFailed": "GitHub のリンクを開けませんでした",
   "settingsOfficialWebsite": "公式サイト",
-  "settingsOfficialWebsiteSubtitle": "拾頁の GitHub Releases からダウンロードしてインストール",
+  "settingsOfficialWebsiteSubtitle": "open.xxread.top からダウンロードしてインストール",
   "settingsOfficialWebsiteOpenFailed": "公式サイトを開けませんでした",
   "updateCheckNow": "アップデートを確認",
   "updateCheckNowSubtitle": "GitHub または公式サイトから最新バージョンを確認します",
@@ -1096,7 +1249,9 @@
   "updateDownloadProgress": "{percent}% ダウンロード済み",
   "@updateDownloadProgress": {
     "placeholders": {
-      "percent": {"type": "int"}
+      "percent": {
+        "type": "int"
+      }
     }
   },
   "updatePreparingInstaller": "パッケージを検証し、システムインストーラーを準備しています…",
@@ -1396,8 +1551,8 @@
   "importSourceTitle": "本を追加",
   "importSourceDescription": "複数の本を選択し、キューを確認してから読み込みを開始できます。",
   "importSelectFiles": "ファイルを選択",
-  "importIosSharedDocuments": "このiPhone内 · Open Reading",
-  "importICloudDrive": "iCloud Drive · Open Reading",
+  "importIosSharedDocuments": "このiPhone内 · 拾页",
+  "importICloudDrive": "iCloud Drive · 拾页",
   "importICloudUnavailable": "iCloud Drive を利用できません",
   "importAndroidFolder": "本のフォルダーを許可",
   "importAndroidRescan": "許可済みフォルダーを検索",
@@ -1432,7 +1587,9 @@
   "settingsAiSwitchedToModel": "{model} に切り替えました",
   "@settingsAiSwitchedToModel": {
     "placeholders": {
-        "model": {"type": "String"}
+      "model": {
+        "type": "String"
+      }
     }
   },
   "settingsAiFillBaseUrlAndApiKey": "先に Base URL と API Key を入力してください",
@@ -1457,7 +1614,9 @@
   "settingsAiFetchModelsFailed": "モデルの取得に失敗しました：{error}",
   "@settingsAiFetchModelsFailed": {
     "placeholders": {
-        "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "settingsAiPreprocessTitle": "AI による書籍前処理",
@@ -1499,91 +1658,147 @@
   "readerAiRequestFailed": "リクエスト失敗：{error}",
   "@readerAiRequestFailed": {
     "placeholders": {
-        "error": {"type": "String"}
+      "error": {
+        "type": "String"
+      }
     }
   },
   "readerAiUnknownError": "不明なエラー",
   "readerAiEmptyResponseError": "サーバーの応答が空です。通常は Base URL の設定ミス、ゲートウェイがモデル API へ転送していない、またはサーバーが接続を早期に切断したことが原因です。\nリクエスト URL：{endpoint}",
   "@readerAiEmptyResponseError": {
     "placeholders": {
-        "endpoint": {"type": "String"}
+      "endpoint": {
+        "type": "String"
+      }
     }
   },
   "readerAiInvalidJsonError": "サーバーの応答が有効な JSON ではありません。現在のエンドポイントは {provider} 設定と互換性がない可能性があります。\nリクエスト URL：{endpoint}\n応答断片：{snippet}",
   "@readerAiInvalidJsonError": {
     "placeholders": {
-        "provider": {"type": "String"},
-        "endpoint": {"type": "String"},
-        "snippet": {"type": "String"}
+      "provider": {
+        "type": "String"
+      },
+      "endpoint": {
+        "type": "String"
+      },
+      "snippet": {
+        "type": "String"
+      }
     }
   },
   "readerAiFailedReadBody": "リクエスト失敗{status}：サーバーの応答データを読み取れませんでした。通常は Base URL の設定ミス、エンドポイントが空の内容を返した、またはネットワークが応答を途中で切断したことが原因です。\nリクエスト URL：{endpoint}",
   "@readerAiFailedReadBody": {
     "placeholders": {
-        "status": {"type": "String"},
-        "endpoint": {"type": "String"}
+      "status": {
+        "type": "String"
+      },
+      "endpoint": {
+        "type": "String"
+      }
     }
   },
   "readerAiNetworkRequestFailed": "ネットワークリクエスト失敗{status}：{error}\nリクエスト URL：{endpoint}",
   "@readerAiNetworkRequestFailed": {
     "placeholders": {
-        "status": {"type": "String"},
-        "error": {"type": "String"},
-        "endpoint": {"type": "String"}
+      "status": {
+        "type": "String"
+      },
+      "error": {
+        "type": "String"
+      },
+      "endpoint": {
+        "type": "String"
+      }
     }
   },
   "readerAiRequestFailedMinimaxHint": "リクエスト失敗({status})：{text}\n確認事項：1) MiniMax の temperature は (0,1] の範囲；2) モデル名とエンドポイントが一致しているか；3) system 指令は1件のみ。\nリクエスト URL：{endpoint}",
   "@readerAiRequestFailedMinimaxHint": {
     "placeholders": {
-        "status": {"type": "String"},
-        "text": {"type": "String"},
-        "endpoint": {"type": "String"}
+      "status": {
+        "type": "String"
+      },
+      "text": {
+        "type": "String"
+      },
+      "endpoint": {
+        "type": "String"
+      }
     }
   },
   "readerAiRequestFailedClaudeHint": "リクエスト失敗({status})：{text}\nヒント：Claude には anthropic-version リクエストヘッダーが必要です。\nリクエスト URL：{endpoint}",
   "@readerAiRequestFailedClaudeHint": {
     "placeholders": {
-        "status": {"type": "String"},
-        "text": {"type": "String"},
-        "endpoint": {"type": "String"}
+      "status": {
+        "type": "String"
+      },
+      "text": {
+        "type": "String"
+      },
+      "endpoint": {
+        "type": "String"
+      }
     }
   },
   "readerAiRequestFailedProviderMismatchHint": "リクエスト失敗({status})：{text}\nヒント：プロバイダーと API Key が一致しているか確認してください。混用はできません。\nリクエスト URL：{endpoint}",
   "@readerAiRequestFailedProviderMismatchHint": {
     "placeholders": {
-        "status": {"type": "String"},
-        "text": {"type": "String"},
-        "endpoint": {"type": "String"}
+      "status": {
+        "type": "String"
+      },
+      "text": {
+        "type": "String"
+      },
+      "endpoint": {
+        "type": "String"
+      }
     }
   },
   "readerAiRequestFailedGeneric": "リクエスト失敗({status})：{text}\nリクエスト URL：{endpoint}",
   "@readerAiRequestFailedGeneric": {
     "placeholders": {
-        "status": {"type": "String"},
-        "text": {"type": "String"},
-        "endpoint": {"type": "String"}
+      "status": {
+        "type": "String"
+      },
+      "text": {
+        "type": "String"
+      },
+      "endpoint": {
+        "type": "String"
+      }
     }
   },
   "readerAiMockSelectionResponse": "AI（モック）: 選択したテキストは「{selectedText}」です。\n\n前文: {before}\n後文: {after}",
   "@readerAiMockSelectionResponse": {
     "placeholders": {
-        "selectedText": {"type": "String"},
-        "before": {"type": "String"},
-        "after": {"type": "String"}
+      "selectedText": {
+        "type": "String"
+      },
+      "before": {
+        "type": "String"
+      },
+      "after": {
+        "type": "String"
+      }
     }
   },
   "readerAiMockPageAnalysis": "AI（モック）: このページは {chars} 文字です。段落の冒頭と末尾の論点に注目することをおすすめします。",
   "@readerAiMockPageAnalysis": {
     "placeholders": {
-        "chars": {"type": "int"}
+      "chars": {
+        "type": "int"
+      }
     }
   },
   "readerAiMockGreeting": "こんにちは",
   "readerAiMockChatResponse": "AI（モック）: 質問は「{question}」ですね。\n\n現在のページ（{chars} 文字）を読みました。続けて質問できます。",
   "@readerAiMockChatResponse": {
     "placeholders": {
-        "question": {"type": "String"},
-        "chars": {"type": "int"}
+      "question": {
+        "type": "String"
+      },
+      "chars": {
+        "type": "int"
+      }
     }
   },
   "readerAiMemorySummaryHeading": "【書籍の記憶サマリー】",
@@ -1596,9 +1811,15 @@
   "readerAiSnippetLocation": "- 位置：{chapterId} ({startOffset}-{endOffset})",
   "@readerAiSnippetLocation": {
     "placeholders": {
-        "chapterId": {"type": "String"},
-        "startOffset": {"type": "int"},
-        "endOffset": {"type": "int"}
+      "chapterId": {
+        "type": "String"
+      },
+      "startOffset": {
+        "type": "int"
+      },
+      "endOffset": {
+        "type": "int"
+      }
     }
   },
   "readerAiReadingSuggestionHeading": "【読み方のヒント】",
@@ -1610,7 +1831,9 @@
   "ttsUnsupportedLanguage": "システムが対応していない言語です: {language}",
   "@ttsUnsupportedLanguage": {
     "placeholders": {
-        "language": {"type": "String"}
+      "language": {
+        "type": "String"
+      }
     }
   },
   "ttsCallFailed": "システム TTS の呼び出しに失敗しました",
@@ -1619,7 +1842,7 @@
   "importErrorTargetNameExhausted": "インポートファイルに利用可能な名前を割り当てられません",
   "importErrorSourceNotMaterialized": "ソースファイルがまだローカルに準備されていません",
   "importErrorCopyVerificationFailed": "コピーしたファイルがソースと一致しません",
-  "importErrorFileTooLarge": "ファイルが 100 MB のインポート上限を超えています",
+  "importErrorFileTooLarge": "ファイルが 500 MB のインポート上限を超えています",
   "importErrorSourcePrepareFailed": "インポートファイルを準備できません",
   "importErrorFailed": "書籍のインポートに失敗しました",
   "importUnknownTitle": "不明なタイトル",
@@ -1629,14 +1852,18 @@
   "homePlanTaskReadMinutes": "{minutes} 分読む",
   "@homePlanTaskReadMinutes": {
     "placeholders": {
-        "minutes": {"type": "int"}
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "homePlanTaskCompleteFocusReading": "集中読書を完了する",
   "homePlanTaskFocusSession": "最低1回 {minutes} 分の集中セッション",
   "@homePlanTaskFocusSession": {
     "placeholders": {
-        "minutes": {"type": "int"}
+      "minutes": {
+        "type": "int"
+      }
     }
   },
   "homePlanTaskKeepRhythm": "リズムを保つ",
@@ -1653,32 +1880,44 @@
   "noteShareBookHeader": "📖 『{title}』 - {author}",
   "@noteShareBookHeader": {
     "placeholders": {
-        "title": {"type": "String"},
-        "author": {"type": "String"}
+      "title": {
+        "type": "String"
+      },
+      "author": {
+        "type": "String"
+      }
     }
   },
   "noteShareNoteLabel": "💭 メモ：{note}",
   "@noteShareNoteLabel": {
     "placeholders": {
-        "note": {"type": "String"}
+      "note": {
+        "type": "String"
+      }
     }
   },
   "noteShareChapterLabel": "📍 {chapter}",
   "@noteShareChapterLabel": {
     "placeholders": {
-        "chapter": {"type": "String"}
+      "chapter": {
+        "type": "String"
+      }
     }
   },
   "noteSharePageLabel": "📄 {page}ページ",
   "@noteSharePageLabel": {
     "placeholders": {
-        "page": {"type": "int"}
+      "page": {
+        "type": "int"
+      }
     }
   },
   "noteShareHashtags": "#読書メモ #{type}",
   "@noteShareHashtags": {
     "placeholders": {
-        "type": {"type": "String"}
+      "type": {
+        "type": "String"
+      }
     }
   },
   "accentPurple": "エレガントパープル",
@@ -1697,7 +1936,7 @@
   "glassPresetStandard": "スタンダードモード",
   "glassPresetDreamy": "ドリーミーモード",
   "agreementV2HeroTitle": "読書を、自分の端末の中に。",
-  "agreementV2HeroBody": "OpenReading はオープンソース・クロスプラットフォーム・ローカルファーストの電子書籍リーダーです。読書のための機能を提供しますが、あなたが取り込んだ書籍を提供・ホスティング・審査することはありません。",
+  "agreementV2HeroBody": "拾页 はオープンソース・クロスプラットフォーム・ローカルファーストの電子書籍リーダーです。読書のための機能を提供しますが、あなたが取り込んだ書籍を提供・ホスティング・審査することはありません。",
   "agreementV2LocalTitle": "ローカルファースト",
   "agreementV2LocalBody": "書籍・進捗・メモは原則としてあなたの端末に保存され、管理とバックアップはあなた自身が行います。",
   "agreementV2OpenSourceTitle": "AGPL-3.0 ライセンス",
@@ -1705,20 +1944,22 @@
   "agreementV2VersionLabel": "規約バージョン {version}",
   "@agreementV2VersionLabel": {
     "placeholders": {
-        "version": {"type": "String"}
+      "version": {
+        "type": "String"
+      }
     }
   },
   "agreementV2Title": "利用規約とプライバシーについて",
   "agreementV2Subtitle": "ご利用前に全文をお読みください。重要な条項は直接記載しています",
-  "agreementV2ImportantNotice": "重要：OpenReading の公式版にはサードパーティの書籍ソースはプリインストール、内蔵、推奨されておらず、開発者がそのコンテンツを運営、代理、ホスティングすることもありません。取り込むファイルと追加するソースはご自身で選択し、権利のあるコンテンツだけを利用してください。",
+  "agreementV2ImportantNotice": "重要：拾页 の公式版にはサードパーティの書籍ソースはプリインストール、内蔵、推奨されておらず、開発者がそのコンテンツを運営、代理、ホスティングすることもありません。取り込むファイルと追加するソースはご自身で選択し、権利のあるコンテンツだけを利用してください。",
   "agreementV2SourceBoundaryTitle": "サードパーティソースの責任範囲",
-  "agreementV2SourceBoundaryPoint1": "公式プロジェクトが提供するのはオープンソースの閲覧ソフトウェアと Open Reading Source Protocol だけであり、ソースのアドレスや公式一覧は提供しません。",
+  "agreementV2SourceBoundaryPoint1": "公式プロジェクトが提供するのはオープンソースの閲覧ソフトウェアと 拾页 Source Protocol だけであり、ソースのアドレスや公式一覧は提供しません。",
   "agreementV2SourceBoundaryPoint2": "各ソースのアドレスはあなたが自分で入力して追加します。アプリは開発者のコンテンツサーバーを経由せず、その独立したサービスへ直接接続します。",
   "agreementV2SourceBoundaryPoint3": "プロトコル互換性は接続可能であることだけを示し、コンテンツの適法性や許諾を証明しません。運営者が提供内容に責任を負い、あなたは追加前に確認して適法に利用します。",
   "agreementV2Section1Title": "適用範囲と同意",
-  "agreementV2Section1Body": "本規約は、OpenReading ソフトウェアおよび付属機能のダウンロード・インストール・使用に適用されます。「同意して続ける」をタップすることで、本規約を読み、理解し、同意したものとみなされます。同意しない場合は、使用を中止しアプリを終了してください。お住まいの地域の法律が定める同意年齢に達していない場合は、保護者が内容を読み同意する必要があります。",
+  "agreementV2Section1Body": "本規約は、拾页 ソフトウェアおよび付属機能のダウンロード・インストール・使用に適用されます。「同意して続ける」をタップすることで、本規約を読み、理解し、同意したものとみなされます。同意しない場合は、使用を中止しアプリを終了してください。お住まいの地域の法律が定める同意年齢に達していない場合は、保護者が内容を読み同意する必要があります。",
   "agreementV2Section2Title": "オープンソースソフトウェアとライセンス",
-  "agreementV2Section2Body": "OpenReading の今後のバージョンは GNU Affero General Public License v3.0 の下で公開されます。ライセンスに従って使用・複製・改変・頒布・販売できますが、改変版を頒布する場合は完全な対応ソースを AGPL-3.0 で提供し、改変版をネットワークサービスとして提供する場合も利用者に対応ソースを提供する必要があります。v1.0.0 以前に付与された MIT License の権利は引き続き有効で撤回されません。本規約はオープンソースライセンスが付与する権利を制限せず、サードパーティコンポーネントには各自のライセンスが適用されます。",
+  "agreementV2Section2Body": "拾页 の今後のバージョンは GNU Affero General Public License v3.0 の下で公開されます。ライセンスに従って使用・複製・改変・頒布・販売できますが、改変版を頒布する場合は完全な対応ソースを AGPL-3.0 で提供し、改変版をネットワークサービスとして提供する場合も利用者に対応ソースを提供する必要があります。v1.0.0 以前に付与された MIT License の権利は引き続き有効で撤回されません。本規約はオープンソースライセンスが付与する権利を制限せず、サードパーティコンポーネントには各自のライセンスが適用されます。",
   "agreementV2Section3Title": "ユーザーコンテンツと著作権責任",
   "agreementV2Section3Body": "“ユーザーコンテンツ”とは、あなたが取り込み、ダウンロードし、開き、変換し、キャッシュし、注釈を付け、読み上げ、またはその他の方法で処理する書籍・文書・画像・メタデータ・リンク等を指します。あなたはユーザーコンテンツについて適法な権利または必要な許諾を有していることを保証し、著作権・商標・プライバシー・名誉・違法情報・悪意あるファイル等に起因する紛争や損失について自ら責任を負います。ソフトウェアと開発者はユーザーコンテンツをアップロード・販売・許諾・推奨・審査せず、ある形式を読み込めることがそのコンテンツを適法に利用できることを意味するものでもありません。",
   "agreementV2Section4Title": "禁止事項",
@@ -1726,7 +1967,7 @@
   "agreementV2Section5Title": "ソース・リンク・サードパーティサービス",
   "agreementV2Section5Body": "公式版は書籍ソースをプリインストール、配布、推奨せず、公式ソース一覧も運営しません。あなたが追加するソース、ネットワーク API、外部リンク、オンラインコンテンツ、システム TTS、AI サービスその他の機能は、独立した第三者が提供・管理し、開発者との間に運営、代理、許諾、推奨、内容審査の関係はありません。ソース運営者は提供内容について法的責任を負います。あなたは追加前に提供元、コンテンツの権利、プライバシーポリシー、利用規約を確認し、自身のアクセス、ダウンロード、キャッシュ、頒布その他の利用行為に責任を負います。適用法が認める最大限の範囲で、開発者は第三者のコンテンツ、課金、データ処理、停止、権利侵害紛争について責任を負いません。",
   "agreementV2Section6Title": "データとプライバシー",
-  "agreementV2Section6Body": "本ソフトウェアはローカルファースト設計であり、書籍・読書進捗・メモ・設定は通常お使いの端末に保存されます。ネットワーク書籍ソース、AI、同期、その他のオンライン機能を有効にしない限り、ローカルでの読書のために書籍本文を開発者へ送信することはありません。自動または手動の更新確認では、拾頁の GitHub Releases のみにアクセスします。通常のネットワーク通信として、GitHub は IP アドレスと User-Agent を処理します。更新リクエストに書籍本文、書庫、メモ、アカウント、端末固有 ID は含まれません。その他のオンライン機能では、必要なデータが選択したプロバイダーへ送信される場合があり、そのプロバイダーのポリシーが適用されます。端末、API キー、バックアップはご自身で保護してください。アンインストール、データ消去、端末故障、誤操作によりデータが完全に失われる可能性があります。",
+  "agreementV2Section6Body": "本ソフトウェアはローカルファースト設計であり、書籍・読書進捗・メモ・設定は通常あなたの端末に保存されます。ネットワークソース、AI、同期などのオンライン機能を有効にしない限り、ローカル読書のために書籍本文が開発者へ送信されることはありません。自動または手動で更新を確認すると、GitHub と公式サイト open.xxread.top に接続し、プラットフォーム、CPU アーキテクチャ、配信チャンネルなど必要な技術情報を送信します。通常のネットワーク通信として、サーバーは IP アドレスと User-Agent を処理します。公式サイトからインストールパッケージを取得する場合、ダウンロード回数の集計、セキュリティ対策、障害調査のため、バージョン、アーキテクチャ、時刻、IP、User-Agent を記録します。生の IP を含む明細は最長 30 日で削除し、その後は生の IP を含まない集計のみを保持します。これらの更新リクエストには、書籍本文、書庫、メモ、アカウント、端末固有 ID は含まれません。GitHub へのアクセスには同社のプライバシーポリシーも適用されます。その他のオンライン機能を有効にすると、関連するクエリ・テキスト断片・端末のネットワーク情報・必要なパラメーターが、あなたが選択したサードパーティサービスに送信される場合があり、詳細は当該サービスの規約に従います。端末・アクセスキー・バックアップはご自身で保護してください。アンインストール・データ消去・端末故障・誤操作によりデータが完全に失われる可能性があります。",
   "agreementV2Section7Title": "AI と自動生成出力",
   "agreementV2Section7Body": "AI による要約・質問応答・翻訳・推薦その他の自動生成結果は、不正確・不完全・古い・誤解を招くものである可能性があります。これらは読書の補助のみを目的とし、法律・医療・投資・学術その他の専門的助言を構成しません。利用前に独自に検証し、リスクの高い判断の根拠にしないでください。AI サービスに送信した内容には当該サービス提供者の規約も適用されます。",
   "agreementV2Section8Title": "無保証",
@@ -1742,7 +1983,7 @@
   "agreementV2ExitLabel": "同意しない",
   "agreementV2ContinueLabel": "同意して続ける",
   "agreementV2ExitDialogTitle": "規約に同意しませんか？",
-  "agreementV2ExitDialogBody": "OpenReading を利用するには利用規約への同意が必要です。同意しない場合はアプリを終了してください。",
+  "agreementV2ExitDialogBody": "拾页 を利用するには利用規約への同意が必要です。同意しない場合はアプリを終了してください。",
   "agreementV2CancelLabel": "戻る",
   "agreementV2ConfirmExitLabel": "終了する",
   "agreementV2SaveFailed": "同意状態を保存できませんでした。後でもう一度お試しください。",

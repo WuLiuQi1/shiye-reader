@@ -102,9 +102,6 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
   _SourcedCategory? _selectedCategory;
   List<SourcedBook> _categoryBooks = const [];
   bool _loadingCategoryBooks = false;
-  bool _loadingMoreCategoryBooks = false;
-  bool _categoryHasMore = false;
-  int _categoryPage = 0;
 
   @override
   void initState() {
@@ -121,7 +118,7 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
   }
 
   Future<void> _loadSources() async {
-    final sources = await _registry.load();
+    final sources = await _registry.loadRunnable();
     if (!mounted) return;
     setState(() {
       _sources = sources;
@@ -136,9 +133,6 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
     _selectedCategory = null;
     _categoryBooks = const [];
     _loadingCategoryBooks = false;
-    _loadingMoreCategoryBooks = false;
-    _categoryHasMore = false;
-    _categoryPage = 0;
     await _loadSources();
   }
 
@@ -164,11 +158,6 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
     bool force = false,
   }) async {
     if (!force && _cache[section] != null) return;
-    if (force) {
-      for (final source in _sourcesFor(section)) {
-        _client.invalidateSourceMetadata(source.id);
-      }
-    }
     setState(() => _cache[section] = const _SectionCache.loading());
     _SectionCache next;
     try {
@@ -285,9 +274,6 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
       _selectedCategory = null;
       _categoryBooks = const [];
       _loadingCategoryBooks = false;
-      _loadingMoreCategoryBooks = false;
-      _categoryHasMore = false;
-      _categoryPage = 0;
     });
     if (_section == _DiscoverSection.categories) {
       _autoSelectFirstCategory();
@@ -305,9 +291,6 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
         _selectedCategory = null;
         _categoryBooks = const [];
         _loadingCategoryBooks = false;
-        _loadingMoreCategoryBooks = false;
-        _categoryHasMore = false;
-        _categoryPage = 0;
       }
     });
     await _loadSection(section);
@@ -321,52 +304,24 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
       _selectedCategory = category;
       _categoryBooks = const [];
       _loadingCategoryBooks = category.source.capabilities.contains('browse');
-      _loadingMoreCategoryBooks = false;
-      _categoryHasMore = false;
-      _categoryPage = 0;
     });
     if (!category.source.capabilities.contains('browse')) return;
-    await _loadCategoryPage(category, reset: true);
-  }
-
-  Future<void> _loadMoreCategoryBooks() async {
-    final category = _selectedCategory;
-    if (category == null || !_categoryHasMore || _loadingMoreCategoryBooks) {
-      return;
-    }
-    setState(() => _loadingMoreCategoryBooks = true);
-    await _loadCategoryPage(category);
-  }
-
-  Future<void> _loadCategoryPage(
-    _SourcedCategory category, {
-    bool reset = false,
-  }) async {
-    final pageNumber = reset ? 1 : _categoryPage + 1;
     try {
       final page = await _client.browse(
         category.source,
         category: category.id,
         sort: 'popular',
-        page: pageNumber,
       );
       if (!mounted || _selectedCategory != category) return;
       setState(() {
-        final items = page.items
+        _categoryBooks = page.items
             .map((book) => SourcedBook(source: category.source, book: book))
             .toList(growable: false);
-        _categoryBooks = reset ? items : [..._categoryBooks, ...items];
         _loadingCategoryBooks = false;
-        _loadingMoreCategoryBooks = false;
-        _categoryPage = page.page;
-        _categoryHasMore = page.hasMore;
       });
     } catch (_) {
       if (!mounted || _selectedCategory != category) return;
-      setState(() {
-        _loadingCategoryBooks = false;
-        _loadingMoreCategoryBooks = false;
-      });
+      setState(() => _loadingCategoryBooks = false);
     }
   }
 
@@ -756,35 +711,8 @@ class _BookSourcesPageState extends State<BookSourcesPage> {
       );
     } else {
       slivers.add(
-        _bookListSliver(
-          _categoryBooks,
-          bottomPadding: _categoryHasMore ? 12 : bottomPadding,
-        ),
+        _bookListSliver(_categoryBooks, bottomPadding: bottomPadding),
       );
-      if (_categoryHasMore) {
-        slivers.add(
-          _paddedSectionSliver(
-            Center(
-              child: OutlinedButton.icon(
-                key: const Key('bookSourceCategoryLoadMore'),
-                onPressed: _loadingMoreCategoryBooks
-                    ? null
-                    : () => unawaited(_loadMoreCategoryBooks()),
-                icon: _loadingMoreCategoryBooks
-                    ? const SizedBox(
-                        width: 18,
-                        height: 18,
-                        child: CircularProgressIndicator(strokeWidth: 2),
-                      )
-                    : const Icon(Icons.expand_more_rounded),
-                label: Text(_loadingMoreCategoryBooks ? '正在加载…' : '加载更多'),
-              ),
-            ),
-            topPadding: 0,
-            bottomPadding: bottomPadding,
-          ),
-        );
-      }
     }
     return slivers;
   }

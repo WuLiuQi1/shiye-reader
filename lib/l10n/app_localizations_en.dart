@@ -105,7 +105,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bookSourcesNoSourcesDescription =>
-      'Paste the address of a service compatible with the Open Reading Source Protocol.';
+      'Paste the address of a service compatible with the 拾页 Source Protocol.';
 
   @override
   String get bookSourcesManageTitle => 'Connected sources';
@@ -133,7 +133,65 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookSourcesConfirm => 'Confirm';
 
   @override
-  String get bookSourcesAddTitle => 'Add open source';
+  String get bookSourcesAddTitle => 'Add source';
+
+  @override
+  String get bookSourcesImportLink => 'Import link';
+
+  @override
+  String get bookSourcesAnalyze => 'Analyze';
+
+  @override
+  String get bookSourcesDetectedOrsp => 'Detected: ORSP';
+
+  @override
+  String get bookSourcesDetectedAdditional => 'Detected: Other protocol';
+
+  @override
+  String get bookSourcesProtocolGroupOrsp => 'ORSP sources';
+
+  @override
+  String get bookSourcesProtocolGroupAdditional => 'Other protocol sources';
+
+  @override
+  String get bookSourcesAdvancedFeatureRequired =>
+      'Enable More source protocols in Advanced features before importing this source.';
+
+  @override
+  String get bookSourcesNoWorkingSources =>
+      'No source passed the live search check. Nothing was imported.';
+
+  @override
+  String bookSourcesVerificationProgress(
+    int completed,
+    int total,
+    int available,
+  ) {
+    return 'Checked $completed/$total; $available working';
+  }
+
+  @override
+  String get bookSourcesSelect => 'Select sources';
+
+  @override
+  String get bookSourcesSelectAll => 'Select all';
+
+  @override
+  String get bookSourcesClearSelection => 'Clear selection';
+
+  @override
+  String get bookSourcesEnableSelected => 'Enable selected';
+
+  @override
+  String get bookSourcesDisableSelected => 'Disable selected';
+
+  @override
+  String get bookSourcesDeleteSelected => 'Delete selected';
+
+  @override
+  String bookSourcesDeleteSelectedMessage(int count) {
+    return 'Delete $count selected sources? Local books are not affected.';
+  }
 
   @override
   String get bookSourcesUrlLabel => 'Source address';
@@ -144,7 +202,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bookSourcesNoOfficialSourcesNotice =>
-      'OpenReading includes no sources and does not operate, recommend, or endorse third-party source services. Every source address is added by you.';
+      '拾页 includes no sources and does not operate, recommend, or endorse third-party source services. Every source address is added by you.';
 
   @override
   String get bookSourcesResponsibilityAck =>
@@ -169,7 +227,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get bookSourcesRefreshFailed => 'Could not refresh this book source';
 
   @override
-  String get bookSourcesProtocolTitle => 'Open Reading Source Protocol';
+  String get bookSourcesProtocolTitle => '拾页 Source Protocol';
 
   @override
   String get bookSourcesProtocolDescription =>
@@ -212,7 +270,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get bookSourcesRightsUnverifiedNotice =>
-      'These statements are supplied by the independent source operator. OpenReading displays them for transparency but does not verify or endorse them.';
+      'These statements are supplied by the independent source operator. 拾页 displays them for transparency but does not verify or endorse them.';
 
   @override
   String get bookSourcesContactOperator => 'Contact operator';
@@ -457,7 +515,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Fixed-width type suited to code, technical material, and focused layouts.';
 
   @override
-  String get fontPreviewText => 'Open Reading · Read freely 开卷有益';
+  String get fontPreviewText => '拾页 · Read freely 开卷有益';
 
   @override
   String get customFonts => 'My fonts';
@@ -616,7 +674,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsQqChannel => 'QQ Channel';
 
   @override
-  String get settingsQqChannelSubtitle => 'Open Reading · OpenReading6';
+  String get settingsQqChannelSubtitle => '拾页 · 拾页6';
 
   @override
   String get settingsQqChannelOpenFailed =>
@@ -1147,7 +1205,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get agreementCardSubtitle => 'Please read the following carefully';
 
   @override
-  String get agreementWelcomeTitle => 'Welcome to OpenReading';
+  String get agreementWelcomeTitle => 'Welcome to 拾页';
 
   @override
   String get agreementWelcomeBody =>
@@ -1564,7 +1622,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get incomingBooksFileTooLarge =>
-      'The file exceeds the 100 MB import limit';
+      'The file exceeds the 500 MB import limit';
 
   @override
   String get incomingBooksTooManyFiles =>
@@ -1649,6 +1707,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get libraryDeleteComplete => 'Deletion complete';
 
   @override
+  String get librarySelectMultiple => 'Select multiple';
+
+  @override
+  String get librarySelectAll => 'Select all';
+
+  @override
+  String librarySelectedBooks(int count) {
+    return '$count selected';
+  }
+
+  @override
+  String libraryDeleteSelected(int count) {
+    return 'Delete $count';
+  }
+
+  @override
+  String get libraryBatchDeleteTitle => 'Delete selected books?';
+
+  @override
+  String libraryBatchDeleteMessage(int count) {
+    return 'This permanently deletes the selected $count books, related notes and bookmarks, and local files. This cannot be undone.';
+  }
+
+  @override
+  String libraryDeletingSelected(int done, int total) {
+    return 'Deleting $done/$total';
+  }
+
+  @override
+  String libraryBatchDeleteSuccess(int count) {
+    return 'Deleted $count books';
+  }
+
+  @override
+  String libraryBatchDeletePartial(int success, int failed) {
+    return 'Deleted $success; $failed failed';
+  }
+
+  @override
   String get readerPrefaceTitle => 'Front Matter';
 
   @override
@@ -1713,6 +1810,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get readerBottomMarginLabel => 'Bottom margin';
+
+  @override
+  String get readerTxtChapterTitlePageTitle => 'Chapter title on its own page';
+
+  @override
+  String get readerTxtChapterTitlePageHint =>
+      'When off, the chapter title appears above the body text';
 
   @override
   String get readerVerticalMarginLabel => 'Vertical margin';
@@ -1881,6 +1985,57 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settingsSectionGeneral => 'General';
 
   @override
+  String get settingsSectionAdvancedFeatures => 'Advanced features';
+
+  @override
+  String get settingsAdditionalSourceProtocolsTitle => 'More source protocols';
+
+  @override
+  String get settingsAdditionalSourceProtocolsSubtitle =>
+      'Enable support for additional source protocols.';
+
+  @override
+  String get additionalSourcesImport => 'Import more source protocols';
+
+  @override
+  String get additionalSourcesImportTitle => 'Import source JSON';
+
+  @override
+  String get additionalSourcesImportNotice =>
+      'Imported sources are checked before use and remain disabled until you enable them.';
+
+  @override
+  String get additionalSourcesChooseFile => 'Add from JSON file';
+
+  @override
+  String get additionalSourcesUrlLabel => 'Source JSON URL';
+
+  @override
+  String get additionalSourcesLoadUrl => 'Load URL';
+
+  @override
+  String additionalSourcesPreview(int supported, int partial, int unsupported) {
+    return '$supported available, $partial partially supported, $unsupported not supported';
+  }
+
+  @override
+  String get additionalSourcesAvailable => 'Available';
+
+  @override
+  String get additionalSourcesPartial => 'Partially supported';
+
+  @override
+  String get additionalSourcesUnsupported => 'Not supported';
+
+  @override
+  String get additionalSourcesImportConfirm => 'Import disabled';
+
+  @override
+  String additionalSourcesImported(int count) {
+    return 'Imported $count sources';
+  }
+
+  @override
   String get settingsSectionAboutSupport => 'About & Support';
 
   @override
@@ -1975,7 +2130,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get firstHomeSupportPaperSemanticLabel =>
-      'A letter from the Open Reading developer asking for voluntary support';
+      'A letter from the 拾页 developer asking for voluntary support';
 
   @override
   String get settingsSupportDevelopmentCardTitle =>
@@ -1983,7 +2138,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsSupportDevelopmentCardSubtitle =>
-      'Building and maintaining Open Reading takes substantial time and effort. If it helps you, voluntary donations are welcome.';
+      'Building and maintaining 拾页 takes substantial time and effort. If it helps you, voluntary donations are welcome.';
 
   @override
   String get settingsDonationAction => 'Donate with WeChat';
@@ -2057,7 +2212,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openSourceLicensesIntro =>
-      'These license texts are available offline in the app. Open Reading, bundled fonts, and third-party software remain subject to their respective licenses.';
+      'These license texts are available offline in the app. 拾页, bundled fonts, and third-party software remain subject to their respective licenses.';
 
   @override
   String get openSourceProjectSection => 'Project licenses';
@@ -2080,7 +2235,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get openSourceLicenseLegalese =>
-      'Open Reading and third-party components remain subject to their respective licenses.';
+      '拾页 and third-party components remain subject to their respective licenses.';
 
   @override
   String get openSourceLicenseLoadFailed => 'Could not load the license text.';
@@ -2115,7 +2270,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get contributorsSubtitle =>
-      'Thanks to everyone making Open Reading better';
+      'Thanks to everyone making 拾页 better';
 
   @override
   String get contributorsOpenProfileFailed =>
@@ -2155,10 +2310,25 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsFloatingNavigationSubtitle =>
-      'Adjust the display style and destination order';
+      'Adjust size, display style, and destination order';
 
   @override
   String get floatingNavigationPreviewTitle => 'Preview';
+
+  @override
+  String get floatingNavigationSizeTitle => 'Size';
+
+  @override
+  String get floatingNavigationSizeAutomatic => 'Automatic';
+
+  @override
+  String get floatingNavigationSizeCustom => 'Custom';
+
+  @override
+  String get floatingNavigationHeightLabel => 'Height';
+
+  @override
+  String get floatingNavigationSideMarginLabel => 'Side margin';
 
   @override
   String get floatingNavigationDisplayModeTitle => 'Display style';
@@ -2187,11 +2357,11 @@ class AppLocalizationsEn extends AppLocalizations {
   String get floatingNavigationResetDone => 'Default order restored';
 
   @override
-  String get settingsLibraryLayoutTitle => 'Library layout';
+  String get settingsLibraryLayoutTitle => 'Library settings';
 
   @override
   String get settingsLibraryLayoutSubtitle =>
-      'Choose cards or a compact grid, then adjust the grid details';
+      'Adjust the library layout and book opening experience';
 
   @override
   String get settingsLibraryLayoutCard => 'Cards';
@@ -2214,6 +2384,49 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settingsLibraryGridShowDetailsSubtitle =>
       'Add one title line and a compact progress bar below each cover';
+
+  @override
+  String get settingsLibraryOpenAnimationTitle => 'Book opening animation';
+
+  @override
+  String get settingsLibraryOpenAnimationSubtitle =>
+      'Used only when opening a book from the library';
+
+  @override
+  String get settingsLibraryOpenAnimationClassicCover =>
+      'Classic cover expansion';
+
+  @override
+  String get settingsLibraryOpenAnimationClassicCoverHint =>
+      'Enlarge the original cover to full screen before revealing the reader';
+
+  @override
+  String get settingsLibraryOpenAnimationMinimal => 'Minimal fade';
+
+  @override
+  String get settingsLibraryOpenAnimationMinimalHint =>
+      'A quick, stable fade with no directional movement';
+
+  @override
+  String get settingsLibraryOpenAnimationPaperRise => 'Paper rise';
+
+  @override
+  String get settingsLibraryOpenAnimationPaperRiseHint =>
+      'The reading paper settles gently into place from below';
+
+  @override
+  String get settingsLibraryOpenAnimationPageSlide => 'Page slide';
+
+  @override
+  String get settingsLibraryOpenAnimationPageSlideHint =>
+      'The reading page enters with a short sideways motion';
+
+  @override
+  String get settingsLibraryOpenAnimationBookSpread => 'Book spread';
+
+  @override
+  String get settingsLibraryOpenAnimationBookSpreadHint =>
+      'Two paper halves open outward from the center';
 
   @override
   String get settingsAccentFollowTheme => 'Accent color: follow theme';
@@ -2304,7 +2517,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settingsOfficialWebsiteSubtitle =>
-      'Download and install from ShiYe GitHub Releases';
+      'Download and install from open.xxread.top';
 
   @override
   String get settingsOfficialWebsiteOpenFailed =>
@@ -3010,10 +3223,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get importSelectFiles => 'Choose files';
 
   @override
-  String get importIosSharedDocuments => 'On My iPhone · Open Reading';
+  String get importIosSharedDocuments => 'On My iPhone · 拾页';
 
   @override
-  String get importICloudDrive => 'iCloud Drive · Open Reading';
+  String get importICloudDrive => 'iCloud Drive · 拾页';
 
   @override
   String get importICloudUnavailable => 'iCloud Drive is unavailable';
@@ -3502,7 +3715,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Copied file does not match source';
 
   @override
-  String get importErrorFileTooLarge => 'File exceeds 100MB import limit';
+  String get importErrorFileTooLarge => 'File exceeds 500 MB import limit';
 
   @override
   String get importErrorSourcePrepareFailed => 'Cannot prepare import file';
@@ -3643,7 +3856,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get agreementV2HeroBody =>
-      'OpenReading is an open-source, cross-platform, local-first ebook reader. It provides reading tools; it does not provide, host, or review books you import.';
+      '拾页 is an open-source, cross-platform, local-first ebook reader. It provides reading tools; it does not provide, host, or review books you import.';
 
   @override
   String get agreementV2LocalTitle => 'Local first';
@@ -3668,18 +3881,18 @@ class AppLocalizationsEn extends AppLocalizations {
   String get agreementV2Title => 'Terms of Use & Privacy Notice';
 
   @override
-  String get agreementV2Subtitle => 'Please read before using OpenReading';
+  String get agreementV2Subtitle => 'Please read before using 拾页';
 
   @override
   String get agreementV2ImportantNotice =>
-      'Important: The official OpenReading app does not preinstall, bundle, or recommend any third-party book source, and its developers do not operate, represent, or host source content. You choose every imported file and source you add; use only content you are authorized to access.';
+      'Important: The official 拾页 app does not preinstall, bundle, or recommend any third-party book source, and its developers do not operate, represent, or host source content. You choose every imported file and source you add; use only content you are authorized to access.';
 
   @override
   String get agreementV2SourceBoundaryTitle => 'Third-party source boundary';
 
   @override
   String get agreementV2SourceBoundaryPoint1 =>
-      'The official project provides open-source reader software and the Open Reading Source Protocol only. It provides no source addresses or official source directory.';
+      'The official project provides open-source reader software and the 拾页 Source Protocol only. It provides no source addresses or official source directory.';
 
   @override
   String get agreementV2SourceBoundaryPoint2 =>
@@ -3694,14 +3907,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get agreementV2Section1Body =>
-      'These terms apply to your download, installation, and use of OpenReading and its included features. By selecting “Agree and continue,” you confirm that you have read, understood, and accepted them. If you do not agree, stop using and exit the app. A guardian must consent where required by local law.';
+      'These terms apply to your download, installation, and use of 拾页 and its included features. By selecting “Agree and continue,” you confirm that you have read, understood, and accepted them. If you do not agree, stop using and exit the app. A guardian must consent where required by local law.';
 
   @override
   String get agreementV2Section2Title => 'Open-source license';
 
   @override
   String get agreementV2Section2Body =>
-      'Future OpenReading versions are released under the GNU Affero General Public License v3.0. You may use, copy, modify, distribute, or sell the software under that license. A distributed modified version must provide its complete corresponding source under AGPL-3.0, and a modified version used to provide a network service must also offer corresponding source to users interacting with it. MIT rights already granted for v1.0.0 and earlier versions remain valid and are not revoked. These terms do not restrict rights granted by the open-source license. Third-party components remain subject to their own licenses.';
+      'Future 拾页 versions are released under the GNU Affero General Public License v3.0. You may use, copy, modify, distribute, or sell the software under that license. A distributed modified version must provide its complete corresponding source under AGPL-3.0, and a modified version used to provide a network service must also offer corresponding source to users interacting with it. MIT rights already granted for v1.0.0 and earlier versions remain valid and are not revoked. These terms do not restrict rights granted by the open-source license. Third-party components remain subject to their own licenses.';
 
   @override
   String get agreementV2Section3Title => 'User content and rights';
@@ -3729,7 +3942,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get agreementV2Section6Body =>
-      'ShiYe Reader is local-first. Books, reading progress, notes, and settings are normally stored on your device. Unless you enable a network book source, AI, sync, or another online feature, the app does not send book text to the developers for local reading. Automatic and manual update checks only contact ShiYe Reader\'s GitHub Releases; GitHub processes your IP address and User-Agent as part of ordinary network communication. Update requests do not include book text, your library, notes, an account, or a unique device identifier. Other online features may send necessary data to the provider you select under that provider\'s policies. Protect your device, API keys, and backups; uninstalling, clearing data, device failure, or user error may permanently erase data.';
+      '拾页 is local-first. Books, reading progress, notes, and settings are normally stored on your device. Unless you enable a network book source, AI, sync, or another online feature, the app does not need to send book text to the developers to provide local reading. Automatic and manual update checks contact GitHub and the official site at open.xxread.top with necessary technical parameters such as platform, processor architecture, and release channel; their servers process your IP address and User-Agent as part of ordinary network communication. When you download an installer from the official site, the backend records the version, architecture, download time, IP address, and User-Agent for download counts, security protection, and troubleshooting. Download-event records containing a raw IP are retained for no more than 30 days and then deleted; only aggregate statistics without raw IP addresses are kept longer. Update requests do not include book text, your library, notes, an account, or a unique device identifier. GitHub requests are also governed by GitHub’s privacy terms. When another online feature is used, queries, selected text, network information, or necessary parameters may be sent to the provider you selected under that provider’s policies. Protect your device, API keys, and backups; uninstalling, clearing data, device failure, or user error may permanently erase data.';
 
   @override
   String get agreementV2Section7Title => 'AI and automated output';
@@ -3785,7 +3998,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get agreementV2ExitDialogBody =>
-      'You must accept the Terms of Use to continue using OpenReading. If you do not agree, please exit the app.';
+      'You must accept the Terms of Use to continue using 拾页. If you do not agree, please exit the app.';
 
   @override
   String get agreementV2CancelLabel => 'Go back';

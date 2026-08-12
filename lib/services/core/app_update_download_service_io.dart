@@ -41,7 +41,7 @@ class AppUpdateDownloadService {
               connectTimeout: const Duration(seconds: 15),
               receiveTimeout: const Duration(minutes: 10),
               followRedirects: false,
-              headers: {if (!kIsWeb) 'User-Agent': 'OpenReading-AppUpdate'},
+              headers: {if (!kIsWeb) 'User-Agent': 'Shiye-AppUpdate'},
             ),
           );
 
@@ -258,9 +258,7 @@ Future<void> _clearOldUpdateFiles(Directory updatesDirectory) async {
 }
 
 bool _isAllowedDownloadUri(Uri uri) =>
-    uri.scheme == 'https' &&
-    uri.host.toLowerCase() == 'github.com' &&
-    uri.path.toLowerCase().startsWith('/wuliuqi1/shiye-reader/releases/');
+    uri.scheme == 'https' && uri.host.toLowerCase() == 'open.xxread.top';
 
 extension on File {
   Future<void> deleteIfExists() async {

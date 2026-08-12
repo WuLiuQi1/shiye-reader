@@ -98,7 +98,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bookSourcesNoSourcesDescription =>
-      '粘贴兼容 Open Reading Source Protocol 的服务地址即可接入。';
+      '粘贴兼容 拾页 Source Protocol 的服务地址即可接入。';
 
   @override
   String get bookSourcesManageTitle => '已接入书源';
@@ -125,7 +125,64 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bookSourcesConfirm => '确认';
 
   @override
-  String get bookSourcesAddTitle => '添加开放书源';
+  String get bookSourcesAddTitle => '添加书源';
+
+  @override
+  String get bookSourcesImportLink => '导入链接';
+
+  @override
+  String get bookSourcesAnalyze => '分析书源';
+
+  @override
+  String get bookSourcesDetectedOrsp => '识别为：ORSP 书源';
+
+  @override
+  String get bookSourcesDetectedAdditional => '识别为：其他协议书源';
+
+  @override
+  String get bookSourcesProtocolGroupOrsp => 'ORSP 书源';
+
+  @override
+  String get bookSourcesProtocolGroupAdditional => '其他协议书源';
+
+  @override
+  String get bookSourcesAdvancedFeatureRequired =>
+      '请先在“高级功能”中开启“更多书源协议”，再导入该书源。';
+
+  @override
+  String get bookSourcesNoWorkingSources => '没有书源通过实际搜索检测，本次未导入任何书源。';
+
+  @override
+  String bookSourcesVerificationProgress(
+    int completed,
+    int total,
+    int available,
+  ) {
+    return '已检测 $completed/$total，可用 $available 个';
+  }
+
+  @override
+  String get bookSourcesSelect => '多选书源';
+
+  @override
+  String get bookSourcesSelectAll => '全选';
+
+  @override
+  String get bookSourcesClearSelection => '取消全选';
+
+  @override
+  String get bookSourcesEnableSelected => '启用所选';
+
+  @override
+  String get bookSourcesDisableSelected => '停用所选';
+
+  @override
+  String get bookSourcesDeleteSelected => '删除所选';
+
+  @override
+  String bookSourcesDeleteSelectedMessage(int count) {
+    return '确定删除选中的 $count 个书源吗？本地书籍不会受到影响。';
+  }
 
   @override
   String get bookSourcesUrlLabel => '书源地址';
@@ -135,7 +192,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bookSourcesNoOfficialSourcesNotice =>
-      '开元阅读不预装任何书源，也不运营、推荐或背书第三方书源服务。每个书源地址都由你主动添加。';
+      '拾页不预装任何书源，也不运营、推荐或背书第三方书源服务。每个书源地址都由你主动添加。';
 
   @override
   String get bookSourcesResponsibilityAck =>
@@ -160,7 +217,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bookSourcesRefreshFailed => '无法刷新该书源';
 
   @override
-  String get bookSourcesProtocolTitle => 'Open Reading Source Protocol';
+  String get bookSourcesProtocolTitle => '拾页 Source Protocol';
 
   @override
   String get bookSourcesProtocolDescription =>
@@ -202,7 +259,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bookSourcesRightsUnverifiedNotice =>
-      '上述信息由独立书源运营者自行声明。开元阅读仅为提高透明度而展示，不负责核验，也不构成推荐或背书。';
+      '上述信息由独立书源运营者自行声明。拾页仅为提高透明度而展示，不负责核验，也不构成推荐或背书。';
 
   @override
   String get bookSourcesContactOperator => '联系运营者';
@@ -440,7 +497,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get fontMonospaceDescription => '等宽字体，适合代码、技术内容和专注排版。';
 
   @override
-  String get fontPreviewText => 'Open Reading · 自由阅读，开卷有益';
+  String get fontPreviewText => '拾页 · 自由阅读，开卷有益';
 
   @override
   String get customFonts => '我的字体';
@@ -589,7 +646,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsQqChannel => 'QQ 频道';
 
   @override
-  String get settingsQqChannelSubtitle => '开元阅读 · OpenReading6';
+  String get settingsQqChannelSubtitle => '拾页 · 拾页6';
 
   @override
   String get settingsQqChannelOpenFailed => '无法打开 QQ 频道邀请链接';
@@ -1113,7 +1170,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get agreementCardSubtitle => '请仔细阅读以下内容';
 
   @override
-  String get agreementWelcomeTitle => '欢迎使用开元阅读';
+  String get agreementWelcomeTitle => '欢迎使用拾页';
 
   @override
   String get agreementWelcomeBody => '为保证你获得稳定、可预期的阅读体验，请先阅读并同意以下协议内容。';
@@ -1504,7 +1561,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get incomingBooksUnsupportedFormat => '暂不支持这种书籍格式';
 
   @override
-  String get incomingBooksFileTooLarge => '文件超过 100 MB 导入限制';
+  String get incomingBooksFileTooLarge => '文件超过 500 MB 导入限制';
 
   @override
   String get incomingBooksTooManyFiles => '一次分享的书籍文件过多，请分批添加';
@@ -1585,6 +1642,45 @@ class AppLocalizationsZh extends AppLocalizations {
   String get libraryDeleteComplete => '删除完成';
 
   @override
+  String get librarySelectMultiple => '选择多本';
+
+  @override
+  String get librarySelectAll => '全选';
+
+  @override
+  String librarySelectedBooks(int count) {
+    return '已选择 $count 本';
+  }
+
+  @override
+  String libraryDeleteSelected(int count) {
+    return '删除 $count 本';
+  }
+
+  @override
+  String get libraryBatchDeleteTitle => '删除所选书籍？';
+
+  @override
+  String libraryBatchDeleteMessage(int count) {
+    return '将永久删除所选的 $count 本书，以及相关笔记、书签和本地文件。此操作无法撤销。';
+  }
+
+  @override
+  String libraryDeletingSelected(int done, int total) {
+    return '正在删除 $done/$total';
+  }
+
+  @override
+  String libraryBatchDeleteSuccess(int count) {
+    return '已删除 $count 本书';
+  }
+
+  @override
+  String libraryBatchDeletePartial(int success, int failed) {
+    return '已删除 $success 本，$failed 本删除失败';
+  }
+
+  @override
   String get readerPrefaceTitle => '正文前';
 
   @override
@@ -1641,6 +1737,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get readerBottomMarginLabel => '下页边距';
+
+  @override
+  String get readerTxtChapterTitlePageTitle => '章节标题独立成页';
+
+  @override
+  String get readerTxtChapterTitlePageHint => '关闭后，章节标题显示在正文开头';
 
   @override
   String get readerVerticalMarginLabel => '上下页边距';
@@ -1799,6 +1901,55 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsSectionGeneral => '通用';
 
   @override
+  String get settingsSectionAdvancedFeatures => '高级功能';
+
+  @override
+  String get settingsAdditionalSourceProtocolsTitle => '更多书源协议';
+
+  @override
+  String get settingsAdditionalSourceProtocolsSubtitle => '开启后，可以支持更多的书源协议。';
+
+  @override
+  String get additionalSourcesImport => '导入更多协议书源';
+
+  @override
+  String get additionalSourcesImportTitle => '导入书源 JSON';
+
+  @override
+  String get additionalSourcesImportNotice => '导入内容会先进行兼容性预检，并保持停用，需由你主动开启。';
+
+  @override
+  String get additionalSourcesChooseFile => '从 JSON 文件添加';
+
+  @override
+  String get additionalSourcesUrlLabel => '书源 JSON 地址';
+
+  @override
+  String get additionalSourcesLoadUrl => '从 URL 加载';
+
+  @override
+  String additionalSourcesPreview(int supported, int partial, int unsupported) {
+    return '可使用 $supported 个，部分支持 $partial 个，暂不支持 $unsupported 个';
+  }
+
+  @override
+  String get additionalSourcesAvailable => '可使用';
+
+  @override
+  String get additionalSourcesPartial => '部分支持';
+
+  @override
+  String get additionalSourcesUnsupported => '暂不支持';
+
+  @override
+  String get additionalSourcesImportConfirm => '停用状态导入';
+
+  @override
+  String additionalSourcesImported(int count) {
+    return '已导入 $count 个书源';
+  }
+
+  @override
   String get settingsSectionAboutSupport => '关于与支持';
 
   @override
@@ -1887,14 +2038,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get firstHomeSupportLater => '再说吧';
 
   @override
-  String get firstHomeSupportPaperSemanticLabel => '开元阅读开发者的自愿支持说明';
+  String get firstHomeSupportPaperSemanticLabel => '拾页开发者的自愿支持说明';
 
   @override
   String get settingsSupportDevelopmentCardTitle => '支持持续开发';
 
   @override
   String get settingsSupportDevelopmentCardSubtitle =>
-      '开发和维护投入了大量时间与精力。如果开元阅读对你有帮助，欢迎自愿捐赠支持。';
+      '开发和维护投入了大量时间与精力。如果拾页对你有帮助，欢迎自愿捐赠支持。';
 
   @override
   String get settingsDonationAction => '微信捐赠';
@@ -1942,7 +2093,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsAiSaveAndEnable => '保存并启用';
 
   @override
-  String get settingsAboutTagline => '拾起一页，片刻自由';
+  String get settingsAboutTagline => '开源、跨平台、专注阅读';
 
   @override
   String get settingsVersionLabel => '版本';
@@ -1961,7 +2112,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get openSourceLicensesIntro =>
-      '以下许可文本随应用离线提供。Open Reading、内置字体及第三方软件分别遵循各自的许可条款。';
+      '以下许可文本随应用离线提供。拾页、内置字体及第三方软件分别遵循各自的许可条款。';
 
   @override
   String get openSourceProjectSection => '项目许可';
@@ -1982,7 +2133,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get openSourceDependenciesSubtitle => '查看由 Flutter 自动收集的第三方软件许可';
 
   @override
-  String get openSourceLicenseLegalese => 'Open Reading 与第三方组件分别遵循各自的许可条款。';
+  String get openSourceLicenseLegalese => '拾页 与第三方组件分别遵循各自的许可条款。';
 
   @override
   String get openSourceLicenseLoadFailed => '无法加载许可文本。';
@@ -2015,7 +2166,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get contributorsTitle => '贡献者';
 
   @override
-  String get contributorsSubtitle => '感谢每一位让 Open Reading 变得更好的人';
+  String get contributorsSubtitle => '感谢每一位让 拾页 变得更好的人';
 
   @override
   String get contributorsOpenProfileFailed => '无法打开贡献者主页';
@@ -2050,10 +2201,25 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsFloatingNavigationTitle => '悬浮导航栏';
 
   @override
-  String get settingsFloatingNavigationSubtitle => '调整显示方式与入口顺序';
+  String get settingsFloatingNavigationSubtitle => '调整尺寸、显示方式与入口顺序';
 
   @override
   String get floatingNavigationPreviewTitle => '预览';
+
+  @override
+  String get floatingNavigationSizeTitle => '尺寸';
+
+  @override
+  String get floatingNavigationSizeAutomatic => '自动适配';
+
+  @override
+  String get floatingNavigationSizeCustom => '自定义';
+
+  @override
+  String get floatingNavigationHeightLabel => '高度';
+
+  @override
+  String get floatingNavigationSideMarginLabel => '左右边距';
 
   @override
   String get floatingNavigationDisplayModeTitle => '显示方式';
@@ -2080,10 +2246,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get floatingNavigationResetDone => '已恢复默认顺序';
 
   @override
-  String get settingsLibraryLayoutTitle => '书库布局';
+  String get settingsLibraryLayoutTitle => '书库设置';
 
   @override
-  String get settingsLibraryLayoutSubtitle => '选择卡片或紧凑网格，并按需调整网格信息';
+  String get settingsLibraryLayoutSubtitle => '调整书库布局与书籍打开体验';
 
   @override
   String get settingsLibraryLayoutCard => '卡片';
@@ -2105,6 +2271,43 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settingsLibraryGridShowDetailsSubtitle => '在每本封面下显示单行书名和精简进度条';
+
+  @override
+  String get settingsLibraryOpenAnimationTitle => '书籍打开动画';
+
+  @override
+  String get settingsLibraryOpenAnimationSubtitle => '仅作用于从书库打开书籍';
+
+  @override
+  String get settingsLibraryOpenAnimationClassicCover => '经典封面展开';
+
+  @override
+  String get settingsLibraryOpenAnimationClassicCoverHint =>
+      '将原封面放大至全屏，再衔接阅读正文';
+
+  @override
+  String get settingsLibraryOpenAnimationMinimal => '极简淡入';
+
+  @override
+  String get settingsLibraryOpenAnimationMinimalHint => '快速稳定地淡入，没有方向位移';
+
+  @override
+  String get settingsLibraryOpenAnimationPaperRise => '纸面浮现';
+
+  @override
+  String get settingsLibraryOpenAnimationPaperRiseHint => '阅读纸面从下方轻轻浮现并落定';
+
+  @override
+  String get settingsLibraryOpenAnimationPageSlide => '侧页推入';
+
+  @override
+  String get settingsLibraryOpenAnimationPageSlideHint => '阅读纸面从侧边短距离滑入';
+
+  @override
+  String get settingsLibraryOpenAnimationBookSpread => '双页展开';
+
+  @override
+  String get settingsLibraryOpenAnimationBookSpreadHint => '两侧纸面从中缝向外展开';
 
   @override
   String get settingsAccentFollowTheme => '强调色：跟随主题';
@@ -2189,7 +2392,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsOfficialWebsite => '官网';
 
   @override
-  String get settingsOfficialWebsiteSubtitle => '从拾页 GitHub Releases 下载并安装';
+  String get settingsOfficialWebsiteSubtitle => '从 open.xxread.top 下载并安装';
 
   @override
   String get settingsOfficialWebsiteOpenFailed => '无法打开官网';
@@ -2861,10 +3064,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get importSelectFiles => '选择文件';
 
   @override
-  String get importIosSharedDocuments => '我的 iPhone · Open Reading';
+  String get importIosSharedDocuments => '我的 iPhone · 拾页';
 
   @override
-  String get importICloudDrive => 'iCloud Drive · Open Reading';
+  String get importICloudDrive => 'iCloud Drive · 拾页';
 
   @override
   String get importICloudUnavailable => 'iCloud Drive 当前不可用';
@@ -3328,7 +3531,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get importErrorCopyVerificationFailed => '复制后的文件与源文件不一致';
 
   @override
-  String get importErrorFileTooLarge => '文件超过 100 MB 导入限制';
+  String get importErrorFileTooLarge => '文件超过 500 MB 导入限制';
 
   @override
   String get importErrorSourcePrepareFailed => '无法准备导入文件';
@@ -3469,7 +3672,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get agreementV2HeroBody =>
-      '开元阅读是一款开源、跨平台、本地优先的电子书阅读工具。它提供阅读能力，但不提供、托管或审核你导入的书籍。';
+      '拾页是一款开源、跨平台、本地优先的电子书阅读工具。它提供阅读能力，但不提供、托管或审核你导入的书籍。';
 
   @override
   String get agreementV2LocalTitle => '本地优先';
@@ -3497,14 +3700,14 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get agreementV2ImportantNotice =>
-      '特别提示：开元阅读官方版本不预装、不内置、不推荐任何第三方书源，也不运营、代理或托管书源内容。你导入的文件和主动添加的书源均由你自行选择；请仅访问和使用你有权使用的内容。';
+      '特别提示：拾页官方版本不预装、不内置、不推荐任何第三方书源，也不运营、代理或托管书源内容。你导入的文件和主动添加的书源均由你自行选择；请仅访问和使用你有权使用的内容。';
 
   @override
   String get agreementV2SourceBoundaryTitle => '第三方书源责任边界';
 
   @override
   String get agreementV2SourceBoundaryPoint1 =>
-      '官方只提供开源阅读软件和 Open Reading Source Protocol，不提供书源地址或官方书源目录。';
+      '官方只提供开源阅读软件和 拾页 Source Protocol，不提供书源地址或官方书源目录。';
 
   @override
   String get agreementV2SourceBoundaryPoint2 =>
@@ -3519,7 +3722,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get agreementV2Section1Body =>
-      '本协议适用于你对开元阅读软件及其附带功能的下载、安装和使用。点击“同意并继续”即表示你已阅读、理解并同意本协议；如你不同意，请停止使用并退出应用。若你未达到所在地法律规定的独立同意年龄，应由监护人阅读并同意。';
+      '本协议适用于你对拾页软件及其附带功能的下载、安装和使用。点击“同意并继续”即表示你已阅读、理解并同意本协议；如你不同意，请停止使用并退出应用。若你未达到所在地法律规定的独立同意年龄，应由监护人阅读并同意。';
 
   @override
   String get agreementV2Section2Title => '开源软件与许可';
@@ -3554,7 +3757,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get agreementV2Section6Body =>
-      '本软件采用本地优先设计，书籍、阅读进度、笔记和设置通常保存在你的设备。除非你主动启用联网书源、AI、同步或其他联网功能，本软件不会为了提供本地阅读而主动将书籍正文发送给开发者。应用自动或手动检查更新时，仅访问拾页的 GitHub Releases；GitHub 会按正常网络通信处理你的 IP 地址与 User-Agent。更新请求不包含书籍正文、书架、笔记、账户或设备唯一标识。启用其他联网功能时，相关查询、文本片段、设备网络信息或必要参数可能发送给你选择的第三方服务，具体以该服务规则为准。你应自行保护设备、访问密钥和备份；卸载、清理数据、设备故障或误操作可能导致数据永久丢失。';
+      '本软件采用本地优先设计，书籍、阅读进度、笔记和设置通常保存在你的设备。除非你主动启用联网书源、AI、同步或其他联网功能，本软件不会为了提供本地阅读而主动将书籍正文发送给开发者。应用自动或手动检查更新时，会访问 GitHub 和官方站点 open.xxread.top，并发送平台、处理器架构、发布渠道等必要技术参数；服务器和网络服务会按正常通信处理你的 IP 地址与 User-Agent。你从官方站点下载安装包时，后台会记录版本、架构、下载时间、IP 和 User-Agent，用于下载次数统计、安全防护和故障排查；原始 IP 下载明细最多保留 30 天，之后删除，长期仅保留不含原始 IP 的汇总统计。上述更新请求不包含书籍正文、书架、笔记、账户或设备唯一标识；访问 GitHub 时还适用 GitHub 的隐私规则。启用其他联网功能时，相关查询、文本片段、设备网络信息或必要参数可能发送给你选择的第三方服务，具体以该服务规则为准。你应自行保护设备、访问密钥和备份；卸载、清理数据、设备故障或误操作可能导致数据永久丢失。';
 
   @override
   String get agreementV2Section7Title => 'AI 与自动化输出';
@@ -3608,7 +3811,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get agreementV2ExitDialogTitle => '不同意条款？';
 
   @override
-  String get agreementV2ExitDialogBody => '你需要同意使用条款后才能继续使用开元阅读。若不同意，请退出应用。';
+  String get agreementV2ExitDialogBody => '你需要同意使用条款后才能继续使用拾页。若不同意，请退出应用。';
 
   @override
   String get agreementV2CancelLabel => '返回阅读';
@@ -4027,7 +4230,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   AppLocalizationsZhTw() : super('zh_TW');
 
   @override
-  String get appTitle => '拾頁';
+  String get appTitle => '開元閱讀';
 
   @override
   String get home => '首頁';
@@ -4116,7 +4319,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get bookSourcesNoSourcesDescription =>
-      '貼上相容 Open Reading Source Protocol 的服務位址即可接入。';
+      '貼上相容 拾页 Source Protocol 的服務位址即可接入。';
 
   @override
   String get bookSourcesManageTitle => '已接入書源';
@@ -4143,7 +4346,64 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get bookSourcesConfirm => '確認';
 
   @override
-  String get bookSourcesAddTitle => '新增開放書源';
+  String get bookSourcesAddTitle => '新增書源';
+
+  @override
+  String get bookSourcesImportLink => '匯入連結';
+
+  @override
+  String get bookSourcesAnalyze => '分析書源';
+
+  @override
+  String get bookSourcesDetectedOrsp => '識別為：ORSP 書源';
+
+  @override
+  String get bookSourcesDetectedAdditional => '識別為：其他協議書源';
+
+  @override
+  String get bookSourcesProtocolGroupOrsp => 'ORSP 書源';
+
+  @override
+  String get bookSourcesProtocolGroupAdditional => '其他協議書源';
+
+  @override
+  String get bookSourcesAdvancedFeatureRequired =>
+      '請先在「進階功能」中開啟「更多書源協議」，再匯入該書源。';
+
+  @override
+  String get bookSourcesNoWorkingSources => '沒有書源通過實際搜尋檢測，本次未匯入任何書源。';
+
+  @override
+  String bookSourcesVerificationProgress(
+    int completed,
+    int total,
+    int available,
+  ) {
+    return '已檢測 $completed/$total，可用 $available 個';
+  }
+
+  @override
+  String get bookSourcesSelect => '多選書源';
+
+  @override
+  String get bookSourcesSelectAll => '全選';
+
+  @override
+  String get bookSourcesClearSelection => '取消全選';
+
+  @override
+  String get bookSourcesEnableSelected => '啟用所選';
+
+  @override
+  String get bookSourcesDisableSelected => '停用所選';
+
+  @override
+  String get bookSourcesDeleteSelected => '刪除所選';
+
+  @override
+  String bookSourcesDeleteSelectedMessage(int count) {
+    return '確定刪除選取的 $count 個書源嗎？本機書籍不受影響。';
+  }
 
   @override
   String get bookSourcesUrlLabel => '書源位址';
@@ -4178,7 +4438,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get bookSourcesRefreshFailed => '無法重新整理此書源';
 
   @override
-  String get bookSourcesProtocolTitle => 'Open Reading Source Protocol';
+  String get bookSourcesProtocolTitle => '拾页 Source Protocol';
 
   @override
   String get bookSourcesProtocolDescription =>
@@ -4458,7 +4718,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get fontMonospaceDescription => '等寬字體，適合程式碼、技術內容和專注排版。';
 
   @override
-  String get fontPreviewText => 'Open Reading · 自由閱讀，開卷有益';
+  String get fontPreviewText => '拾页 · 自由閱讀，開卷有益';
 
   @override
   String get customFonts => '我的字體';
@@ -4564,7 +4824,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get settingsQqChannel => 'QQ 頻道';
 
   @override
-  String get settingsQqChannelSubtitle => '開元閱讀 · OpenReading6';
+  String get settingsQqChannelSubtitle => '開元閱讀 · 拾页6';
 
   @override
   String get settingsQqChannelOpenFailed => '無法開啟 QQ 頻道邀請連結';
@@ -5479,7 +5739,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get incomingBooksUnsupportedFormat => '暫不支援這種書籍格式';
 
   @override
-  String get incomingBooksFileTooLarge => '檔案超過 100 MB 匯入限制';
+  String get incomingBooksFileTooLarge => '檔案超過 500 MB 匯入限制';
 
   @override
   String get incomingBooksTooManyFiles => '一次分享的書籍檔案過多，請分批加入';
@@ -5560,6 +5820,45 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get libraryDeleteComplete => '刪除完成';
 
   @override
+  String get librarySelectMultiple => '選擇多本';
+
+  @override
+  String get librarySelectAll => '全選';
+
+  @override
+  String librarySelectedBooks(int count) {
+    return '已選擇 $count 本';
+  }
+
+  @override
+  String libraryDeleteSelected(int count) {
+    return '刪除 $count 本';
+  }
+
+  @override
+  String get libraryBatchDeleteTitle => '刪除所選書籍？';
+
+  @override
+  String libraryBatchDeleteMessage(int count) {
+    return '將永久刪除所選的 $count 本書，以及相關筆記、書籤和本機檔案。此操作無法復原。';
+  }
+
+  @override
+  String libraryDeletingSelected(int done, int total) {
+    return '正在刪除 $done/$total';
+  }
+
+  @override
+  String libraryBatchDeleteSuccess(int count) {
+    return '已刪除 $count 本書';
+  }
+
+  @override
+  String libraryBatchDeletePartial(int success, int failed) {
+    return '已刪除 $success 本，$failed 本刪除失敗';
+  }
+
+  @override
   String get readerPrefaceTitle => '內文前';
 
   @override
@@ -5616,6 +5915,12 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get readerBottomMarginLabel => '下頁邊距';
+
+  @override
+  String get readerTxtChapterTitlePageTitle => '章節標題獨立成頁';
+
+  @override
+  String get readerTxtChapterTitlePageHint => '關閉後，章節標題顯示在正文開頭';
 
   @override
   String get readerVerticalMarginLabel => '上下頁邊距';
@@ -5774,6 +6079,55 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get settingsSectionGeneral => '通用';
 
   @override
+  String get settingsSectionAdvancedFeatures => '進階功能';
+
+  @override
+  String get settingsAdditionalSourceProtocolsTitle => '更多書源協議';
+
+  @override
+  String get settingsAdditionalSourceProtocolsSubtitle => '開啟後，可以支援更多的書源協議。';
+
+  @override
+  String get additionalSourcesImport => '匯入更多協議書源';
+
+  @override
+  String get additionalSourcesImportTitle => '匯入書源 JSON';
+
+  @override
+  String get additionalSourcesImportNotice => '匯入內容會先進行相容性預檢，並保持停用，需由你主動開啟。';
+
+  @override
+  String get additionalSourcesChooseFile => '從 JSON 檔案新增';
+
+  @override
+  String get additionalSourcesUrlLabel => '書源 JSON 網址';
+
+  @override
+  String get additionalSourcesLoadUrl => '從 URL 載入';
+
+  @override
+  String additionalSourcesPreview(int supported, int partial, int unsupported) {
+    return '可使用 $supported 個，部分支援 $partial 個，暫不支援 $unsupported 個';
+  }
+
+  @override
+  String get additionalSourcesAvailable => '可使用';
+
+  @override
+  String get additionalSourcesPartial => '部分支援';
+
+  @override
+  String get additionalSourcesUnsupported => '暫不支援';
+
+  @override
+  String get additionalSourcesImportConfirm => '停用狀態匯入';
+
+  @override
+  String additionalSourcesImported(int count) {
+    return '已匯入 $count 個書源';
+  }
+
+  @override
   String get settingsSectionAboutSupport => '關於與支持';
 
   @override
@@ -5917,7 +6271,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get settingsAiSaveAndEnable => '儲存並啟用';
 
   @override
-  String get settingsAboutTagline => '拾起一頁，片刻自由';
+  String get settingsAboutTagline => '開源、跨平台、專注閱讀';
 
   @override
   String get settingsVersionLabel => '版本';
@@ -5936,7 +6290,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get openSourceLicensesIntro =>
-      '以下授權文字隨應用程式離線提供。Open Reading、內建字型及第三方軟體分別適用各自的授權條款。';
+      '以下授權文字隨應用程式離線提供。拾页、內建字型及第三方軟體分別適用各自的授權條款。';
 
   @override
   String get openSourceProjectSection => '專案授權';
@@ -5957,7 +6311,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get openSourceDependenciesSubtitle => '查看由 Flutter 自動彙整的第三方軟體授權';
 
   @override
-  String get openSourceLicenseLegalese => 'Open Reading 與第三方元件分別適用各自的授權條款。';
+  String get openSourceLicenseLegalese => '拾页 與第三方元件分別適用各自的授權條款。';
 
   @override
   String get openSourceLicenseLoadFailed => '無法載入授權文字。';
@@ -5990,7 +6344,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get contributorsTitle => '貢獻者';
 
   @override
-  String get contributorsSubtitle => '感謝每一位讓 Open Reading 變得更好的人';
+  String get contributorsSubtitle => '感謝每一位讓 拾页 變得更好的人';
 
   @override
   String get contributorsOpenProfileFailed => '無法開啟貢獻者主頁';
@@ -6025,10 +6379,25 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get settingsFloatingNavigationTitle => '懸浮導覽列';
 
   @override
-  String get settingsFloatingNavigationSubtitle => '調整顯示方式與入口順序';
+  String get settingsFloatingNavigationSubtitle => '調整尺寸、顯示方式與入口順序';
 
   @override
   String get floatingNavigationPreviewTitle => '預覽';
+
+  @override
+  String get floatingNavigationSizeTitle => '尺寸';
+
+  @override
+  String get floatingNavigationSizeAutomatic => '自動調整';
+
+  @override
+  String get floatingNavigationSizeCustom => '自訂';
+
+  @override
+  String get floatingNavigationHeightLabel => '高度';
+
+  @override
+  String get floatingNavigationSideMarginLabel => '左右邊距';
 
   @override
   String get floatingNavigationDisplayModeTitle => '顯示方式';
@@ -6055,10 +6424,10 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get floatingNavigationResetDone => '已恢復預設順序';
 
   @override
-  String get settingsLibraryLayoutTitle => '書庫版面';
+  String get settingsLibraryLayoutTitle => '書庫設定';
 
   @override
-  String get settingsLibraryLayoutSubtitle => '選擇卡片或緊湊網格，並按需調整網格資訊';
+  String get settingsLibraryLayoutSubtitle => '調整書庫版面與書籍開啟體驗';
 
   @override
   String get settingsLibraryLayoutCard => '卡片';
@@ -6080,6 +6449,43 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get settingsLibraryGridShowDetailsSubtitle => '在每本封面下顯示單行書名和精簡進度列';
+
+  @override
+  String get settingsLibraryOpenAnimationTitle => '書籍開啟動畫';
+
+  @override
+  String get settingsLibraryOpenAnimationSubtitle => '僅套用於從書庫開啟書籍';
+
+  @override
+  String get settingsLibraryOpenAnimationClassicCover => '經典封面展開';
+
+  @override
+  String get settingsLibraryOpenAnimationClassicCoverHint =>
+      '將原封面放大至全螢幕，再銜接閱讀正文';
+
+  @override
+  String get settingsLibraryOpenAnimationMinimal => '極簡淡入';
+
+  @override
+  String get settingsLibraryOpenAnimationMinimalHint => '快速穩定地淡入，沒有方向位移';
+
+  @override
+  String get settingsLibraryOpenAnimationPaperRise => '紙面浮現';
+
+  @override
+  String get settingsLibraryOpenAnimationPaperRiseHint => '閱讀紙面從下方輕輕浮現並定位';
+
+  @override
+  String get settingsLibraryOpenAnimationPageSlide => '側頁推入';
+
+  @override
+  String get settingsLibraryOpenAnimationPageSlideHint => '閱讀紙面從側邊短距離滑入';
+
+  @override
+  String get settingsLibraryOpenAnimationBookSpread => '雙頁展開';
+
+  @override
+  String get settingsLibraryOpenAnimationBookSpreadHint => '兩側紙面從中縫向外展開';
 
   @override
   String get settingsAccentFollowTheme => '強調色：跟隨主題';
@@ -6146,7 +6552,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get settingsAboutTitle => '關於應用程式';
 
   @override
-  String get settingsAppName => '拾頁';
+  String get settingsAppName => '開元閱讀';
 
   @override
   String get settingsAuthor => '維護者：小元Niki';
@@ -6164,7 +6570,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get settingsOfficialWebsite => '官方網站';
 
   @override
-  String get settingsOfficialWebsiteSubtitle => '從拾頁 GitHub Releases 下載並安裝';
+  String get settingsOfficialWebsiteSubtitle => '從 open.xxread.top 下載並安裝';
 
   @override
   String get settingsOfficialWebsiteOpenFailed => '無法開啟官方網站';
@@ -6836,10 +7242,10 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get importSelectFiles => '選擇檔案';
 
   @override
-  String get importIosSharedDocuments => '我的 iPhone · Open Reading';
+  String get importIosSharedDocuments => '我的 iPhone · 拾页';
 
   @override
-  String get importICloudDrive => 'iCloud Drive · Open Reading';
+  String get importICloudDrive => 'iCloud Drive · 拾页';
 
   @override
   String get importICloudUnavailable => 'iCloud Drive 目前無法使用';
@@ -7303,7 +7709,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get importErrorCopyVerificationFailed => '複製後的檔案與來源檔案不一致';
 
   @override
-  String get importErrorFileTooLarge => '檔案超過 100 MB 匯入限制';
+  String get importErrorFileTooLarge => '檔案超過 500 MB 匯入限制';
 
   @override
   String get importErrorSourcePrepareFailed => '無法準備匯入檔案';
@@ -7479,7 +7885,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get agreementV2SourceBoundaryPoint1 =>
-      '官方只提供開源閱讀軟體和 Open Reading Source Protocol，不提供書源位址或官方書源目錄。';
+      '官方只提供開源閱讀軟體和 拾页 Source Protocol，不提供書源位址或官方書源目錄。';
 
   @override
   String get agreementV2SourceBoundaryPoint2 =>
@@ -7529,7 +7935,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get agreementV2Section6Body =>
-      '本軟體採用本機優先設計，書籍、閱讀進度、筆記和設定通常儲存在你的裝置。除非你主動啟用連網書源、AI、同步或其他連網功能，本軟體不會為了提供本機閱讀而主動將書籍內文傳送給開發者。應用程式自動或手動檢查更新時，僅會存取拾頁的 GitHub Releases；GitHub 會依正常網路通訊處理你的 IP 位址與 User-Agent。更新請求不包含書籍內文、書庫、筆記、帳戶或裝置唯一識別碼。啟用其他連網功能時，必要資料可能會傳送給你選擇的服務供應商，並適用該供應商的政策。你應自行保護裝置、API 金鑰和備份；解除安裝、清除資料、裝置故障或誤操作可能導致資料永久遺失。';
+      '本軟體採用本機優先設計，書籍、閱讀進度、筆記和設定通常儲存在你的裝置。除非你主動啟用連網書源、AI、同步或其他連網功能，本軟體不會為了提供本機閱讀而主動將書籍內文傳送給開發者。應用程式自動或手動檢查更新時，會存取 GitHub 和官方網站 open.xxread.top，並傳送平台、處理器架構、發布頻道等必要技術參數；伺服器和網路服務會依正常通訊處理你的 IP 位址與 User-Agent。你從官方網站下載安裝套件時，後台會記錄版本、架構、下載時間、IP 和 User-Agent，用於下載次數統計、安全防護和故障排除；原始 IP 下載明細最多保留 30 天，之後刪除，長期僅保留不含原始 IP 的彙總統計。上述更新請求不包含書籍內文、書庫、筆記、帳戶或裝置唯一識別碼；存取 GitHub 時亦適用 GitHub 的隱私規則。啟用其他連網功能時，相關查詢、文字片段、裝置網路資訊或必要參數可能傳送給你選擇的第三方服務，具體以該服務規則為準。你應自行保護裝置、存取金鑰和備份；解除安裝、清除資料、裝置故障或誤操作可能導致資料永久遺失。';
 
   @override
   String get agreementV2Section7Title => 'AI 與自動化輸出';

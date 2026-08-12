@@ -5,7 +5,6 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:xxread/book_sources/models/registered_book_source.dart';
-import 'package:xxread/book_sources/protocol/book_source_protocol.dart';
 import 'package:xxread/book_sources/services/book_source_client.dart';
 import 'package:xxread/book_sources/services/book_source_shelf_service.dart';
 import 'package:xxread/utils/localization_extension.dart';
@@ -40,23 +39,6 @@ class SourceSearchPage extends StatefulWidget {
         .toList(growable: false);
   }
 
-  @visibleForTesting
-  static String normalizeSearchText(String value) => value
-      .toLowerCase()
-      .replaceAll(RegExp(r'[\s《》〈〉「」『』【】\[\]()（）·•:：,，.。!！?？_-]+'), '');
-
-  /// 精准书名优先；包含关系保留为相关结果，其余折叠而不是直接丢弃。
-  @visibleForTesting
-  static int relevanceScore(BookSourceBook book, String query) {
-    final title = normalizeSearchText(book.title);
-    final target = normalizeSearchText(query);
-    if (target.isEmpty || title.isEmpty) return 0;
-    if (title == target) return 100;
-    if (title.startsWith(target) || target.startsWith(title)) return 70;
-    if (title.contains(target) || target.contains(title)) return 50;
-    return 0;
-  }
-
   @override
   State<SourceSearchPage> createState() => _SourceSearchPageState();
 }
@@ -78,9 +60,9 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
   bool _hasSearched = false;
   bool _loadingMore = false;
   bool _loadMoreFailed = false;
-  bool _showOtherResults = false;
   int _failedSourceCount = 0;
   String _activeQuery = '';
+  int _searchGeneration = 0;
 
   bool get _hasMore => _pageStates.values.any((state) => state.hasMore);
 
@@ -119,7 +101,11 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
   Future<void> _search() async {
     final query = _queryController.text.trim();
     final targetSources = _targets;
-    if (query.isEmpty || targetSources.isEmpty || _searching) return;
+    if (query.isEmpty || targetSources.isEmpty) {
+      if (_searching && mounted) setState(() => _searching = false);
+      return;
+    }
+    final generation = ++_searchGeneration;
 
     FocusScope.of(context).unfocus();
     setState(() {
@@ -131,7 +117,6 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
       _pageStates = const {};
       _loadingMore = false;
       _loadMoreFailed = false;
-      _showOtherResults = false;
     });
 
     final batches = await Future.wait(
@@ -152,9 +137,9 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
       }),
     );
 
-    if (!mounted) return;
+    if (!mounted || generation != _searchGeneration) return;
     setState(() {
-      _results = _sortResults(batches.expand((batch) => batch.items), query);
+      _results = batches.expand((batch) => batch.items).toList(growable: false);
       _pageStates = {
         for (final batch in batches)
           if (!batch.failed)
@@ -167,76 +152,7 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
       _failedSourceCount = batches.where((batch) => batch.failed).length;
       _searching = false;
     });
-    unawaited(_enrichExactResults(query));
     WidgetsBinding.instance.addPostFrameCallback((_) => _handleScroll());
-  }
-
-  Future<void> _enrichExactResults(String query) async {
-    final exact = _results
-        .where(
-          (item) => SourceSearchPage.relevanceScore(item.book, query) == 100,
-        )
-        .take(8)
-        .toList(growable: false);
-    if (exact.isEmpty) return;
-    final enriched = <SourcedBook>[];
-    // Bound follow-up traffic so exact matches cannot create a burst of
-    // detail/catalog requests that blocks animations on slower devices.
-    for (var offset = 0; offset < exact.length; offset += 2) {
-      enriched.addAll(
-        await Future.wait(exact.skip(offset).take(2).map(_enrichSearchResult)),
-      );
-      if (!mounted || query != _activeQuery) return;
-    }
-    if (!mounted || query != _activeQuery) return;
-    final replacements = {
-      for (final item in enriched)
-        '${item.source.id}\u0000${item.book.id}': item,
-    };
-    setState(() {
-      _results = _sortResults(
-        _results.map(
-          (item) =>
-              replacements['${item.source.id}\u0000${item.book.id}'] ?? item,
-        ),
-        query,
-      );
-    });
-  }
-
-  Future<SourcedBook> _enrichSearchResult(SourcedBook item) async {
-    try {
-      final detail = await widget.client.getBook(item.source, item.book.id);
-      var chapterCount = item.book.chapterCount;
-      if (chapterCount == null || chapterCount <= 0) {
-        final chapters = await widget.client.getChapters(
-          item.source,
-          item.book.id,
-        );
-        if (chapters.isNotEmpty) chapterCount = chapters.length;
-      }
-      return SourcedBook(
-        source: item.source,
-        book: BookSourceBook(
-          id: item.book.id,
-          title: detail.title.isEmpty ? item.book.title : detail.title,
-          author: detail.author.isEmpty ? item.book.author : detail.author,
-          description: detail.description.isEmpty
-              ? item.book.description
-              : detail.description,
-          categories: detail.categories.isEmpty
-              ? item.book.categories
-              : detail.categories,
-          coverUrl: detail.coverUrl ?? item.book.coverUrl,
-          status: detail.status ?? item.book.status,
-          latestChapter: detail.latestChapter ?? item.book.latestChapter,
-          updatedAt: detail.updatedAt ?? item.book.updatedAt,
-          chapterCount: chapterCount,
-        ),
-      );
-    } catch (_) {
-      return item;
-    }
   }
 
   Future<void> _loadMore() async {
@@ -249,6 +165,7 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
     if (targets.isEmpty) return;
 
     final query = _activeQuery;
+    final generation = _searchGeneration;
     setState(() {
       _loadingMore = true;
       _loadMoreFailed = false;
@@ -280,7 +197,9 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
       }),
     );
 
-    if (!mounted || query != _activeQuery) return;
+    if (!mounted || generation != _searchGeneration || query != _activeQuery) {
+      return;
+    }
     final seen = _results
         .map((item) => '${item.source.id}\u0000${item.book.id}')
         .toSet();
@@ -300,27 +219,15 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
     }
 
     setState(() {
-      _results = _sortResults([..._results, ...appended], query);
+      _results = [..._results, ...appended];
       _pageStates = nextStates;
       _loadingMore = false;
       _loadMoreFailed = batches.any((batch) => batch.failed);
     });
   }
 
-  List<SourcedBook> _sortResults(Iterable<SourcedBook> items, String query) {
-    final result = items.toList(growable: false);
-    result.sort((left, right) {
-      final byScore = SourceSearchPage.relevanceScore(
-        right.book,
-        query,
-      ).compareTo(SourceSearchPage.relevanceScore(left.book, query));
-      if (byScore != 0) return byScore;
-      return left.book.title.compareTo(right.book.title);
-    });
-    return result;
-  }
-
   void _clearSearch() {
+    _searchGeneration++;
     _queryController.clear();
     setState(() {
       _results = const [];
@@ -328,6 +235,7 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
       _hasSearched = false;
       _failedSourceCount = 0;
       _activeQuery = '';
+      _searching = false;
       _loadingMore = false;
       _loadMoreFailed = false;
     });
@@ -418,7 +326,15 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
 
   void _changeScope(String? sourceId) {
     if (_selectedSourceId == sourceId) return;
-    setState(() => _selectedSourceId = sourceId);
+    _searchGeneration++;
+    setState(() {
+      _selectedSourceId = sourceId;
+      if (_hasSearched) {
+        _searching = true;
+        _results = const [];
+        _pageStates = const {};
+      }
+    });
     if (_hasSearched && _activeQuery.isNotEmpty) {
       _queryController.text = _activeQuery;
       unawaited(_search());
@@ -487,10 +403,10 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(16, 10, 16, 12),
           sliver: SliverList.separated(
-            itemCount: _visibleResults.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 10),
+            itemCount: _results.length,
+            separatorBuilder: (_, _) => const SizedBox(height: 10),
             itemBuilder: (context, index) {
-              final result = _visibleResults[index];
+              final result = _results[index];
               return Center(
                 child: ConstrainedBox(
                   constraints: const BoxConstraints(maxWidth: 1048),
@@ -503,29 +419,6 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
             },
           ),
         ),
-        if (_hiddenResultCount > 0)
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 14),
-            sliver: SliverToBoxAdapter(
-              child: Center(
-                child: TextButton.icon(
-                  key: const Key('bookSourceOtherResultsButton'),
-                  onPressed: () =>
-                      setState(() => _showOtherResults = !_showOtherResults),
-                  icon: Icon(
-                    _showOtherResults
-                        ? Icons.expand_less_rounded
-                        : Icons.expand_more_rounded,
-                  ),
-                  label: Text(
-                    _showOtherResults
-                        ? '收起其他结果'
-                        : '显示其他结果（$_hiddenResultCount）',
-                  ),
-                ),
-              ),
-            ),
-          ),
         if (_hasMore || _loadingMore || _loadMoreFailed)
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(16, 0, 16, 24),
@@ -556,24 +449,6 @@ class _SourceSearchPageState extends State<SourceSearchPage> {
           ),
       ],
     );
-  }
-
-  List<SourcedBook> get _visibleResults {
-    if (_showOtherResults) return _results;
-    final relevant = _relevantResults;
-    // 某些书源只返回别名或简介匹配；没有任何书名相关项时仍展示结果，避免空白。
-    return relevant.isEmpty ? _results : relevant;
-  }
-
-  List<SourcedBook> get _relevantResults => _results
-      .where(
-        (item) => SourceSearchPage.relevanceScore(item.book, _activeQuery) > 0,
-      )
-      .toList(growable: false);
-
-  int get _hiddenResultCount {
-    final relevant = _relevantResults;
-    return relevant.isEmpty ? 0 : _results.length - relevant.length;
   }
 
   String _scopeLabel() {

@@ -2,18 +2,8 @@ part of '../../reader_shader_page_curl.dart';
 
 class _ReaderShaderPageCurlState extends State<ReaderShaderPageCurl>
     with TickerProviderStateMixin, WidgetsBindingObserver {
-  // `RenderRepaintBoundary.toImage` is substantially more expensive on many
-  // Android GPUs than it is on iOS. Keep Android's curl snapshots below a
-  // tighter memory budget and warm adjacent pages one at a time so a page turn
-  // never queues several large GPU readbacks in the same frame.
-  static final bool _isAndroid =
-      !kIsWeb && defaultTargetPlatform == TargetPlatform.android;
-  static final int _snapshotBudgetBytes = _isAndroid
-      ? 32 * 1024 * 1024
-      : 48 * 1024 * 1024;
-  static final int _perSnapshotBudgetBytes = _isAndroid
-      ? 5 * 1024 * 1024
-      : 8 * 1024 * 1024;
+  static const int _snapshotBudgetBytes = 48 * 1024 * 1024;
+  static const int _perSnapshotBudgetBytes = 8 * 1024 * 1024;
   static const int _maxQueuedProgrammaticTurns = 2;
   static const double _edgeStartFraction = 0.30;
   static const double _activationDistance = 18;
@@ -34,7 +24,7 @@ class _ReaderShaderPageCurlState extends State<ReaderShaderPageCurl>
   );
   final _ReaderSnapshotCache _snapshotCache = _ReaderSnapshotCache(
     maxBytes: _snapshotBudgetBytes,
-    maxEntries: _isAndroid ? 5 : 7,
+    maxEntries: 7,
   );
   final Map<_SnapshotRequestKey, Future<ui.Image?>> _inFlightCaptures = {};
   final Queue<_QueuedProgrammaticTurn> _programmaticTurns = Queue();
@@ -200,30 +190,23 @@ class _ReaderShaderPageCurlState extends State<ReaderShaderPageCurl>
     if (!mounted || !_routeWorkEnabled || generation != _captureGeneration) {
       return;
     }
-    final adjacentPages = <(ReaderPageSnapshot, GlobalKey)>[];
+    final adjacentCaptures = <Future<ui.Image?>>[];
     final forward = widget.forwardPage;
     if (forward != null) {
-      adjacentPages.add((forward, _forwardKey));
+      adjacentCaptures.add(_ensureSnapshot(forward, _forwardKey, generation));
     }
     final backward = widget.backwardPage;
     if (backward != null) {
-      adjacentPages.add((backward, _backwardKey));
+      adjacentCaptures.add(_ensureSnapshot(backward, _backwardKey, generation));
     }
     final outgoingBack = widget.outgoingBackPage;
     if (outgoingBack != null) {
-      adjacentPages.add((outgoingBack, _outgoingBackKey));
+      adjacentCaptures.add(
+        _ensureSnapshot(outgoingBack, _outgoingBackKey, generation),
+      );
     }
-    if (adjacentPages.isNotEmpty) {
-      if (_isAndroid) {
-        for (final page in adjacentPages) {
-          await _ensureSnapshot(page.$1, page.$2, generation);
-        }
-      } else {
-        await Future.wait([
-          for (final page in adjacentPages)
-            _ensureSnapshot(page.$1, page.$2, generation),
-        ]);
-      }
+    if (adjacentCaptures.isNotEmpty) {
+      await Future.wait(adjacentCaptures);
     }
   }
 

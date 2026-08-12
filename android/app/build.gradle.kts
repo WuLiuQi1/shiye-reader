@@ -1,4 +1,5 @@
 import java.util.Properties
+import java.io.FileInputStream
 
 plugins {
     id("com.android.application")
@@ -7,15 +8,13 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-val keystoreProperties = Properties().apply {
-    val propertiesFile = rootProject.file("key.properties")
-    if (propertiesFile.exists()) {
-        propertiesFile.inputStream().use(::load)
-    }
+val keystoreProperties = Properties()
+val keystorePropertiesFile = rootProject.file("key.properties")
+if (keystorePropertiesFile.exists()) {
+    FileInputStream(keystorePropertiesFile).use { keystoreProperties.load(it) }
 }
 
-// CI can provide its own credentials through environment variables. Local release
-// builds fall back to android/key.properties and the bundled project keystore.
+// CI 环境变量优先；本地构建回退到 android/key.properties。
 val releaseKeystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
     ?: keystoreProperties.getProperty("storeFile")
 val releaseKeystorePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
@@ -40,9 +39,9 @@ gradle.taskGraph.whenReady {
     }
     if (buildsRelease && !hasReleaseSigning) {
         throw GradleException(
-            "Release signing is required. Set ANDROID_KEYSTORE_PATH, " +
-                "ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, and ANDROID_KEY_PASSWORD, " +
-                "or provide android/key.properties.",
+            "Release signing is required. Configure android/key.properties or set " +
+                "ANDROID_KEYSTORE_PATH, ANDROID_KEYSTORE_PASSWORD, " +
+                "ANDROID_KEY_ALIAS, and ANDROID_KEY_PASSWORD.",
         )
     }
 }
@@ -76,7 +75,7 @@ android {
     signingConfigs {
         if (hasReleaseSigning) {
             create("release") {
-                storeFile = file(releaseKeystorePath!!)
+                storeFile = rootProject.file(releaseKeystorePath!!)
                 storePassword = releaseKeystorePassword
                 keyAlias = releaseKeyAlias
                 keyPassword = releaseKeyPassword

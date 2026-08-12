@@ -272,7 +272,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookSourcesNoSourcesDescription.
   ///
   /// In en, this message translates to:
-  /// **'Paste the address of a service compatible with the Open Reading Source Protocol.'**
+  /// **'Paste the address of a service compatible with the 拾页 Source Protocol.'**
   String get bookSourcesNoSourcesDescription;
 
   /// No description provided for @bookSourcesManageTitle.
@@ -326,8 +326,108 @@ abstract class AppLocalizations {
   /// No description provided for @bookSourcesAddTitle.
   ///
   /// In en, this message translates to:
-  /// **'Add open source'**
+  /// **'Add source'**
   String get bookSourcesAddTitle;
+
+  /// No description provided for @bookSourcesImportLink.
+  ///
+  /// In en, this message translates to:
+  /// **'Import link'**
+  String get bookSourcesImportLink;
+
+  /// No description provided for @bookSourcesAnalyze.
+  ///
+  /// In en, this message translates to:
+  /// **'Analyze'**
+  String get bookSourcesAnalyze;
+
+  /// No description provided for @bookSourcesDetectedOrsp.
+  ///
+  /// In en, this message translates to:
+  /// **'Detected: ORSP'**
+  String get bookSourcesDetectedOrsp;
+
+  /// No description provided for @bookSourcesDetectedAdditional.
+  ///
+  /// In en, this message translates to:
+  /// **'Detected: Other protocol'**
+  String get bookSourcesDetectedAdditional;
+
+  /// No description provided for @bookSourcesProtocolGroupOrsp.
+  ///
+  /// In en, this message translates to:
+  /// **'ORSP sources'**
+  String get bookSourcesProtocolGroupOrsp;
+
+  /// No description provided for @bookSourcesProtocolGroupAdditional.
+  ///
+  /// In en, this message translates to:
+  /// **'Other protocol sources'**
+  String get bookSourcesProtocolGroupAdditional;
+
+  /// No description provided for @bookSourcesAdvancedFeatureRequired.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable More source protocols in Advanced features before importing this source.'**
+  String get bookSourcesAdvancedFeatureRequired;
+
+  /// No description provided for @bookSourcesNoWorkingSources.
+  ///
+  /// In en, this message translates to:
+  /// **'No source passed the live search check. Nothing was imported.'**
+  String get bookSourcesNoWorkingSources;
+
+  /// No description provided for @bookSourcesVerificationProgress.
+  ///
+  /// In en, this message translates to:
+  /// **'Checked {completed}/{total}; {available} working'**
+  String bookSourcesVerificationProgress(
+    int completed,
+    int total,
+    int available,
+  );
+
+  /// No description provided for @bookSourcesSelect.
+  ///
+  /// In en, this message translates to:
+  /// **'Select sources'**
+  String get bookSourcesSelect;
+
+  /// No description provided for @bookSourcesSelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get bookSourcesSelectAll;
+
+  /// No description provided for @bookSourcesClearSelection.
+  ///
+  /// In en, this message translates to:
+  /// **'Clear selection'**
+  String get bookSourcesClearSelection;
+
+  /// No description provided for @bookSourcesEnableSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable selected'**
+  String get bookSourcesEnableSelected;
+
+  /// No description provided for @bookSourcesDisableSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable selected'**
+  String get bookSourcesDisableSelected;
+
+  /// No description provided for @bookSourcesDeleteSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete selected'**
+  String get bookSourcesDeleteSelected;
+
+  /// No description provided for @bookSourcesDeleteSelectedMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {count} selected sources? Local books are not affected.'**
+  String bookSourcesDeleteSelectedMessage(int count);
 
   /// No description provided for @bookSourcesUrlLabel.
   ///
@@ -344,7 +444,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookSourcesNoOfficialSourcesNotice.
   ///
   /// In en, this message translates to:
-  /// **'OpenReading includes no sources and does not operate, recommend, or endorse third-party source services. Every source address is added by you.'**
+  /// **'拾页 includes no sources and does not operate, recommend, or endorse third-party source services. Every source address is added by you.'**
   String get bookSourcesNoOfficialSourcesNotice;
 
   /// No description provided for @bookSourcesResponsibilityAck.
@@ -392,7 +492,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookSourcesProtocolTitle.
   ///
   /// In en, this message translates to:
-  /// **'Open Reading Source Protocol'**
+  /// **'拾页 Source Protocol'**
   String get bookSourcesProtocolTitle;
 
   /// No description provided for @bookSourcesProtocolDescription.
@@ -470,7 +570,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookSourcesRightsUnverifiedNotice.
   ///
   /// In en, this message translates to:
-  /// **'These statements are supplied by the independent source operator. OpenReading displays them for transparency but does not verify or endorse them.'**
+  /// **'These statements are supplied by the independent source operator. 拾页 displays them for transparency but does not verify or endorse them.'**
   String get bookSourcesRightsUnverifiedNotice;
 
   /// No description provided for @bookSourcesContactOperator.
@@ -944,7 +1044,7 @@ abstract class AppLocalizations {
   /// Bilingual font preview sample
   ///
   /// In en, this message translates to:
-  /// **'Open Reading · Read freely 开卷有益'**
+  /// **'拾页 · Read freely 开卷有益'**
   String get fontPreviewText;
 
   /// No description provided for @customFonts.
@@ -1226,7 +1326,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsQqChannelSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Open Reading · OpenReading6'**
+  /// **'拾页 · 拾页6'**
   String get settingsQqChannelSubtitle;
 
   /// No description provided for @settingsQqChannelOpenFailed.
@@ -2240,7 +2340,7 @@ abstract class AppLocalizations {
   /// Welcome heading inside the agreement content
   ///
   /// In en, this message translates to:
-  /// **'Welcome to OpenReading'**
+  /// **'Welcome to 拾页'**
   String get agreementWelcomeTitle;
 
   /// Welcome paragraph asking the user to read and agree to the agreement
@@ -2918,7 +3018,7 @@ abstract class AppLocalizations {
   /// No description provided for @incomingBooksFileTooLarge.
   ///
   /// In en, this message translates to:
-  /// **'The file exceeds the 100 MB import limit'**
+  /// **'The file exceeds the 500 MB import limit'**
   String get incomingBooksFileTooLarge;
 
   /// No description provided for @incomingBooksTooManyFiles.
@@ -3053,6 +3153,60 @@ abstract class AppLocalizations {
   /// **'Deletion complete'**
   String get libraryDeleteComplete;
 
+  /// No description provided for @librarySelectMultiple.
+  ///
+  /// In en, this message translates to:
+  /// **'Select multiple'**
+  String get librarySelectMultiple;
+
+  /// No description provided for @librarySelectAll.
+  ///
+  /// In en, this message translates to:
+  /// **'Select all'**
+  String get librarySelectAll;
+
+  /// No description provided for @librarySelectedBooks.
+  ///
+  /// In en, this message translates to:
+  /// **'{count} selected'**
+  String librarySelectedBooks(int count);
+
+  /// No description provided for @libraryDeleteSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete {count}'**
+  String libraryDeleteSelected(int count);
+
+  /// No description provided for @libraryBatchDeleteTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete selected books?'**
+  String get libraryBatchDeleteTitle;
+
+  /// No description provided for @libraryBatchDeleteMessage.
+  ///
+  /// In en, this message translates to:
+  /// **'This permanently deletes the selected {count} books, related notes and bookmarks, and local files. This cannot be undone.'**
+  String libraryBatchDeleteMessage(int count);
+
+  /// No description provided for @libraryDeletingSelected.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleting {done}/{total}'**
+  String libraryDeletingSelected(int done, int total);
+
+  /// No description provided for @libraryBatchDeleteSuccess.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted {count} books'**
+  String libraryBatchDeleteSuccess(int count);
+
+  /// No description provided for @libraryBatchDeletePartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted {success}; {failed} failed'**
+  String libraryBatchDeletePartial(int success, int failed);
+
   /// Chapter title for TXT content that appears before the first detected chapter heading
   ///
   /// In en, this message translates to:
@@ -3160,6 +3314,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Bottom margin'**
   String get readerBottomMarginLabel;
+
+  /// No description provided for @readerTxtChapterTitlePageTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Chapter title on its own page'**
+  String get readerTxtChapterTitlePageTitle;
+
+  /// No description provided for @readerTxtChapterTitlePageHint.
+  ///
+  /// In en, this message translates to:
+  /// **'When off, the chapter title appears above the body text'**
+  String get readerTxtChapterTitlePageHint;
 
   /// No description provided for @readerVerticalMarginLabel.
   ///
@@ -3430,6 +3596,96 @@ abstract class AppLocalizations {
   /// **'General'**
   String get settingsSectionGeneral;
 
+  /// No description provided for @settingsSectionAdvancedFeatures.
+  ///
+  /// In en, this message translates to:
+  /// **'Advanced features'**
+  String get settingsSectionAdvancedFeatures;
+
+  /// No description provided for @settingsAdditionalSourceProtocolsTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'More source protocols'**
+  String get settingsAdditionalSourceProtocolsTitle;
+
+  /// No description provided for @settingsAdditionalSourceProtocolsSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Enable support for additional source protocols.'**
+  String get settingsAdditionalSourceProtocolsSubtitle;
+
+  /// No description provided for @additionalSourcesImport.
+  ///
+  /// In en, this message translates to:
+  /// **'Import more source protocols'**
+  String get additionalSourcesImport;
+
+  /// No description provided for @additionalSourcesImportTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Import source JSON'**
+  String get additionalSourcesImportTitle;
+
+  /// No description provided for @additionalSourcesImportNotice.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported sources are checked before use and remain disabled until you enable them.'**
+  String get additionalSourcesImportNotice;
+
+  /// No description provided for @additionalSourcesChooseFile.
+  ///
+  /// In en, this message translates to:
+  /// **'Add from JSON file'**
+  String get additionalSourcesChooseFile;
+
+  /// No description provided for @additionalSourcesUrlLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Source JSON URL'**
+  String get additionalSourcesUrlLabel;
+
+  /// No description provided for @additionalSourcesLoadUrl.
+  ///
+  /// In en, this message translates to:
+  /// **'Load URL'**
+  String get additionalSourcesLoadUrl;
+
+  /// No description provided for @additionalSourcesPreview.
+  ///
+  /// In en, this message translates to:
+  /// **'{supported} available, {partial} partially supported, {unsupported} not supported'**
+  String additionalSourcesPreview(int supported, int partial, int unsupported);
+
+  /// No description provided for @additionalSourcesAvailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Available'**
+  String get additionalSourcesAvailable;
+
+  /// No description provided for @additionalSourcesPartial.
+  ///
+  /// In en, this message translates to:
+  /// **'Partially supported'**
+  String get additionalSourcesPartial;
+
+  /// No description provided for @additionalSourcesUnsupported.
+  ///
+  /// In en, this message translates to:
+  /// **'Not supported'**
+  String get additionalSourcesUnsupported;
+
+  /// No description provided for @additionalSourcesImportConfirm.
+  ///
+  /// In en, this message translates to:
+  /// **'Import disabled'**
+  String get additionalSourcesImportConfirm;
+
+  /// No description provided for @additionalSourcesImported.
+  ///
+  /// In en, this message translates to:
+  /// **'Imported {count} sources'**
+  String additionalSourcesImported(int count);
+
   /// Section title grouping donation, about info and contributors
   ///
   /// In en, this message translates to:
@@ -3601,7 +3857,7 @@ abstract class AppLocalizations {
   /// Accessibility label for the paper shown in the first-home support introduction
   ///
   /// In en, this message translates to:
-  /// **'A letter from the Open Reading developer asking for voluntary support'**
+  /// **'A letter from the 拾页 developer asking for voluntary support'**
   String get firstHomeSupportPaperSemanticLabel;
 
   /// Title of the voluntary developer support card
@@ -3613,7 +3869,7 @@ abstract class AppLocalizations {
   /// Explanation shown on the voluntary developer support card
   ///
   /// In en, this message translates to:
-  /// **'Building and maintaining Open Reading takes substantial time and effort. If it helps you, voluntary donations are welcome.'**
+  /// **'Building and maintaining 拾页 takes substantial time and effort. If it helps you, voluntary donations are welcome.'**
   String get settingsSupportDevelopmentCardSubtitle;
 
   /// Action label that opens the WeChat donation QR code
@@ -3745,7 +4001,7 @@ abstract class AppLocalizations {
   /// No description provided for @openSourceLicensesIntro.
   ///
   /// In en, this message translates to:
-  /// **'These license texts are available offline in the app. Open Reading, bundled fonts, and third-party software remain subject to their respective licenses.'**
+  /// **'These license texts are available offline in the app. 拾页, bundled fonts, and third-party software remain subject to their respective licenses.'**
   String get openSourceLicensesIntro;
 
   /// No description provided for @openSourceProjectSection.
@@ -3787,7 +4043,7 @@ abstract class AppLocalizations {
   /// No description provided for @openSourceLicenseLegalese.
   ///
   /// In en, this message translates to:
-  /// **'Open Reading and third-party components remain subject to their respective licenses.'**
+  /// **'拾页 and third-party components remain subject to their respective licenses.'**
   String get openSourceLicenseLegalese;
 
   /// No description provided for @openSourceLicenseLoadFailed.
@@ -3853,7 +4109,7 @@ abstract class AppLocalizations {
   /// Subtitle of the contributors card
   ///
   /// In en, this message translates to:
-  /// **'Thanks to everyone making Open Reading better'**
+  /// **'Thanks to everyone making 拾页 better'**
   String get contributorsSubtitle;
 
   /// Toast when a contributor profile link fails to open
@@ -3919,7 +4175,7 @@ abstract class AppLocalizations {
   /// Description of the floating home navigation settings entry
   ///
   /// In en, this message translates to:
-  /// **'Adjust the display style and destination order'**
+  /// **'Adjust size, display style, and destination order'**
   String get settingsFloatingNavigationSubtitle;
 
   /// No description provided for @floatingNavigationPreviewTitle.
@@ -3927,6 +4183,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Preview'**
   String get floatingNavigationPreviewTitle;
+
+  /// No description provided for @floatingNavigationSizeTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Size'**
+  String get floatingNavigationSizeTitle;
+
+  /// No description provided for @floatingNavigationSizeAutomatic.
+  ///
+  /// In en, this message translates to:
+  /// **'Automatic'**
+  String get floatingNavigationSizeAutomatic;
+
+  /// No description provided for @floatingNavigationSizeCustom.
+  ///
+  /// In en, this message translates to:
+  /// **'Custom'**
+  String get floatingNavigationSizeCustom;
+
+  /// No description provided for @floatingNavigationHeightLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Height'**
+  String get floatingNavigationHeightLabel;
+
+  /// No description provided for @floatingNavigationSideMarginLabel.
+  ///
+  /// In en, this message translates to:
+  /// **'Side margin'**
+  String get floatingNavigationSideMarginLabel;
 
   /// No description provided for @floatingNavigationDisplayModeTitle.
   ///
@@ -3979,13 +4265,13 @@ abstract class AppLocalizations {
   /// Title of the library layout selector
   ///
   /// In en, this message translates to:
-  /// **'Library layout'**
+  /// **'Library settings'**
   String get settingsLibraryLayoutTitle;
 
   /// Description of the card and cover-only grid library layouts
   ///
   /// In en, this message translates to:
-  /// **'Choose cards or a compact grid, then adjust the grid details'**
+  /// **'Adjust the library layout and book opening experience'**
   String get settingsLibraryLayoutSubtitle;
 
   /// Card layout option for the library
@@ -4029,6 +4315,78 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Add one title line and a compact progress bar below each cover'**
   String get settingsLibraryGridShowDetailsSubtitle;
+
+  /// No description provided for @settingsLibraryOpenAnimationTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Book opening animation'**
+  String get settingsLibraryOpenAnimationTitle;
+
+  /// No description provided for @settingsLibraryOpenAnimationSubtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Used only when opening a book from the library'**
+  String get settingsLibraryOpenAnimationSubtitle;
+
+  /// No description provided for @settingsLibraryOpenAnimationClassicCover.
+  ///
+  /// In en, this message translates to:
+  /// **'Classic cover expansion'**
+  String get settingsLibraryOpenAnimationClassicCover;
+
+  /// No description provided for @settingsLibraryOpenAnimationClassicCoverHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Enlarge the original cover to full screen before revealing the reader'**
+  String get settingsLibraryOpenAnimationClassicCoverHint;
+
+  /// No description provided for @settingsLibraryOpenAnimationMinimal.
+  ///
+  /// In en, this message translates to:
+  /// **'Minimal fade'**
+  String get settingsLibraryOpenAnimationMinimal;
+
+  /// No description provided for @settingsLibraryOpenAnimationMinimalHint.
+  ///
+  /// In en, this message translates to:
+  /// **'A quick, stable fade with no directional movement'**
+  String get settingsLibraryOpenAnimationMinimalHint;
+
+  /// No description provided for @settingsLibraryOpenAnimationPaperRise.
+  ///
+  /// In en, this message translates to:
+  /// **'Paper rise'**
+  String get settingsLibraryOpenAnimationPaperRise;
+
+  /// No description provided for @settingsLibraryOpenAnimationPaperRiseHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The reading paper settles gently into place from below'**
+  String get settingsLibraryOpenAnimationPaperRiseHint;
+
+  /// No description provided for @settingsLibraryOpenAnimationPageSlide.
+  ///
+  /// In en, this message translates to:
+  /// **'Page slide'**
+  String get settingsLibraryOpenAnimationPageSlide;
+
+  /// No description provided for @settingsLibraryOpenAnimationPageSlideHint.
+  ///
+  /// In en, this message translates to:
+  /// **'The reading page enters with a short sideways motion'**
+  String get settingsLibraryOpenAnimationPageSlideHint;
+
+  /// No description provided for @settingsLibraryOpenAnimationBookSpread.
+  ///
+  /// In en, this message translates to:
+  /// **'Book spread'**
+  String get settingsLibraryOpenAnimationBookSpread;
+
+  /// No description provided for @settingsLibraryOpenAnimationBookSpreadHint.
+  ///
+  /// In en, this message translates to:
+  /// **'Two paper halves open outward from the center'**
+  String get settingsLibraryOpenAnimationBookSpreadHint;
 
   /// Accent summary when following the app theme
   ///
@@ -4189,7 +4547,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsOfficialWebsiteSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'Download and install from ShiYe GitHub Releases'**
+  /// **'Download and install from open.xxread.top'**
   String get settingsOfficialWebsiteSubtitle;
 
   /// No description provided for @settingsOfficialWebsiteOpenFailed.
@@ -5425,13 +5783,13 @@ abstract class AppLocalizations {
   /// No description provided for @importIosSharedDocuments.
   ///
   /// In en, this message translates to:
-  /// **'On My iPhone · Open Reading'**
+  /// **'On My iPhone · 拾页'**
   String get importIosSharedDocuments;
 
   /// No description provided for @importICloudDrive.
   ///
   /// In en, this message translates to:
-  /// **'iCloud Drive · Open Reading'**
+  /// **'iCloud Drive · 拾页'**
   String get importICloudDrive;
 
   /// No description provided for @importICloudUnavailable.
@@ -6207,7 +6565,7 @@ abstract class AppLocalizations {
   /// BookImportFailure message when the file exceeds the size limit
   ///
   /// In en, this message translates to:
-  /// **'File exceeds 100MB import limit'**
+  /// **'File exceeds 500 MB import limit'**
   String get importErrorFileTooLarge;
 
   /// BookImportFailure message when the source file cannot be prepared
@@ -6459,7 +6817,7 @@ abstract class AppLocalizations {
   /// User agreement V2 hero body paragraph
   ///
   /// In en, this message translates to:
-  /// **'OpenReading is an open-source, cross-platform, local-first ebook reader. It provides reading tools; it does not provide, host, or review books you import.'**
+  /// **'拾页 is an open-source, cross-platform, local-first ebook reader. It provides reading tools; it does not provide, host, or review books you import.'**
   String get agreementV2HeroBody;
 
   /// User agreement V2 local-first principle title
@@ -6501,13 +6859,13 @@ abstract class AppLocalizations {
   /// User agreement V2 panel subtitle
   ///
   /// In en, this message translates to:
-  /// **'Please read before using OpenReading'**
+  /// **'Please read before using 拾页'**
   String get agreementV2Subtitle;
 
   /// User agreement V2 important notice callout
   ///
   /// In en, this message translates to:
-  /// **'Important: The official OpenReading app does not preinstall, bundle, or recommend any third-party book source, and its developers do not operate, represent, or host source content. You choose every imported file and source you add; use only content you are authorized to access.'**
+  /// **'Important: The official 拾页 app does not preinstall, bundle, or recommend any third-party book source, and its developers do not operate, represent, or host source content. You choose every imported file and source you add; use only content you are authorized to access.'**
   String get agreementV2ImportantNotice;
 
   /// User agreement V2 source boundary card title
@@ -6519,7 +6877,7 @@ abstract class AppLocalizations {
   /// User agreement V2 source boundary point 1
   ///
   /// In en, this message translates to:
-  /// **'The official project provides open-source reader software and the Open Reading Source Protocol only. It provides no source addresses or official source directory.'**
+  /// **'The official project provides open-source reader software and the 拾页 Source Protocol only. It provides no source addresses or official source directory.'**
   String get agreementV2SourceBoundaryPoint1;
 
   /// User agreement V2 source boundary point 2
@@ -6543,7 +6901,7 @@ abstract class AppLocalizations {
   /// User agreement V2 section 1 body
   ///
   /// In en, this message translates to:
-  /// **'These terms apply to your download, installation, and use of OpenReading and its included features. By selecting “Agree and continue,” you confirm that you have read, understood, and accepted them. If you do not agree, stop using and exit the app. A guardian must consent where required by local law.'**
+  /// **'These terms apply to your download, installation, and use of 拾页 and its included features. By selecting “Agree and continue,” you confirm that you have read, understood, and accepted them. If you do not agree, stop using and exit the app. A guardian must consent where required by local law.'**
   String get agreementV2Section1Body;
 
   /// User agreement V2 section 2 title
@@ -6555,7 +6913,7 @@ abstract class AppLocalizations {
   /// User agreement V2 section 2 body
   ///
   /// In en, this message translates to:
-  /// **'Future OpenReading versions are released under the GNU Affero General Public License v3.0. You may use, copy, modify, distribute, or sell the software under that license. A distributed modified version must provide its complete corresponding source under AGPL-3.0, and a modified version used to provide a network service must also offer corresponding source to users interacting with it. MIT rights already granted for v1.0.0 and earlier versions remain valid and are not revoked. These terms do not restrict rights granted by the open-source license. Third-party components remain subject to their own licenses.'**
+  /// **'Future 拾页 versions are released under the GNU Affero General Public License v3.0. You may use, copy, modify, distribute, or sell the software under that license. A distributed modified version must provide its complete corresponding source under AGPL-3.0, and a modified version used to provide a network service must also offer corresponding source to users interacting with it. MIT rights already granted for v1.0.0 and earlier versions remain valid and are not revoked. These terms do not restrict rights granted by the open-source license. Third-party components remain subject to their own licenses.'**
   String get agreementV2Section2Body;
 
   /// User agreement V2 section 3 title
@@ -6603,7 +6961,7 @@ abstract class AppLocalizations {
   /// User agreement V2 section 6 body
   ///
   /// In en, this message translates to:
-  /// **'ShiYe Reader is local-first. Books, reading progress, notes, and settings are normally stored on your device. Unless you enable a network book source, AI, sync, or another online feature, the app does not send book text to the developers for local reading. Automatic and manual update checks only contact ShiYe Reader\'s GitHub Releases; GitHub processes your IP address and User-Agent as part of ordinary network communication. Update requests do not include book text, your library, notes, an account, or a unique device identifier. Other online features may send necessary data to the provider you select under that provider\'s policies. Protect your device, API keys, and backups; uninstalling, clearing data, device failure, or user error may permanently erase data.'**
+  /// **'拾页 is local-first. Books, reading progress, notes, and settings are normally stored on your device. Unless you enable a network book source, AI, sync, or another online feature, the app does not need to send book text to the developers to provide local reading. Automatic and manual update checks contact GitHub and the official site at open.xxread.top with necessary technical parameters such as platform, processor architecture, and release channel; their servers process your IP address and User-Agent as part of ordinary network communication. When you download an installer from the official site, the backend records the version, architecture, download time, IP address, and User-Agent for download counts, security protection, and troubleshooting. Download-event records containing a raw IP are retained for no more than 30 days and then deleted; only aggregate statistics without raw IP addresses are kept longer. Update requests do not include book text, your library, notes, an account, or a unique device identifier. GitHub requests are also governed by GitHub’s privacy terms. When another online feature is used, queries, selected text, network information, or necessary parameters may be sent to the provider you selected under that provider’s policies. Protect your device, API keys, and backups; uninstalling, clearing data, device failure, or user error may permanently erase data.'**
   String get agreementV2Section6Body;
 
   /// User agreement V2 section 7 title
@@ -6699,7 +7057,7 @@ abstract class AppLocalizations {
   /// User agreement V2 exit dialog body
   ///
   /// In en, this message translates to:
-  /// **'You must accept the Terms of Use to continue using OpenReading. If you do not agree, please exit the app.'**
+  /// **'You must accept the Terms of Use to continue using 拾页. If you do not agree, please exit the app.'**
   String get agreementV2ExitDialogBody;
 
   /// User agreement V2 exit dialog cancel button label

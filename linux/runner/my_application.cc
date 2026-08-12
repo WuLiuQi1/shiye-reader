@@ -15,16 +15,14 @@ static const char* get_localized_app_name() {
   const char* locale = setlocale(LC_ALL, nullptr);
   if (locale) {
     // Check if locale contains Chinese
-    if (strstr(locale, "zh_TW") || strstr(locale, "zh-Hant")) {
-      return u8"拾頁";
-    }
-    if (strstr(locale, "zh_CN") || strstr(locale, "zh-Hans") ||
+    if (strstr(locale, "zh_CN") || strstr(locale, "zh_TW") ||
+        strstr(locale, "zh-Hans") || strstr(locale, "zh-Hant") ||
         strstr(locale, "Chinese")) {
-      return u8"拾页";
+      return u8"开元阅读";
     }
   }
-  // Keep the product brand consistent across locales.
-  return u8"拾页";
+  // Default to English
+  return "OpenReading";
 }
 
 static void set_window_icon(GtkWindow* window) {

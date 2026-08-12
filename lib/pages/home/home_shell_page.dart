@@ -4,7 +4,7 @@
 import 'dart:async';
 import 'dart:ui';
 
-import 'package:flutter/foundation.dart' show listEquals;
+import 'package:flutter/foundation.dart' show defaultTargetPlatform, listEquals;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
@@ -117,12 +117,18 @@ class _HomeShellPageState extends State<HomeShellPage> {
   @override
   void initState() {
     super.initState();
+    _libraryController.selection.addListener(_handleLibrarySelectionChanged);
     // 优化PageController，设置合适的视窗比例
     _pageController = PageController(
       viewportFraction: 1.0, // 保持全屏显示
       keepPage: true, // 保持页面状态
     );
   }
+
+  void _handleLibrarySelectionChanged() {
+    if (mounted) setState(() {});
+  }
+
 
   /// 组装导航项列表（可看作“首页路由表”）。
   ///
@@ -228,6 +234,9 @@ class _HomeShellPageState extends State<HomeShellPage> {
   void _updateSelectedIndex(int index) {
     if (!mounted) return;
     final destinationChanged = _selectedIndex != index;
+    if (destinationChanged && _libraryController.selection.value.isActive) {
+      _libraryController.exitSelection();
+    }
     final pageControllerDetached = !_pageController.hasClients;
     if (pageControllerDetached) {
       _pendingPageControllerIndex = index;
@@ -306,11 +315,19 @@ class _HomeShellPageState extends State<HomeShellPage> {
 
   @override
   void dispose() {
+    _libraryController.selection.removeListener(_handleLibrarySelectionChanged);
     _pageController.dispose();
     _homeDashboardController.dispose();
     _settingsController.dispose();
     _libraryController.dispose();
     super.dispose();
+  }
+
+
+  Future<void> _waitForNextFrame() {
+    final completer = Completer<void>();
+    WidgetsBinding.instance.addPostFrameCallback((_) => completer.complete());
+    return completer.future;
   }
 
   @override
@@ -319,6 +336,16 @@ class _HomeShellPageState extends State<HomeShellPage> {
     final hideNavigationLabels = context.select<AppSettingsNotifier, bool>(
       (settings) => settings.hideNavigationLabels,
     );
+    final customizeNavigationSize = context.select<AppSettingsNotifier, bool>(
+      (settings) => settings.customizeFloatingNavigationSize,
+    );
+    final navigationHeight = context.select<AppSettingsNotifier, double>(
+      (settings) => settings.floatingNavigationHeight,
+    );
+    final navigationHorizontalMargin = context
+        .select<AppSettingsNotifier, double>(
+          (settings) => settings.floatingNavigationHorizontalMargin,
+        );
     final overlayStyle = SystemUiHelper.overlayStyleForBrightness(
       Theme.of(context).brightness,
     );
@@ -338,6 +365,10 @@ class _HomeShellPageState extends State<HomeShellPage> {
         _schedulePageControllerSync();
         content = _buildBottomNavigation(
           showNavigationLabels: !hideNavigationLabels,
+          customHeight: customizeNavigationSize ? navigationHeight : null,
+          customHorizontalMargin: customizeNavigationSize
+              ? navigationHorizontalMargin
+              : null,
         );
         break;
     }

@@ -7,31 +7,9 @@ import 'dart:async';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:xxread/core/reader/reader_transition_work_scope.dart';
 import 'package:xxread/utils/page_transitions.dart';
-
-enum BookOpenStyle { classic, fade, paper, side, doublePage, none }
-
-class BookOpenStylePreference {
-  static const key = 'bookOpenStyle';
-  // 单元测试和启动前保持旧行为；应用启动加载后，新用户默认极简淡入。
-  static BookOpenStyle current = BookOpenStyle.classic;
-
-  static Future<void> load() async {
-    final value = (await SharedPreferences.getInstance()).getString(key);
-    current = BookOpenStyle.values.firstWhere(
-      (item) => item.name == value,
-      orElse: () => BookOpenStyle.fade,
-    );
-  }
-
-  static Future<void> save(BookOpenStyle value) async {
-    current = value;
-    await (await SharedPreferences.getInstance()).setString(key, value.name);
-  }
-}
 
 /// 一次"打开书籍"动画所需的上下文：封面在屏幕上的位置与外观。
 ///
@@ -199,19 +177,11 @@ class BookOpenTransition {
   static PageRoute<T> createRoute<T extends Object?>(
     Widget page, {
     BookOpenAnimation? animation,
+    LibraryBookOpenAnimation? libraryAnimation,
     Color? readerBackgroundColor,
     ReaderPageTransitionOrigin origin = ReaderPageTransitionOrigin.standard,
     bool waitForReaderReady = false,
   }) {
-    final style = BookOpenStylePreference.current;
-    if (style != BookOpenStyle.classic) {
-      return _createStyledRoute<T>(
-        page,
-        style: style,
-        origin: origin,
-        backgroundColor: readerBackgroundColor,
-      );
-    }
     final activity = BookOpenTransitionActivity._(
       holdOpeningCover: animation != null && waitForReaderReady,
       hasCoverFlight: animation != null,
@@ -220,6 +190,7 @@ class BookOpenTransition {
       return CustomPageTransitions.createSmoothReaderPageRoute<T>(
         page,
         origin: origin,
+        libraryAnimation: libraryAnimation,
         backgroundColor: readerBackgroundColor,
         routeWrapper: (route, routeAnimation, child) =>
             _AndroidPredictiveBackDriver(
@@ -264,63 +235,6 @@ class BookOpenTransition {
       },
     );
     return route;
-  }
-
-  static PageRoute<T> _createStyledRoute<T extends Object?>(
-    Widget page, {
-    required BookOpenStyle style,
-    required ReaderPageTransitionOrigin origin,
-    Color? backgroundColor,
-  }) {
-    if (style == BookOpenStyle.fade) {
-      return CustomPageTransitions.createSmoothReaderPageRoute<T>(
-        page,
-        origin: origin,
-        backgroundColor: backgroundColor,
-      );
-    }
-    return PageRouteBuilder<T>(
-      transitionDuration: style == BookOpenStyle.none
-          ? Duration.zero
-          : const Duration(milliseconds: 380),
-      reverseTransitionDuration: style == BookOpenStyle.none
-          ? Duration.zero
-          : const Duration(milliseconds: 300),
-      pageBuilder: (_, __, ___) => page,
-      transitionsBuilder: (context, animation, _, child) {
-        if (style == BookOpenStyle.none ||
-            MediaQuery.disableAnimationsOf(context)) {
-          return child;
-        }
-        final curved = CurvedAnimation(
-          parent: animation,
-          curve: Curves.easeOutCubic,
-        );
-        return switch (style) {
-          BookOpenStyle.paper => FadeTransition(
-            opacity: curved,
-            child: ScaleTransition(
-              scale: Tween<double>(begin: 0.965, end: 1).animate(curved),
-              alignment: Alignment.center,
-              child: child,
-            ),
-          ),
-          BookOpenStyle.side => SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0.12, 0),
-              end: Offset.zero,
-            ).animate(curved),
-            child: FadeTransition(opacity: curved, child: child),
-          ),
-          BookOpenStyle.doublePage => ScaleTransition(
-            scale: Tween<double>(begin: 0.88, end: 1).animate(curved),
-            alignment: Alignment.center,
-            child: FadeTransition(opacity: curved, child: child),
-          ),
-          _ => child,
-        };
-      },
-    );
   }
 
   /// 等到反向转场真正移出 Overlay 后再恢复书架数据。

@@ -61,7 +61,7 @@ void main() {
         find.byKey(const ValueKey('book-source-reader-loading-placeholder')),
         findsWidgets,
       );
-      expect(find.byType(CircularProgressIndicator), findsNothing);
+      expect(find.byType(ReaderOpeningLoader), findsNothing);
 
       client.completeCatalog();
       await tester.pump();
@@ -70,7 +70,7 @@ void main() {
         find.byKey(const ValueKey('book-source-reader-content')),
         findsOneWidget,
       );
-      expect(find.byType(CircularProgressIndicator), findsNothing);
+      expect(find.byType(ReaderOpeningLoader), findsNothing);
     },
   );
 
@@ -100,7 +100,7 @@ void main() {
     await tester.pump(const Duration(milliseconds: 660));
     await tester.pump();
     expect(find.byType(ReaderOpeningLoader), findsOneWidget);
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byKey(const ValueKey('reader-opening-dots')), findsOneWidget);
 
     expect(
       tester
@@ -129,10 +129,10 @@ void main() {
       find.byKey(const ValueKey('book-source-reader-content')),
       findsOneWidget,
     );
-    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+    expect(find.byType(ReaderOpeningLoader), findsOneWidget);
 
     await tester.pump(const Duration(milliseconds: 300));
-    expect(find.byType(CircularProgressIndicator), findsNothing);
+    expect(find.byType(ReaderOpeningLoader), findsNothing);
   });
 
   testWidgets('loads source chapters and navigates to the next chapter', (
@@ -170,9 +170,14 @@ void main() {
       ),
     );
     await _pumpUntilFound(tester, find.text('第一章'));
-    // v0.4.6 keeps the chapter heading and opening body on the same page.
     expect(find.text('第一章'), findsWidgets);
-    expect(find.byType(ReaderChapterTitlePage), findsNothing);
+    expect(find.byType(ReaderInlineChapterTitle), findsOneWidget);
+    await tester.fling(
+      find.byKey(const ValueKey('book-source-reader-surface')),
+      const Offset(0, -500),
+      1000,
+    );
+    await tester.pumpAndSettle();
     final firstBody = find.textContaining('第一章正文', findRichText: true);
     await _pumpUntilFound(tester, firstBody);
     expect(firstBody, findsOneWidget);
@@ -344,6 +349,15 @@ void main() {
         tester,
         find.byKey(const ValueKey('book-source-reader-surface')),
       );
+      if (mode == BookSourcePageMode.verticalScroll) {
+        await tester.fling(
+          find.byKey(const ValueKey('book-source-reader-surface')),
+          const Offset(0, -500),
+          1000,
+        );
+      } else {
+        await tester.tapAt(const Offset(760, 300));
+      }
       await tester.pumpAndSettle();
       await _pumpUntilFound(tester, bodyFinder);
 
@@ -382,6 +396,7 @@ void main() {
       tester,
       find.byKey(const ValueKey('book-source-reader-surface')),
     );
+    await tester.tapAt(const Offset(760, 300));
     await tester.pumpAndSettle();
     await _pumpUntilFound(tester, bodyFinder);
 
@@ -390,7 +405,7 @@ void main() {
     expect(body.text.style?.letterSpacing, 0.7);
   });
 
-  testWidgets('vertical source pages are clipped to one fixed reading window', (
+  testWidgets('vertical source text keeps its natural continuous height', (
     tester,
   ) async {
     await tester.binding.setSurfaceSize(const Size(400, 800));
@@ -427,18 +442,18 @@ void main() {
       expect(listRect.top, closeTo(windowPadding.top, 0.1));
       expect(listRect.bottom, closeTo(800 - windowPadding.bottom, 0.1));
 
-      final pageCells = find.byWidgetPredicate(
+      final continuousParts = find.byWidgetPredicate(
         (widget) =>
-            widget is SizedBox &&
+            widget is Column &&
             widget.key is ValueKey<String> &&
             (widget.key! as ValueKey<String>).value.startsWith(
-              'book-source-vertical-page:',
+              'book-source-vertical-part:',
             ),
       );
-      expect(pageCells, findsWidgets);
+      expect(continuousParts, findsOneWidget);
       expect(
-        tester.widget<SizedBox>(pageCells.first).height,
-        closeTo(listRect.height, 0.1),
+        tester.getSize(continuousParts.first).height,
+        isNot(closeTo(listRect.height, 0.1)),
       );
     } finally {
       await tester.pumpWidget(const SizedBox.shrink());
@@ -659,33 +674,34 @@ void main() {
     },
   );
 
-  testWidgets('next chapter preview avoids fetching a farther chapter', (
-    tester,
-  ) async {
-    await tester.binding.setSurfaceSize(const Size(1200, 800));
-    SharedPreferences.setMockInitialValues({
-      ReaderSettingsStore.pageModeKey: BookSourcePageMode.pageCurl.name,
-    });
-    final client = _DelayedThirdChapterClient();
-    try {
-      await tester.pumpWidget(_buildTabletSourceReader(client));
-      final forwardCurl = await _pumpUntilSpreadTarget(
-        tester,
-        bindingEdge: ReaderPageBindingEdge.left,
-        forward: true,
-        pageIdentity: (identity) => identity.contains(':chapter-2:1:'),
-      );
+  testWidgets(
+    'next chapter preview is ready even while a farther prefetch is pending',
+    (tester) async {
+      await tester.binding.setSurfaceSize(const Size(1200, 800));
+      SharedPreferences.setMockInitialValues({
+        ReaderSettingsStore.pageModeKey: BookSourcePageMode.pageCurl.name,
+      });
+      final client = _DelayedThirdChapterClient();
+      try {
+        await tester.pumpWidget(_buildTabletSourceReader(client));
+        final forwardCurl = await _pumpUntilSpreadTarget(
+          tester,
+          bindingEdge: ReaderPageBindingEdge.left,
+          forward: true,
+          pageIdentity: (identity) => identity.contains(':chapter-2:1:'),
+        );
 
-      expect(forwardCurl.forwardPage, isNotNull);
-      expect(client.requestedChapterIds, isNot(contains('chapter-3')));
-      expect(client.thirdChapterCompleted, isFalse);
-    } finally {
-      client.completeThirdChapter();
-      await tester.pumpWidget(const SizedBox.shrink());
-      await tester.pump();
-      await tester.binding.setSurfaceSize(null);
-    }
-  });
+        expect(forwardCurl.forwardPage, isNotNull);
+        expect(client.requestedChapterIds, contains('chapter-3'));
+        expect(client.thirdChapterCompleted, isFalse);
+      } finally {
+        client.completeThirdChapter();
+        await tester.pumpWidget(const SizedBox.shrink());
+        await tester.pump();
+        await tester.binding.setSurfaceSize(null);
+      }
+    },
+  );
 
   testWidgets(
     'prefetched chapter turn does not wait for progress persistence',
@@ -778,12 +794,10 @@ void main() {
           await tester.pump(const Duration(milliseconds: 100));
         }
 
-        var pageView = await _pumpUntilAttachedSlidePageView(
-          tester,
-          const ValueKey('source-slide:chapter-1'),
-        );
+        var pageView = tester.widget<PageView>(find.byType(PageView));
         final controller = pageView.controller!;
-        expect(controller.page, 0);
+        controller.jumpToPage(1);
+        await tester.pump();
 
         unawaited(
           controller.nextPage(
@@ -810,13 +824,26 @@ void main() {
           client.requestedChapterIds.where((id) => id == 'chapter-2').length,
           1,
         );
-        pageView = await _pumpUntilAttachedSlidePageView(
-          tester,
-          const ValueKey('source-slide:chapter-2'),
-        );
+        pageView = tester.widget<PageView>(find.byType(PageView));
         expect(pageView.key, const ValueKey('source-slide:chapter-2'));
         final chapterTwoController = pageView.controller!;
-        expect(chapterTwoController.page, 1);
+        expect(chapterTwoController.page, 2);
+
+        final forward = chapterTwoController.nextPage(
+          duration: const Duration(milliseconds: 280),
+          curve: Curves.easeOutCubic,
+        );
+        await tester.pumpAndSettle();
+        await forward;
+        expect(chapterTwoController.page, 3);
+
+        final backward = chapterTwoController.previousPage(
+          duration: const Duration(milliseconds: 280),
+          curve: Curves.easeOutCubic,
+        );
+        await tester.pumpAndSettle();
+        await backward;
+        expect(chapterTwoController.page, 2);
 
         final previousChapter = chapterTwoController.previousPage(
           duration: const Duration(milliseconds: 280),
@@ -829,10 +856,16 @@ void main() {
           find.byKey(const ValueKey('source-slide:chapter-1')),
         );
 
-        final chapterOneController = (await _pumpUntilAttachedSlidePageView(
-          tester,
-          const ValueKey('source-slide:chapter-1'),
-        )).controller!;
+        final chapterOneController = tester
+            .widget<PageView>(find.byType(PageView))
+            .controller!;
+        expect(chapterOneController.page, 1);
+        final earlierPage = chapterOneController.previousPage(
+          duration: const Duration(milliseconds: 280),
+          curve: Curves.easeOutCubic,
+        );
+        await tester.pumpAndSettle();
+        await earlierPage;
         expect(chapterOneController.page, 0);
       } finally {
         store.completeSave();
@@ -885,26 +918,24 @@ void main() {
           await tester.pump(const Duration(milliseconds: 100));
         }
 
-        final controller = (await _pumpUntilAttachedSlidePageView(
-          tester,
-          const ValueKey('source-slide:chapter-1'),
-        )).controller!;
-        expect(controller.page, 0);
+        final controller = tester
+            .widget<PageView>(find.byType(PageView))
+            .controller!;
+        controller.jumpToPage(1);
+        await tester.pump();
         unawaited(
           controller.nextPage(
-            duration: const Duration(milliseconds: 600),
+            duration: const Duration(milliseconds: 280),
             curve: Curves.easeOutCubic,
           ),
         );
         await tester.pump();
-        await tester.pump(const Duration(milliseconds: 160));
-        expect(controller.page, greaterThan(0.5));
+        await tester.pump(const Duration(milliseconds: 120));
+        expect(controller.page, greaterThan(1.5));
         final interruptedPage = controller.page!;
 
         final drag = await tester.startGesture(
-          tester
-              .getRect(find.byKey(const ValueKey('source-slide:chapter-1')))
-              .center,
+          tester.getRect(find.byType(PageView)).center,
         );
         await drag.moveBy(const Offset(360, 0));
         await tester.pump();
@@ -1011,7 +1042,7 @@ void main() {
   );
 
   testWidgets(
-    'tablet forward chapter curl previews a short chapter without a title-only leaf',
+    'tablet forward chapter curl previews title and body leaves for a short chapter',
     (tester) async {
       await tester.binding.setSurfaceSize(const Size(1200, 800));
       SharedPreferences.setMockInitialValues({
@@ -1027,14 +1058,21 @@ void main() {
           tester,
           bindingEdge: ReaderPageBindingEdge.left,
           forward: true,
-          pageIdentity: (identity) => identity.contains(':chapter-2:0:'),
+          pageIdentity: (identity) => identity.contains(':chapter-2:1:'),
         );
 
+        expect(
+          forwardCurl.forwardPage!.key.pageIdentity,
+          contains(':chapter-2:1:'),
+        );
         expect(
           forwardCurl.outgoingBackPage!.key.pageIdentity,
           contains(':chapter-2:0:'),
         );
-        expect(forwardCurl.forwardPage!.key.pageIdentity, contains('blank:'));
+        expect(
+          forwardCurl.forwardPage!.key.pageIdentity,
+          isNot(contains('blank:')),
+        );
         expect(
           client.requestedChapterIds.where((id) => id == 'chapter-2').length,
           1,
@@ -1273,20 +1311,6 @@ Future<void> _pumpUntilFound(WidgetTester tester, Finder finder) async {
   }
 }
 
-Future<PageView> _pumpUntilAttachedSlidePageView(
-  WidgetTester tester,
-  Key key,
-) async {
-  final finder = find.byKey(key);
-  for (var attempt = 0; attempt < 30; attempt++) {
-    await tester.pump(const Duration(milliseconds: 50));
-    if (finder.evaluate().length != 1) continue;
-    final pageView = tester.widget<PageView>(finder);
-    if (pageView.controller?.hasClients ?? false) return pageView;
-  }
-  throw TestFailure('Expected an attached slide PageView with key $key.');
-}
-
 Widget _buildTabletSourceReader(
   BookSourceClient client, {
   BookSourceReadingProgressStore progressStore =
@@ -1335,10 +1359,6 @@ Future<ReaderShaderPageCurl> _pumpUntilSpreadTarget(
     final curl = _spreadCurl(tester, bindingEdge);
     final target = forward ? curl.forwardPage : curl.backwardPage;
     if (target != null && pageIdentity(target.key.pageIdentity)) return curl;
-    final backPage = curl.outgoingBackPage;
-    if (backPage != null && pageIdentity(backPage.key.pageIdentity)) {
-      return curl;
-    }
   }
   throw TestFailure('Expected tablet page curl target did not appear.');
 }

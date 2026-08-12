@@ -87,16 +87,6 @@ class DatabaseService {
     // sqflite 默认关闭外键约束，必须在每个连接上显式开启，
     // 否则建表语句里的 ON DELETE CASCADE 不会生效。
     await db.execute('PRAGMA foreign_keys = ON');
-    // Keep reader progress, imports and cache maintenance from blocking one
-    // another where SQLite supports changing the journal during configure.
-    // sqflite_darwin reports a DatabaseException for this pragma on iOS
-    // (including the misleading "not an error" native message), which then
-    // prevents the whole database from opening. iOS keeps its default journal
-    // mode here; foreign keys above still apply on every connection.
-    if (!kIsWeb && !Platform.isIOS) {
-      await db.execute('PRAGMA journal_mode = WAL');
-      await db.execute('PRAGMA synchronous = NORMAL');
-    }
   }
 
   Future<void> _onCreate(Database db, int version) async {
@@ -372,7 +362,7 @@ class DatabaseService {
       await ReaderAnnotationSchemaMigration.migrate(db);
     }
     if (oldVersion < 21) {
-      await _createBooksTableIndexes(db);
+      await db.execute('ALTER TABLE books ADD COLUMN reading_progress REAL');
     }
   }
 
@@ -386,6 +376,7 @@ class DatabaseService {
         format TEXT NOT NULL,
         currentPage INTEGER DEFAULT 0,
         totalPages INTEGER DEFAULT 1,
+        reading_progress REAL,
         importDate INTEGER NOT NULL,
         cached_content TEXT,
         cached_pages TEXT,
@@ -485,10 +476,6 @@ class DatabaseService {
     // 为importDate创建索引，用于按导入时间排序
     await db.execute(
       'CREATE INDEX IF NOT EXISTS idx_books_import_date ON books (importDate DESC)',
-    );
-    await db.execute(
-      'CREATE INDEX IF NOT EXISTS idx_books_reading_progress '
-      'ON books (currentPage DESC, importDate DESC)',
     );
     // 为title和author创建索引，用于搜索功能
     await db.execute(

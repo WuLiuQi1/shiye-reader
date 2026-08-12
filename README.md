@@ -1,7 +1,7 @@
 <div align="center">
-  <img src="assets/images/app_icon.png" width="112" alt="拾页图标">
-  <h1>拾页 · ShiYe Reader</h1>
-  <p>本地优先、支持开放书源的开源电子书阅读器</p>
+  <img src="assets/images/app_icon.png" width="112" alt="开元阅读图标">
+  <h1>开元阅读 · Open Reading</h1>
+  <p>本地优先、跨平台、支持开放书源的现代电子书阅读器</p>
 
   <p>
     <a href="README.en.md">English</a> ·
@@ -23,30 +23,41 @@
     <a href="LICENSE"><img src="https://img.shields.io/badge/License-AGPL--3.0-2ea44f" alt="AGPL-3.0 License"></a>
     <img src="https://img.shields.io/badge/Reader_Engine-Flutter_Native-0ea5e9" alt="Flutter Native Reader Engine">
     <img src="https://img.shields.io/badge/Core_Reader-No_WebView-f97316" alt="Core Reader Without WebView">
-    <a href="https://github.com/WuLiuQi1/shiye-reader"><img src="https://img.shields.io/badge/GitHub-shiye--reader-181717?logo=github" alt="GitHub"></a>
-    <a href="https://github.com/miloquinn/open-reading-source-protocol"><img src="https://img.shields.io/badge/Book_Source-ORSP_1.1-7c3aed" alt="Open Reading Source Protocol 1.1"></a>
+    <a href="https://github.com/miloquinn/open-reading"><img src="https://img.shields.io/badge/GitHub-open--reading-181717?logo=github" alt="GitHub"></a>
+    <a href="https://github.com/miloquinn/open-reading-source-protocol"><img src="https://img.shields.io/badge/Book_Source-ORSP_1.5-7c3aed" alt="Open Reading Source Protocol 1.5"></a>
   </p>
 </div>
 
 ---
 
-> [!IMPORTANT]
-> **非官方修改版声明：**「拾页」是基于
-> [Open Reading](https://github.com/miloquinn/open-reading) 修改的非官方版本，
-> 与上游作者不存在官方隶属或背书关系。首次公开修改日期为 **2026-07-31**。
-> 修改内容和分发说明见 [NOTICE.md](NOTICE.md)；本仓库提供与发布版本对应的完整源代码。
+## 关于开源版本与后续开发
 
-拾页是一款使用 Flutter 构建的开源电子书阅读器。它以本地文件阅读为基础，同时通过
-Open Reading Source Protocol（ORSP）连接用户自行选择的公开内容服务。书籍、阅读进度、
-书签、阅读统计与大多数设置默认保存在当前设备；本地阅读不要求登录，也不依赖项目方的
-云端服务。
+开元阅读从最初发布到今天，得到了许多用户、开发者和朋友的关注、反馈与帮助。每一次 Issue、
+建议、测试和传播，都真实地推动了这个项目向前走。非常感谢大家一路以来的信任与支持。
+
+`v2.4.5` 是本仓库最后一个公开源码版本。从 `v2.4.6` 起，开元阅读的后续版本将转为闭源开发，
+但仍会继续通过 GitHub Releases 和[官方网站](https://open.xxread.top/download)提供正式安装包与
+更新说明。公共仓库今后主要用于保存历史源码、发布安装包和接收问题反馈。
+
+这是一个经过认真考虑、但并不轻松的决定。随着功能、平台适配和日常维护工作的持续增加，
+我希望把有限的时间更集中地投入到产品体验、稳定性和长期维护中。我理解这个变化可能会让
+重视开源的朋友失望，也尊重每个人继续使用历史版本、自行维护分支或选择其他项目的决定。
+
+已经公开的内容不会被删除，也不会被追溯改变授权：`v2.4.5` 及以前版本的源码会继续保留，
+原有开源许可证持续有效，大家仍然可以学习、使用、Fork 和维护这些版本。感谢所有曾经为
+开元阅读提供帮助的人，也谢谢愿意继续陪伴它走下去的每一位用户。
+
+开元阅读是一款使用 Flutter 构建的电子书阅读器。本仓库保存 `v2.4.5` 及以前版本的开源源码。
+应用以本地文件阅读为基础，同时通过 Open Reading Source Protocol（ORSP）连接用户自行选择的
+公开内容服务。书籍、阅读进度、书签、阅读统计与大多数设置默认保存在当前设备；本地阅读
+不要求登录，也不依赖项目方的云端服务。
 
 ## 当前功能
 
 ### 本地书架与阅读
 
 - 导入和管理本地书籍，记录最近阅读、阅读进度、阅读时长与会话统计；
-- TXT 支持编码探测、章节识别及标题与正文同页显示，EPUB 支持目录、正文与图片内容解析；
+- TXT 支持编码探测、章节识别和独立章节标题页，EPUB 支持目录、正文与图片内容解析；
 - 无真实封面时自动生成简约封面，真实封面始终优先；
 - 书架支持搜索以及“全部 / 在读 / 已读”筛选；
 - Android 与 iOS 提供平台存储桥接，桌面端使用本地文件和 SQLite FFI。
@@ -75,13 +86,10 @@ Open Reading Source Protocol（ORSP）连接用户自行选择的公开内容服
 
 ### 开放书源
 
-- 添加、启用、停用或移除符合 ORSP 1.4 的 HTTP(S) 书源；
-- 可从 JSON 文件批量导入 Legado / 阅读 v3 书源；支持常用 URL 模板、
-  CSS 选择器、文本/属性提取和正文清理规则（不执行书源 JavaScript）；
+- 添加、启用、停用或移除符合 ORSP 1.5 的 HTTP(S) 书源；
 - 聚合多个已启用书源的推荐、分类、最新内容和搜索结果，并可筛选全部或单一书源；
 - 支持在线查看书籍详情、目录和章节正文，也可加入本地书架；
 - 在线阅读与本地阅读共用主题、排版、翻页模式、书签入口和阅读设置；
-- 在线阅读工具栏可搜索其他已启用书源并换源，按同名章节尽量恢复章内进度；
 - 章节内容按需获取并缓存，一个书源失败不会丢弃其他书源已返回的结果。
 
 ### 可选 AI 服务
@@ -124,21 +132,18 @@ Open Reading Source Protocol（ORSP）连接用户自行选择的公开内容服
 
 - 本地阅读不要求账号；
 - 书籍、进度、书签、统计、字体和阅读主题主要保存在当前设备；
-- iOS 支持手动将书源、书架和阅读进度备份至 iCloud 并覆盖恢复；正文、封面和缓存不进入备份；
+- 项目当前不内置云同步或 WebDAV，卸载、清理数据或设备故障前请自行备份；
 - 只有在用户主动使用书源、封面检索、AI、更新检查等功能时才会访问网络；
 - 更新检查会同时查询 GitHub Releases 与官方站点；从官方站点下载安装包时，服务端会为下载统计、安全防护和故障排查记录版本、架构、时间、IP 与 User-Agent，含原始 IP 的明细最多保留 30 天；
 - 自定义字体、背景图片、书籍文件和第三方内容的使用与分发授权由用户自行确认。
 
 ## Open Reading Source Protocol
 
-ORSP 1.4 让阅读器通过统一 HTTP 协议连接公开、无需登录的内容服务，而不是在客户端保存站点
+ORSP 1.5 让阅读器通过统一 HTTP 协议连接公开、无需登录的内容服务，而不是在客户端保存站点
 抓取规则、Cookie 或可执行脚本。协议定义发现文档、搜索、书籍详情、分页章节目录与章节正文，
 还可选提供推荐、分类和浏览能力，以及运营者、联系入口、内容许可与权利声明元数据。
 
-- 协议仓库：[miloquinn/open-reading-source-protocol](https://github.com/miloquinn/open-reading-source-protocol)
-- 仓库内规范副本：[`docs/book-source-protocol-v1.md`](docs/book-source-protocol-v1.md)
-- OpenAPI 定义：[`docs/book-source-openapi.yaml`](docs/book-source-openapi.yaml)
-- 示例发现文档：[`docs/examples/open-reading-source.json`](docs/examples/open-reading-source.json)
+- 权威协议仓库：[miloquinn/open-reading-source-protocol](https://github.com/miloquinn/open-reading-source-protocol)
 
 运行仓库内的本地示例书源：
 
@@ -146,8 +151,8 @@ ORSP 1.4 让阅读器通过统一 HTTP 协议连接公开、无需登录的内�
 dart run tool/example_book_source_server.dart
 ```
 
-然后在 App 的“书源”页面添加 `http://127.0.0.1:8787`。Android 模拟器访问宿主机时通常需要
-改用 `http://10.0.2.2:8787`。
+该服务用于协议开发和接口调试。正式 App 的书源网络策略默认拒绝回环和私网地址，不能直接
+把 `127.0.0.1` 或模拟器宿主地址注册为书源。
 
 请只接入原创、公共领域或已获得合法授权的内容，不要使用书源能力绕过访问控制、付费机制
 或第三方服务条款。
@@ -160,8 +165,8 @@ dart run tool/example_book_source_server.dart
 环境要求：Flutter 3.x、Dart `>=3.4.0 <4.0.0`。
 
 ```bash
-git clone https://github.com/WuLiuQi1/shiye-reader.git
-cd shiye-reader
+git clone https://github.com/miloquinn/open-reading.git
+cd open-reading
 flutter pub get
 flutter run
 ```
@@ -232,17 +237,15 @@ tool/              # 本地开发、官网发布校验与示例服务工具
 
 ## 参与贡献
 
-欢迎提交 Issue 和 Pull Request，包括阅读体验、格式兼容、平台适配、无障碍、翻译和 ORSP
-参考实现。提交前请运行格式化、静态分析和相关测试，并避免提交 API Key、书籍文件、本地
-数据库或任何无权分发的内容。
+本仓库主要保存 `v2.4.5` 及以前的历史开源源码。针对这些历史版本的问题仍可提交 Issue；
+后续闭源版本不再通过本仓库接收功能 Pull Request。如果你希望继续维护或改进历史版本，
+欢迎遵循原有许可证进行 Fork。提交任何公开内容时，请避免包含 API Key、书籍文件、本地
+数据库或其他无权分发的材料。
 
 ## 许可证
 
 [GNU AGPL-3.0](LICENSE) © [miloquinn](https://github.com/miloquinn)。修改版在分发或通过网络
 提供服务时，须按 AGPL-3.0 提供对应源代码。`v1.0.0` 及更早发布版本仍适用其原有
 [MIT 授权](LICENSE-MIT-LEGACY)，详见[授权边界说明](LICENSING.md)。
-
-「拾页」的修改说明、上游署名和源码提供方式见 [NOTICE.md](NOTICE.md)，第三方组件说明见
-[THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md)。
 
 <!-- Minimal documentation-only change for pull request verification. -->

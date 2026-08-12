@@ -111,7 +111,6 @@ class HomeMobileDashboardPage extends StatefulWidget {
       book: shelfService.sourceBookFrom(book),
       client: client,
       shelfService: shelfService,
-      initialShelfBookId: book.id,
     );
   }
 
@@ -203,7 +202,15 @@ class _HomeMobileDashboardPageState extends State<HomeMobileDashboardPage>
   Future<List<Book>> _loadRecentBooks() async {
     try {
       final orderedBookIds = await _statsDao.getRecentBookIds(limit: 6);
-      final books = await _bookDao.getBooksByIdsInOrder(orderedBookIds);
+      final books = <Book>[];
+      final seen = <int>{};
+
+      for (final id in orderedBookIds) {
+        final book = await _bookDao.getBookById(id);
+        if (book == null) continue;
+        books.add(book);
+        seen.add(id);
+      }
 
       if (books.isNotEmpty) {
         return books.take(6).toList(growable: false);
@@ -374,7 +381,9 @@ class _HomeMobileDashboardPageState extends State<HomeMobileDashboardPage>
               backgroundColor: palette.cardColor,
               child: ListView(
                 scrollCacheExtent: const ScrollCacheExtent.pixels(720),
-                physics: const AlwaysScrollableScrollPhysics(),
+                physics: const AlwaysScrollableScrollPhysics(
+                  parent: BouncingScrollPhysics(),
+                ),
                 padding: EdgeInsets.fromLTRB(
                   metrics.horizontalPadding,
                   metrics.contentTopPadding,
@@ -499,9 +508,7 @@ class _HomeMobileDashboardPageState extends State<HomeMobileDashboardPage>
       );
     }
 
-    final progress = book.totalPages <= 0
-        ? 0.0
-        : (book.currentPage / book.totalPages).clamp(0.0, 1.0);
+    final progress = book.progress;
     final percent = (progress * 100).round();
     final coverWidth = spacious ? 118.0 : 102.0;
     final coverHeight = spacious ? 164.0 : 142.0;
@@ -830,6 +837,7 @@ class _HomeMobileDashboardPageState extends State<HomeMobileDashboardPage>
       height: 206,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
         itemCount: books.length,
         separatorBuilder: (_, _) => const SizedBox(width: 14),
         itemBuilder: (context, index) =>
@@ -840,9 +848,7 @@ class _HomeMobileDashboardPageState extends State<HomeMobileDashboardPage>
 
   Widget _buildRecentBookItem(Book book) {
     final palette = _palette;
-    final progress = book.totalPages <= 0
-        ? 0
-        : ((book.currentPage / book.totalPages) * 100).clamp(0, 100).round();
+    final progress = (book.progress * 100).round();
     return Semantics(
       button: true,
       label:

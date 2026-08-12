@@ -99,7 +99,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bookSourcesNoSourcesDescription =>
-      'Open Reading Source Protocol に対応したサービスのアドレスを貼り付けて接続します。';
+      '拾页 Source Protocol に対応したサービスのアドレスを貼り付けて接続します。';
 
   @override
   String get bookSourcesManageTitle => '接続済みのソース';
@@ -126,7 +126,65 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bookSourcesConfirm => '確認';
 
   @override
-  String get bookSourcesAddTitle => 'オープンソースを追加';
+  String get bookSourcesAddTitle => 'ソースを追加';
+
+  @override
+  String get bookSourcesImportLink => 'リンクをインポート';
+
+  @override
+  String get bookSourcesAnalyze => 'ソースを分析';
+
+  @override
+  String get bookSourcesDetectedOrsp => '検出: ORSP ソース';
+
+  @override
+  String get bookSourcesDetectedAdditional => '検出: その他のプロトコル';
+
+  @override
+  String get bookSourcesProtocolGroupOrsp => 'ORSP ソース';
+
+  @override
+  String get bookSourcesProtocolGroupAdditional => 'その他のプロトコル';
+
+  @override
+  String get bookSourcesAdvancedFeatureRequired =>
+      '高度な機能で追加のブックソースプロトコルを有効にしてからインポートしてください。';
+
+  @override
+  String get bookSourcesNoWorkingSources =>
+      '実際の検索確認に合格したソースがないため、インポートしませんでした。';
+
+  @override
+  String bookSourcesVerificationProgress(
+    int completed,
+    int total,
+    int available,
+  ) {
+    return '確認済み $completed/$total、利用可能 $available';
+  }
+
+  @override
+  String get bookSourcesSelect => 'ソースを複数選択';
+
+  @override
+  String get bookSourcesSelectAll => 'すべて選択';
+
+  @override
+  String get bookSourcesClearSelection => '選択を解除';
+
+  @override
+  String get bookSourcesEnableSelected => '選択項目を有効化';
+
+  @override
+  String get bookSourcesDisableSelected => '選択項目を無効化';
+
+  @override
+  String get bookSourcesDeleteSelected => '選択項目を削除';
+
+  @override
+  String bookSourcesDeleteSelectedMessage(int count) {
+    return '選択した $count 件のソースを削除しますか？ローカルの本には影響しません。';
+  }
 
   @override
   String get bookSourcesUrlLabel => 'ソースのアドレス';
@@ -136,7 +194,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bookSourcesNoOfficialSourcesNotice =>
-      'OpenReading は書籍ソースをプリインストールせず、サードパーティサービスを運営、推奨、保証しません。すべてのアドレスはあなたが追加します。';
+      '拾页 は書籍ソースをプリインストールせず、サードパーティサービスを運営、推奨、保証しません。すべてのアドレスはあなたが追加します。';
 
   @override
   String get bookSourcesResponsibilityAck =>
@@ -161,7 +219,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get bookSourcesRefreshFailed => 'このソースを更新できませんでした';
 
   @override
-  String get bookSourcesProtocolTitle => 'Open Reading Source Protocol';
+  String get bookSourcesProtocolTitle => '拾页 Source Protocol';
 
   @override
   String get bookSourcesProtocolDescription =>
@@ -203,7 +261,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get bookSourcesRightsUnverifiedNotice =>
-      'これらの情報は独立したソース運営者による自己申告です。OpenReading は透明性のために表示しますが、検証、推奨、保証は行いません。';
+      'これらの情報は独立したソース運営者による自己申告です。拾页 は透明性のために表示しますが、検証、推奨、保証は行いません。';
 
   @override
   String get bookSourcesContactOperator => '運営者に連絡';
@@ -441,7 +499,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get fontMonospaceDescription => 'コードや技術文書、集中しやすい組版に適した等幅フォントです。';
 
   @override
-  String get fontPreviewText => 'Open Reading · 自由に読む 開卷有益';
+  String get fontPreviewText => '拾页 · 自由に読む 開卷有益';
 
   @override
   String get customFonts => 'マイフォント';
@@ -592,7 +650,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsQqChannel => 'QQ チャンネル';
 
   @override
-  String get settingsQqChannelSubtitle => '開元閱讀 · OpenReading6';
+  String get settingsQqChannelSubtitle => '開元閱讀 · 拾页6';
 
   @override
   String get settingsQqChannelOpenFailed => 'QQ チャンネルの招待リンクを開けませんでした';
@@ -1116,7 +1174,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get agreementCardSubtitle => '以下の内容をよくお読みください';
 
   @override
-  String get agreementWelcomeTitle => 'OpenReading へようこそ';
+  String get agreementWelcomeTitle => '拾页 へようこそ';
 
   @override
   String get agreementWelcomeBody => '安定した読書体験を提供するため、まず以下の規約をお読みのうえ同意してください。';
@@ -1511,7 +1569,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get incomingBooksUnsupportedFormat => 'この書籍形式には対応していません';
 
   @override
-  String get incomingBooksFileTooLarge => 'ファイルが 100 MB の読み込み上限を超えています';
+  String get incomingBooksFileTooLarge => 'ファイルが 500 MB の読み込み上限を超えています';
 
   @override
   String get incomingBooksTooManyFiles => '一度に共有された書籍が多すぎます。分けて追加してください';
@@ -1592,6 +1650,45 @@ class AppLocalizationsJa extends AppLocalizations {
   String get libraryDeleteComplete => '削除が完了しました';
 
   @override
+  String get librarySelectMultiple => '複数選択';
+
+  @override
+  String get librarySelectAll => 'すべて選択';
+
+  @override
+  String librarySelectedBooks(int count) {
+    return '$count 冊を選択';
+  }
+
+  @override
+  String libraryDeleteSelected(int count) {
+    return '$count 冊を削除';
+  }
+
+  @override
+  String get libraryBatchDeleteTitle => '選択した本を削除しますか？';
+
+  @override
+  String libraryBatchDeleteMessage(int count) {
+    return '選択した $count 冊と、関連するメモ、ブックマーク、ローカルファイルを完全に削除します。この操作は取り消せません。';
+  }
+
+  @override
+  String libraryDeletingSelected(int done, int total) {
+    return '削除中 $done/$total';
+  }
+
+  @override
+  String libraryBatchDeleteSuccess(int count) {
+    return '$count 冊を削除しました';
+  }
+
+  @override
+  String libraryBatchDeletePartial(int success, int failed) {
+    return '$success 冊を削除、$failed 冊は失敗しました';
+  }
+
+  @override
   String get readerPrefaceTitle => '前付';
 
   @override
@@ -1648,6 +1745,12 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get readerBottomMarginLabel => '下余白';
+
+  @override
+  String get readerTxtChapterTitlePageTitle => '章タイトルを独立ページに表示';
+
+  @override
+  String get readerTxtChapterTitlePageHint => 'オフにすると、章タイトルは本文の先頭に表示されます';
 
   @override
   String get readerVerticalMarginLabel => '上下余白';
@@ -1809,6 +1912,57 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get settingsSectionGeneral => '一般';
+
+  @override
+  String get settingsSectionAdvancedFeatures => '高度な機能';
+
+  @override
+  String get settingsAdditionalSourceProtocolsTitle => 'その他のブックソースプロトコル';
+
+  @override
+  String get settingsAdditionalSourceProtocolsSubtitle =>
+      '有効にすると、追加のブックソースプロトコルを利用できます。';
+
+  @override
+  String get additionalSourcesImport => '追加プロトコルのソースをインポート';
+
+  @override
+  String get additionalSourcesImportTitle => 'ソース JSON をインポート';
+
+  @override
+  String get additionalSourcesImportNotice =>
+      'インポートしたソースは事前確認され、有効にするまで無効のままです。';
+
+  @override
+  String get additionalSourcesChooseFile => 'JSON ファイルから追加';
+
+  @override
+  String get additionalSourcesUrlLabel => 'ソース JSON URL';
+
+  @override
+  String get additionalSourcesLoadUrl => 'URL から読み込む';
+
+  @override
+  String additionalSourcesPreview(int supported, int partial, int unsupported) {
+    return '利用可能 $supported、一部対応 $partial、未対応 $unsupported';
+  }
+
+  @override
+  String get additionalSourcesAvailable => '利用可能';
+
+  @override
+  String get additionalSourcesPartial => '一部対応';
+
+  @override
+  String get additionalSourcesUnsupported => '未対応';
+
+  @override
+  String get additionalSourcesImportConfirm => '無効のままインポート';
+
+  @override
+  String additionalSourcesImported(int count) {
+    return '$count 件のソースをインポートしました';
+  }
 
   @override
   String get settingsSectionAboutSupport => 'アプリ情報とサポート';
@@ -1978,7 +2132,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get openSourceLicensesIntro =>
-      '以下のライセンス文はアプリ内でオフライン表示できます。Open Reading、内蔵フォント、サードパーティソフトウェアには、それぞれのライセンスが適用されます。';
+      '以下のライセンス文はアプリ内でオフライン表示できます。拾页、内蔵フォント、サードパーティソフトウェアには、それぞれのライセンスが適用されます。';
 
   @override
   String get openSourceProjectSection => 'プロジェクト';
@@ -2000,7 +2154,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get openSourceLicenseLegalese =>
-      'Open Reading とサードパーティコンポーネントには、それぞれのライセンスが適用されます。';
+      '拾页 とサードパーティコンポーネントには、それぞれのライセンスが適用されます。';
 
   @override
   String get openSourceLicenseLoadFailed => 'ライセンス文を読み込めませんでした。';
@@ -2033,7 +2187,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get contributorsTitle => 'コントリビューター';
 
   @override
-  String get contributorsSubtitle => 'Open Reading をより良くしてくれるすべての人に感謝します';
+  String get contributorsSubtitle => '拾页 をより良くしてくれるすべての人に感謝します';
 
   @override
   String get contributorsOpenProfileFailed => 'コントリビューターのプロフィールを開けませんでした';
@@ -2070,10 +2224,25 @@ class AppLocalizationsJa extends AppLocalizations {
   String get settingsFloatingNavigationTitle => 'フローティングナビゲーション';
 
   @override
-  String get settingsFloatingNavigationSubtitle => '表示方法と項目の順序を調整します';
+  String get settingsFloatingNavigationSubtitle => 'サイズ、表示方法、項目の順序を調整します';
 
   @override
   String get floatingNavigationPreviewTitle => 'プレビュー';
+
+  @override
+  String get floatingNavigationSizeTitle => 'サイズ';
+
+  @override
+  String get floatingNavigationSizeAutomatic => '自動調整';
+
+  @override
+  String get floatingNavigationSizeCustom => 'カスタム';
+
+  @override
+  String get floatingNavigationHeightLabel => '高さ';
+
+  @override
+  String get floatingNavigationSideMarginLabel => '左右余白';
 
   @override
   String get floatingNavigationDisplayModeTitle => '表示方法';
@@ -2100,11 +2269,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get floatingNavigationResetDone => '既定の順序に戻しました';
 
   @override
-  String get settingsLibraryLayoutTitle => 'ライブラリの表示';
+  String get settingsLibraryLayoutTitle => 'ライブラリ設定';
 
   @override
-  String get settingsLibraryLayoutSubtitle =>
-      'カードまたはコンパクトなグリッドを選び、グリッド情報を調整できます';
+  String get settingsLibraryLayoutSubtitle => 'ライブラリの表示と本を開く動きを調整します';
 
   @override
   String get settingsLibraryLayoutCard => 'カード';
@@ -2127,6 +2295,45 @@ class AppLocalizationsJa extends AppLocalizations {
   @override
   String get settingsLibraryGridShowDetailsSubtitle =>
       '各表紙の下に1行のタイトルとコンパクトな進捗バーを表示します';
+
+  @override
+  String get settingsLibraryOpenAnimationTitle => '本を開くアニメーション';
+
+  @override
+  String get settingsLibraryOpenAnimationSubtitle => 'ライブラリから本を開くときだけ使用します';
+
+  @override
+  String get settingsLibraryOpenAnimationClassicCover => 'クラシック表紙展開';
+
+  @override
+  String get settingsLibraryOpenAnimationClassicCoverHint =>
+      '元の表紙を全画面まで拡大してから本文を表示します';
+
+  @override
+  String get settingsLibraryOpenAnimationMinimal => 'シンプルなフェード';
+
+  @override
+  String get settingsLibraryOpenAnimationMinimalHint =>
+      '方向移動のない、すばやく安定したフェードです';
+
+  @override
+  String get settingsLibraryOpenAnimationPaperRise => '紙面の浮上';
+
+  @override
+  String get settingsLibraryOpenAnimationPaperRiseHint =>
+      '読書画面が下から穏やかに所定位置へ移動します';
+
+  @override
+  String get settingsLibraryOpenAnimationPageSlide => 'ページスライド';
+
+  @override
+  String get settingsLibraryOpenAnimationPageSlideHint => '読書画面が横から短い距離だけ入ります';
+
+  @override
+  String get settingsLibraryOpenAnimationBookSpread => '見開き展開';
+
+  @override
+  String get settingsLibraryOpenAnimationBookSpreadHint => '左右の紙面が中央から外側へ開きます';
 
   @override
   String get settingsAccentFollowTheme => 'アクセントカラー：テーマに従う';
@@ -2213,7 +2420,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get settingsOfficialWebsiteSubtitle =>
-      '拾頁の GitHub Releases からダウンロードしてインストール';
+      'open.xxread.top からダウンロードしてインストール';
 
   @override
   String get settingsOfficialWebsiteOpenFailed => '公式サイトを開けませんでした';
@@ -2890,10 +3097,10 @@ class AppLocalizationsJa extends AppLocalizations {
   String get importSelectFiles => 'ファイルを選択';
 
   @override
-  String get importIosSharedDocuments => 'このiPhone内 · Open Reading';
+  String get importIosSharedDocuments => 'このiPhone内 · 拾页';
 
   @override
-  String get importICloudDrive => 'iCloud Drive · Open Reading';
+  String get importICloudDrive => 'iCloud Drive · 拾页';
 
   @override
   String get importICloudUnavailable => 'iCloud Drive を利用できません';
@@ -3363,7 +3570,7 @@ class AppLocalizationsJa extends AppLocalizations {
   String get importErrorCopyVerificationFailed => 'コピーしたファイルがソースと一致しません';
 
   @override
-  String get importErrorFileTooLarge => 'ファイルが 100 MB のインポート上限を超えています';
+  String get importErrorFileTooLarge => 'ファイルが 500 MB のインポート上限を超えています';
 
   @override
   String get importErrorSourcePrepareFailed => 'インポートファイルを準備できません';
@@ -3504,7 +3711,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get agreementV2HeroBody =>
-      'OpenReading はオープンソース・クロスプラットフォーム・ローカルファーストの電子書籍リーダーです。読書のための機能を提供しますが、あなたが取り込んだ書籍を提供・ホスティング・審査することはありません。';
+      '拾页 はオープンソース・クロスプラットフォーム・ローカルファーストの電子書籍リーダーです。読書のための機能を提供しますが、あなたが取り込んだ書籍を提供・ホスティング・審査することはありません。';
 
   @override
   String get agreementV2LocalTitle => 'ローカルファースト';
@@ -3533,14 +3740,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get agreementV2ImportantNotice =>
-      '重要：OpenReading の公式版にはサードパーティの書籍ソースはプリインストール、内蔵、推奨されておらず、開発者がそのコンテンツを運営、代理、ホスティングすることもありません。取り込むファイルと追加するソースはご自身で選択し、権利のあるコンテンツだけを利用してください。';
+      '重要：拾页 の公式版にはサードパーティの書籍ソースはプリインストール、内蔵、推奨されておらず、開発者がそのコンテンツを運営、代理、ホスティングすることもありません。取り込むファイルと追加するソースはご自身で選択し、権利のあるコンテンツだけを利用してください。';
 
   @override
   String get agreementV2SourceBoundaryTitle => 'サードパーティソースの責任範囲';
 
   @override
   String get agreementV2SourceBoundaryPoint1 =>
-      '公式プロジェクトが提供するのはオープンソースの閲覧ソフトウェアと Open Reading Source Protocol だけであり、ソースのアドレスや公式一覧は提供しません。';
+      '公式プロジェクトが提供するのはオープンソースの閲覧ソフトウェアと 拾页 Source Protocol だけであり、ソースのアドレスや公式一覧は提供しません。';
 
   @override
   String get agreementV2SourceBoundaryPoint2 =>
@@ -3555,14 +3762,14 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get agreementV2Section1Body =>
-      '本規約は、OpenReading ソフトウェアおよび付属機能のダウンロード・インストール・使用に適用されます。「同意して続ける」をタップすることで、本規約を読み、理解し、同意したものとみなされます。同意しない場合は、使用を中止しアプリを終了してください。お住まいの地域の法律が定める同意年齢に達していない場合は、保護者が内容を読み同意する必要があります。';
+      '本規約は、拾页 ソフトウェアおよび付属機能のダウンロード・インストール・使用に適用されます。「同意して続ける」をタップすることで、本規約を読み、理解し、同意したものとみなされます。同意しない場合は、使用を中止しアプリを終了してください。お住まいの地域の法律が定める同意年齢に達していない場合は、保護者が内容を読み同意する必要があります。';
 
   @override
   String get agreementV2Section2Title => 'オープンソースソフトウェアとライセンス';
 
   @override
   String get agreementV2Section2Body =>
-      'OpenReading の今後のバージョンは GNU Affero General Public License v3.0 の下で公開されます。ライセンスに従って使用・複製・改変・頒布・販売できますが、改変版を頒布する場合は完全な対応ソースを AGPL-3.0 で提供し、改変版をネットワークサービスとして提供する場合も利用者に対応ソースを提供する必要があります。v1.0.0 以前に付与された MIT License の権利は引き続き有効で撤回されません。本規約はオープンソースライセンスが付与する権利を制限せず、サードパーティコンポーネントには各自のライセンスが適用されます。';
+      '拾页 の今後のバージョンは GNU Affero General Public License v3.0 の下で公開されます。ライセンスに従って使用・複製・改変・頒布・販売できますが、改変版を頒布する場合は完全な対応ソースを AGPL-3.0 で提供し、改変版をネットワークサービスとして提供する場合も利用者に対応ソースを提供する必要があります。v1.0.0 以前に付与された MIT License の権利は引き続き有効で撤回されません。本規約はオープンソースライセンスが付与する権利を制限せず、サードパーティコンポーネントには各自のライセンスが適用されます。';
 
   @override
   String get agreementV2Section3Title => 'ユーザーコンテンツと著作権責任';
@@ -3590,7 +3797,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get agreementV2Section6Body =>
-      '本ソフトウェアはローカルファースト設計であり、書籍・読書進捗・メモ・設定は通常お使いの端末に保存されます。ネットワーク書籍ソース、AI、同期、その他のオンライン機能を有効にしない限り、ローカルでの読書のために書籍本文を開発者へ送信することはありません。自動または手動の更新確認では、拾頁の GitHub Releases のみにアクセスします。通常のネットワーク通信として、GitHub は IP アドレスと User-Agent を処理します。更新リクエストに書籍本文、書庫、メモ、アカウント、端末固有 ID は含まれません。その他のオンライン機能では、必要なデータが選択したプロバイダーへ送信される場合があり、そのプロバイダーのポリシーが適用されます。端末、API キー、バックアップはご自身で保護してください。アンインストール、データ消去、端末故障、誤操作によりデータが完全に失われる可能性があります。';
+      '本ソフトウェアはローカルファースト設計であり、書籍・読書進捗・メモ・設定は通常あなたの端末に保存されます。ネットワークソース、AI、同期などのオンライン機能を有効にしない限り、ローカル読書のために書籍本文が開発者へ送信されることはありません。自動または手動で更新を確認すると、GitHub と公式サイト open.xxread.top に接続し、プラットフォーム、CPU アーキテクチャ、配信チャンネルなど必要な技術情報を送信します。通常のネットワーク通信として、サーバーは IP アドレスと User-Agent を処理します。公式サイトからインストールパッケージを取得する場合、ダウンロード回数の集計、セキュリティ対策、障害調査のため、バージョン、アーキテクチャ、時刻、IP、User-Agent を記録します。生の IP を含む明細は最長 30 日で削除し、その後は生の IP を含まない集計のみを保持します。これらの更新リクエストには、書籍本文、書庫、メモ、アカウント、端末固有 ID は含まれません。GitHub へのアクセスには同社のプライバシーポリシーも適用されます。その他のオンライン機能を有効にすると、関連するクエリ・テキスト断片・端末のネットワーク情報・必要なパラメーターが、あなたが選択したサードパーティサービスに送信される場合があり、詳細は当該サービスの規約に従います。端末・アクセスキー・バックアップはご自身で保護してください。アンインストール・データ消去・端末故障・誤操作によりデータが完全に失われる可能性があります。';
 
   @override
   String get agreementV2Section7Title => 'AI と自動生成出力';
@@ -3645,7 +3852,7 @@ class AppLocalizationsJa extends AppLocalizations {
 
   @override
   String get agreementV2ExitDialogBody =>
-      'OpenReading を利用するには利用規約への同意が必要です。同意しない場合はアプリを終了してください。';
+      '拾页 を利用するには利用規約への同意が必要です。同意しない場合はアプリを終了してください。';
 
   @override
   String get agreementV2CancelLabel => '戻る';

@@ -34,6 +34,7 @@ class BookDao implements BookImportStore {
           'format',
           'currentPage',
           'totalPages',
+          'reading_progress',
           'importDate',
           'file_modified_time',
           'content_hash',
@@ -59,12 +60,20 @@ class BookDao implements BookImportStore {
     }
   }
 
-  Future<void> updateBookProgress(int bookId, int currentPage) async {
+  Future<void> updateBookProgress(
+    int bookId,
+    int currentPage, {
+    double? readingProgress,
+  }) async {
     try {
       final db = await _dbService.database;
+      final values = <String, Object?>{'currentPage': currentPage};
+      if (readingProgress != null) {
+        values['reading_progress'] = readingProgress.clamp(0.0, 1.0);
+      }
       final result = await db.update(
         'books',
-        {'currentPage': currentPage},
+        values,
         where: 'id = ?',
         whereArgs: [bookId],
       );
@@ -101,32 +110,6 @@ class BookDao implements BookImportStore {
     } catch (e) {
       throw Exception('获取书籍详情失败: $e');
     }
-  }
-
-  /// Loads recent-book cards in one query. The caller-provided ordering is
-  /// restored afterwards because SQLite does not guarantee IN-clause order.
-  Future<List<Book>> getBooksByIdsInOrder(Iterable<int> bookIds) async {
-    final ids = <int>[];
-    final seen = <int>{};
-    for (final id in bookIds) {
-      if (seen.add(id)) ids.add(id);
-    }
-    if (ids.isEmpty) return const [];
-    final db = await _dbService.database;
-    final placeholders = List<String>.filled(ids.length, '?').join(', ');
-    final rows = await db.query(
-      'books',
-      where: 'id IN ($placeholders)',
-      whereArgs: ids,
-    );
-    final byId = <int, Book>{
-      for (final row in rows)
-        if (row['id'] is int) row['id'] as int: Book.fromMap(row),
-    };
-    return [
-      for (final id in ids)
-        if (byId[id] case final book?) book,
-    ];
   }
 
   Future<Book?> getBookBySource({
@@ -393,14 +376,18 @@ class BookDao implements BookImportStore {
     String canonicalJson,
     String? renderedJson,
     String? layoutSignature,
-    int currentPage,
-  ) async {
+    int currentPage, {
+    double? readingProgress,
+  }) async {
     try {
       final db = await _dbService.database;
       final updates = <String, dynamic>{
         'last_canonical_locator': canonicalJson,
         'currentPage': currentPage,
       };
+      if (readingProgress != null) {
+        updates['reading_progress'] = readingProgress.clamp(0.0, 1.0);
+      }
       if (renderedJson != null) {
         updates['last_rendered_locator'] = renderedJson;
       }
