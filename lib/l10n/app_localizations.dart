@@ -104,7 +104,7 @@ abstract class AppLocalizations {
   /// The title of the application
   ///
   /// In en, this message translates to:
-  /// **'拾页'**
+  /// **'OpenReading'**
   String get appTitle;
 
   /// Home tab label
@@ -272,7 +272,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookSourcesNoSourcesDescription.
   ///
   /// In en, this message translates to:
-  /// **'Paste the address of a service compatible with the 拾页 Source Protocol.'**
+  /// **'Paste the address of a service compatible with the Open Reading Source Protocol.'**
   String get bookSourcesNoSourcesDescription;
 
   /// No description provided for @bookSourcesManageTitle.
@@ -444,7 +444,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookSourcesNoOfficialSourcesNotice.
   ///
   /// In en, this message translates to:
-  /// **'拾页 includes no sources and does not operate, recommend, or endorse third-party source services. Every source address is added by you.'**
+  /// **'OpenReading includes no sources and does not operate, recommend, or endorse third-party source services. Every source address is added by you.'**
   String get bookSourcesNoOfficialSourcesNotice;
 
   /// No description provided for @bookSourcesResponsibilityAck.
@@ -492,7 +492,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookSourcesProtocolTitle.
   ///
   /// In en, this message translates to:
-  /// **'拾页 Source Protocol'**
+  /// **'Open Reading Source Protocol'**
   String get bookSourcesProtocolTitle;
 
   /// No description provided for @bookSourcesProtocolDescription.
@@ -570,7 +570,7 @@ abstract class AppLocalizations {
   /// No description provided for @bookSourcesRightsUnverifiedNotice.
   ///
   /// In en, this message translates to:
-  /// **'These statements are supplied by the independent source operator. 拾页 displays them for transparency but does not verify or endorse them.'**
+  /// **'These statements are supplied by the independent source operator. OpenReading displays them for transparency but does not verify or endorse them.'**
   String get bookSourcesRightsUnverifiedNotice;
 
   /// No description provided for @bookSourcesContactOperator.
@@ -1044,7 +1044,7 @@ abstract class AppLocalizations {
   /// Bilingual font preview sample
   ///
   /// In en, this message translates to:
-  /// **'拾页 · Read freely 开卷有益'**
+  /// **'Open Reading · Read freely 开卷有益'**
   String get fontPreviewText;
 
   /// No description provided for @customFonts.
@@ -1326,7 +1326,7 @@ abstract class AppLocalizations {
   /// No description provided for @settingsQqChannelSubtitle.
   ///
   /// In en, this message translates to:
-  /// **'拾页 · 拾页6'**
+  /// **'Open Reading · OpenReading6'**
   String get settingsQqChannelSubtitle;
 
   /// No description provided for @settingsQqChannelOpenFailed.
@@ -2340,7 +2340,7 @@ abstract class AppLocalizations {
   /// Welcome heading inside the agreement content
   ///
   /// In en, this message translates to:
-  /// **'Welcome to 拾页'**
+  /// **'Welcome to OpenReading'**
   String get agreementWelcomeTitle;
 
   /// Welcome paragraph asking the user to read and agree to the agreement
@@ -3857,7 +3857,7 @@ abstract class AppLocalizations {
   /// Accessibility label for the paper shown in the first-home support introduction
   ///
   /// In en, this message translates to:
-  /// **'A letter from the 拾页 developer asking for voluntary support'**
+  /// **'A letter from the Open Reading developer asking for voluntary support'**
   String get firstHomeSupportPaperSemanticLabel;
 
   /// Title of the voluntary developer support card
@@ -3869,7 +3869,7 @@ abstract class AppLocalizations {
   /// Explanation shown on the voluntary developer support card
   ///
   /// In en, this message translates to:
-  /// **'Building and maintaining 拾页 takes substantial time and effort. If it helps you, voluntary donations are welcome.'**
+  /// **'Building and maintaining Open Reading takes substantial time and effort. If it helps you, voluntary donations are welcome.'**
   String get settingsSupportDevelopmentCardSubtitle;
 
   /// Action label that opens the WeChat donation QR code
@@ -4001,7 +4001,7 @@ abstract class AppLocalizations {
   /// No description provided for @openSourceLicensesIntro.
   ///
   /// In en, this message translates to:
-  /// **'These license texts are available offline in the app. 拾页, bundled fonts, and third-party software remain subject to their respective licenses.'**
+  /// **'These license texts are available offline in the app. Open Reading, bundled fonts, and third-party software remain subject to their respective licenses.'**
   String get openSourceLicensesIntro;
 
   /// No description provided for @openSourceProjectSection.
@@ -4043,7 +4043,7 @@ abstract class AppLocalizations {
   /// No description provided for @openSourceLicenseLegalese.
   ///
   /// In en, this message translates to:
-  /// **'拾页 and third-party components remain subject to their respective licenses.'**
+  /// **'Open Reading and third-party components remain subject to their respective licenses.'**
   String get openSourceLicenseLegalese;
 
   /// No description provided for @openSourceLicenseLoadFailed.
@@ -4109,7 +4109,7 @@ abstract class AppLocalizations {
   /// Subtitle of the contributors card
   ///
   /// In en, this message translates to:
-  /// **'Thanks to everyone making 拾页 better'**
+  /// **'Thanks to everyone making Open Reading better'**
   String get contributorsSubtitle;
 
   /// Toast when a contributor profile link fails to open
@@ -4511,7 +4511,7 @@ abstract class AppLocalizations {
   /// Display name of the app in the about card
   ///
   /// In en, this message translates to:
-  /// **'拾页'**
+  /// **'Open Reading'**
   String get settingsAppName;
 
   /// Author line in the about card
@@ -5783,13 +5783,13 @@ abstract class AppLocalizations {
   /// No description provided for @importIosSharedDocuments.
   ///
   /// In en, this message translates to:
-  /// **'On My iPhone · 拾页'**
+  /// **'On My iPhone · Open Reading'**
   String get importIosSharedDocuments;
 
   /// No description provided for @importICloudDrive.
   ///
   /// In en, this message translates to:
-  /// **'iCloud Drive · 拾页'**
+  /// **'iCloud Drive · Open Reading'**
   String get importICloudDrive;
 
   /// No description provided for @importICloudUnavailable.
@@ -6817,7 +6817,7 @@ abstract class AppLocalizations {
   /// User agreement V2 hero body paragraph
   ///
   /// In en, this message translates to:
-  /// **'拾页 is an open-source, cross-platform, local-first ebook reader. It provides reading tools; it does not provide, host, or review books you import.'**
+  /// **'OpenReading is an open-source, cross-platform, local-first ebook reader. It provides reading tools; it does not provide, host, or review books you import.'**
   String get agreementV2HeroBody;
 
   /// User agreement V2 local-first principle title
@@ -6859,13 +6859,13 @@ abstract class AppLocalizations {
   /// User agreement V2 panel subtitle
   ///
   /// In en, this message translates to:
-  /// **'Please read before using 拾页'**
+  /// **'Please read before using OpenReading'**
   String get agreementV2Subtitle;
 
   /// User agreement V2 important notice callout
   ///
   /// In en, this message translates to:
-  /// **'Important: The official 拾页 app does not preinstall, bundle, or recommend any third-party book source, and its developers do not operate, represent, or host source content. You choose every imported file and source you add; use only content you are authorized to access.'**
+  /// **'Important: The official OpenReading app does not preinstall, bundle, or recommend any third-party book source, and its developers do not operate, represent, or host source content. You choose every imported file and source you add; use only content you are authorized to access.'**
   String get agreementV2ImportantNotice;
 
   /// User agreement V2 source boundary card title
@@ -6877,7 +6877,7 @@ abstract class AppLocalizations {
   /// User agreement V2 source boundary point 1
   ///
   /// In en, this message translates to:
-  /// **'The official project provides open-source reader software and the 拾页 Source Protocol only. It provides no source addresses or official source directory.'**
+  /// **'The official project provides open-source reader software and the Open Reading Source Protocol only. It provides no source addresses or official source directory.'**
   String get agreementV2SourceBoundaryPoint1;
 
   /// User agreement V2 source boundary point 2
@@ -6901,7 +6901,7 @@ abstract class AppLocalizations {
   /// User agreement V2 section 1 body
   ///
   /// In en, this message translates to:
-  /// **'These terms apply to your download, installation, and use of 拾页 and its included features. By selecting “Agree and continue,” you confirm that you have read, understood, and accepted them. If you do not agree, stop using and exit the app. A guardian must consent where required by local law.'**
+  /// **'These terms apply to your download, installation, and use of OpenReading and its included features. By selecting “Agree and continue,” you confirm that you have read, understood, and accepted them. If you do not agree, stop using and exit the app. A guardian must consent where required by local law.'**
   String get agreementV2Section1Body;
 
   /// User agreement V2 section 2 title
@@ -6913,7 +6913,7 @@ abstract class AppLocalizations {
   /// User agreement V2 section 2 body
   ///
   /// In en, this message translates to:
-  /// **'Future 拾页 versions are released under the GNU Affero General Public License v3.0. You may use, copy, modify, distribute, or sell the software under that license. A distributed modified version must provide its complete corresponding source under AGPL-3.0, and a modified version used to provide a network service must also offer corresponding source to users interacting with it. MIT rights already granted for v1.0.0 and earlier versions remain valid and are not revoked. These terms do not restrict rights granted by the open-source license. Third-party components remain subject to their own licenses.'**
+  /// **'Future OpenReading versions are released under the GNU Affero General Public License v3.0. You may use, copy, modify, distribute, or sell the software under that license. A distributed modified version must provide its complete corresponding source under AGPL-3.0, and a modified version used to provide a network service must also offer corresponding source to users interacting with it. MIT rights already granted for v1.0.0 and earlier versions remain valid and are not revoked. These terms do not restrict rights granted by the open-source license. Third-party components remain subject to their own licenses.'**
   String get agreementV2Section2Body;
 
   /// User agreement V2 section 3 title
@@ -6961,7 +6961,7 @@ abstract class AppLocalizations {
   /// User agreement V2 section 6 body
   ///
   /// In en, this message translates to:
-  /// **'拾页 is local-first. Books, reading progress, notes, and settings are normally stored on your device. Unless you enable a network book source, AI, sync, or another online feature, the app does not need to send book text to the developers to provide local reading. Automatic and manual update checks contact GitHub and the official site at open.xxread.top with necessary technical parameters such as platform, processor architecture, and release channel; their servers process your IP address and User-Agent as part of ordinary network communication. When you download an installer from the official site, the backend records the version, architecture, download time, IP address, and User-Agent for download counts, security protection, and troubleshooting. Download-event records containing a raw IP are retained for no more than 30 days and then deleted; only aggregate statistics without raw IP addresses are kept longer. Update requests do not include book text, your library, notes, an account, or a unique device identifier. GitHub requests are also governed by GitHub’s privacy terms. When another online feature is used, queries, selected text, network information, or necessary parameters may be sent to the provider you selected under that provider’s policies. Protect your device, API keys, and backups; uninstalling, clearing data, device failure, or user error may permanently erase data.'**
+  /// **'OpenReading is local-first. Books, reading progress, notes, and settings are normally stored on your device. Unless you enable a network book source, AI, sync, or another online feature, the app does not need to send book text to the developers to provide local reading. Automatic and manual update checks contact GitHub and the official site at open.xxread.top with necessary technical parameters such as platform, processor architecture, and release channel; their servers process your IP address and User-Agent as part of ordinary network communication. When you download an installer from the official site, the backend records the version, architecture, download time, IP address, and User-Agent for download counts, security protection, and troubleshooting. Download-event records containing a raw IP are retained for no more than 30 days and then deleted; only aggregate statistics without raw IP addresses are kept longer. Update requests do not include book text, your library, notes, an account, or a unique device identifier. GitHub requests are also governed by GitHub’s privacy terms. When another online feature is used, queries, selected text, network information, or necessary parameters may be sent to the provider you selected under that provider’s policies. Protect your device, API keys, and backups; uninstalling, clearing data, device failure, or user error may permanently erase data.'**
   String get agreementV2Section6Body;
 
   /// User agreement V2 section 7 title
@@ -7057,7 +7057,7 @@ abstract class AppLocalizations {
   /// User agreement V2 exit dialog body
   ///
   /// In en, this message translates to:
-  /// **'You must accept the Terms of Use to continue using 拾页. If you do not agree, please exit the app.'**
+  /// **'You must accept the Terms of Use to continue using OpenReading. If you do not agree, please exit the app.'**
   String get agreementV2ExitDialogBody;
 
   /// User agreement V2 exit dialog cancel button label

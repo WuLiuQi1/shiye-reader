@@ -39,7 +39,6 @@ import 'package:xxread/utils/system_ui_helper.dart';
 import 'package:xxread/utils/ui_style.dart';
 import 'package:xxread/widgets/app_brand_icon.dart';
 import 'package:xxread/widgets/accent_color_picker_sheet.dart';
-import 'package:xxread/widgets/contributors_view.dart';
 import 'package:xxread/widgets/reader_settings_controls.dart';
 import 'package:xxread/widgets/side_toast.dart';
 import 'package:xxread/widgets/update_check_gate.dart';
@@ -158,6 +157,8 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   final ReaderHttpAIService _aiService = ReaderHttpAIService();
   final ScrollController _scrollController = ScrollController();
+  // Kept for backward-compatible controller requests; the support card itself
+  // has been removed from the 拾页 settings surface.
   final GlobalKey _supportSectionKey = GlobalKey();
   late final AppCacheManager _cacheManager;
 
@@ -1890,7 +1891,7 @@ class _SettingsPageState extends State<SettingsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      '拾页',
+                      l10n.settingsAppName,
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         fontWeight: FontWeight.w800,
                         letterSpacing: -0.3,
@@ -1898,7 +1899,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     const SizedBox(height: 3),
                     Text(
-                      '拾起一页，片刻自由',
+                      l10n.settingsAboutTagline,
                       style: Theme.of(context).textTheme.bodySmall?.copyWith(
                         color: scheme.onSurfaceVariant,
                       ),
@@ -1917,6 +1918,15 @@ class _SettingsPageState extends State<SettingsPage> {
           _buildOpenSourceLicensesLink(),
           const SizedBox(height: 10),
           _buildChangelogLink(),
+          const SizedBox(height: 14),
+          _buildCommunityButton(
+            onPressed: _openGithubRepo,
+            backgroundColor: const Color(0xFF181717),
+            foregroundColor: Colors.white,
+            icon: const _GithubMark(),
+            title: 'GitHub',
+            subtitle: l10n.settingsViewSourceSubtitle,
+          ),
         ],
       ),
     );
@@ -2145,7 +2155,6 @@ class _SettingsPageState extends State<SettingsPage> {
       );
     }
   }
-
 
   Future<void> _openTelegramChannel() async {
     final uri = Uri.parse('https://t.me/origoreading');

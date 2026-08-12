@@ -54,7 +54,7 @@
   "bookSourcesSearchPrompt": "Add and enable a source to search it here",
   "bookSourcesNoResults": "No matching books found",
   "bookSourcesNoSourcesTitle": "No sources yet",
-  "bookSourcesNoSourcesDescription": "Paste the address of a service compatible with the 拾页 Source Protocol.",
+  "bookSourcesNoSourcesDescription": "Paste the address of a service compatible with the Open Reading Source Protocol.",
   "bookSourcesManageTitle": "Connected sources",
   "bookSourcesEnabled": "Enabled",
   "bookSourcesDisabled": "Disabled",
@@ -73,19 +73,7 @@
   "bookSourcesAdvancedFeatureRequired": "Enable More source protocols in Advanced features before importing this source.",
   "bookSourcesNoWorkingSources": "No source passed the live search check. Nothing was imported.",
   "bookSourcesVerificationProgress": "Checked {completed}/{total}; {available} working",
-  "@bookSourcesVerificationProgress": {
-    "placeholders": {
-      "completed": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      },
-      "available": {
-        "type": "int"
-      }
-    }
-  },
+  "@bookSourcesVerificationProgress": {"placeholders":{"completed":{"type":"int"},"total":{"type":"int"},"available":{"type":"int"}}},
   "bookSourcesSelect": "Select sources",
   "bookSourcesSelectAll": "Select all",
   "bookSourcesClearSelection": "Clear selection",
@@ -93,16 +81,10 @@
   "bookSourcesDisableSelected": "Disable selected",
   "bookSourcesDeleteSelected": "Delete selected",
   "bookSourcesDeleteSelectedMessage": "Delete {count} selected sources? Local books are not affected.",
-  "@bookSourcesDeleteSelectedMessage": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@bookSourcesDeleteSelectedMessage": {"placeholders":{"count":{"type":"int"}}},
   "bookSourcesUrlLabel": "Source address",
   "bookSourcesUrlHint": "https://example.com or a discovery document URL",
-  "bookSourcesNoOfficialSourcesNotice": "拾页 includes no sources and does not operate, recommend, or endorse third-party source services. Every source address is added by you.",
+  "bookSourcesNoOfficialSourcesNotice": "OpenReading includes no sources and does not operate, recommend, or endorse third-party source services. Every source address is added by you.",
   "bookSourcesResponsibilityAck": "I confirm that I am authorized to access this content and will not use the source to bypass sign-in, payment, DRM, or other access controls.",
   "bookSourcesConnect": "Connect and validate",
   "bookSourcesConnecting": "Validating protocol…",
@@ -110,7 +92,7 @@
   "bookSourcesRefresh": "Refresh source",
   "bookSourcesRefreshed": "Book source refreshed",
   "bookSourcesRefreshFailed": "Could not refresh this book source",
-  "bookSourcesProtocolTitle": "拾页 Source Protocol",
+  "bookSourcesProtocolTitle": "Open Reading Source Protocol",
   "bookSourcesProtocolDescription": "A common contract for discovery, search, book details, catalogs, and chapter content. Developers can host native sources or build adapters for content they are authorized to serve.",
   "bookSourcesProtocolDetails": "View protocol",
   "bookSourcesProtocolRepository": "Protocol repository",
@@ -123,7 +105,7 @@
   "bookSourcesContentLicense": "Content license",
   "bookSourcesRightsStatement": "Rights statement",
   "bookSourcesRightsNotProvided": "Not provided by this source",
-  "bookSourcesRightsUnverifiedNotice": "These statements are supplied by the independent source operator. 拾页 displays them for transparency but does not verify or endorse them.",
+  "bookSourcesRightsUnverifiedNotice": "These statements are supplied by the independent source operator. OpenReading displays them for transparency but does not verify or endorse them.",
   "bookSourcesContactOperator": "Contact operator",
   "bookSourcesRightsReport": "Rights report",
   "bookSourcesRightsReportOpenFailed": "Could not open the rights-report form",
@@ -424,7 +406,7 @@
   "@fontMonospaceDescription": {
     "description": "Monospace font option description"
   },
-  "fontPreviewText": "拾页 · Read freely 开卷有益",
+  "fontPreviewText": "Open Reading · Read freely 开卷有益",
   "@fontPreviewText": {
     "description": "Bilingual font preview sample"
   },
@@ -434,9 +416,7 @@
   "customFontsCount": "{count} imported fonts",
   "@customFontsCount": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
+      "count": {"type": "int"}
     }
   },
   "customFontsLocalOnly": "Imported fonts are stored only on this device and are not synced automatically.",
@@ -451,17 +431,13 @@
   "fontDeleteDownloadTitle": "Delete downloaded \"{name}\"?",
   "@fontDeleteDownloadTitle": {
     "placeholders": {
-      "name": {
-        "type": "String"
-      }
+      "name": {"type": "String"}
     }
   },
   "fontDeleteDownloadMessage": "Will free {size} of storage. Will re-download next time you use it.",
   "@fontDeleteDownloadMessage": {
     "placeholders": {
-      "size": {
-        "type": "String"
-      }
+      "size": {"type": "String"}
     }
   },
   "fontDownloadCancelled": "Download cancelled",
@@ -490,9 +466,7 @@
   "deleteCustomFontTitle": "Delete “{name}”?",
   "@deleteCustomFontTitle": {
     "placeholders": {
-      "name": {
-        "type": "String"
-      }
+      "name": {"type": "String"}
     }
   },
   "deleteCustomFontMessage": "The font file will be removed from this device.",
@@ -502,7 +476,7 @@
   "settingsTelegramSubtitle": "Official Telegram channel",
   "settingsTelegramOpenFailed": "Could not open the Telegram link",
   "settingsQqChannel": "QQ Channel",
-  "settingsQqChannelSubtitle": "拾页 · 拾页6",
+  "settingsQqChannelSubtitle": "Open Reading · OpenReading6",
   "settingsQqChannelOpenFailed": "Could not open the QQ Channel invitation link",
   "languageSystem": "Follow System",
   "@languageSystem": {
@@ -960,12 +934,8 @@
   "readerNavigationPosition": "Chapter {current} of {total}",
   "@readerNavigationPosition": {
     "placeholders": {
-      "current": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
+      "current": {"type": "int"},
+      "total": {"type": "int"}
     }
   },
   "readerSearchChapters": "Search chapters",
@@ -1176,7 +1146,7 @@
   "@agreementCardSubtitle": {
     "description": "Subtitle under the agreement card title"
   },
-  "agreementWelcomeTitle": "Welcome to 拾页",
+  "agreementWelcomeTitle": "Welcome to OpenReading",
   "@agreementWelcomeTitle": {
     "description": "Welcome heading inside the agreement content"
   },
@@ -1710,13 +1680,7 @@
   "libraryExportOriginalHint": "Copy the original file to another location",
   "libraryExportDownloadedTxtHint": "Export the downloaded book as a generated TXT file",
   "bookExportSuccess": "Exported to {location}",
-  "@bookExportSuccess": {
-    "placeholders": {
-      "location": {
-        "type": "String"
-      }
-    }
-  },
+  "@bookExportSuccess": {"placeholders": {"location": {"type": "String"}}},
   "bookExportSourceMissing": "The book file is missing and cannot be exported",
   "bookExportUnsupported": "Book export is not supported on this platform yet",
   "bookExportFailed": "Could not export the book",
@@ -1832,60 +1796,18 @@
   "librarySelectMultiple": "Select multiple",
   "librarySelectAll": "Select all",
   "librarySelectedBooks": "{count} selected",
-  "@librarySelectedBooks": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@librarySelectedBooks": {"placeholders": {"count": {"type": "int"}}},
   "libraryDeleteSelected": "Delete {count}",
-  "@libraryDeleteSelected": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@libraryDeleteSelected": {"placeholders": {"count": {"type": "int"}}},
   "libraryBatchDeleteTitle": "Delete selected books?",
   "libraryBatchDeleteMessage": "This permanently deletes the selected {count} books, related notes and bookmarks, and local files. This cannot be undone.",
-  "@libraryBatchDeleteMessage": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@libraryBatchDeleteMessage": {"placeholders": {"count": {"type": "int"}}},
   "libraryDeletingSelected": "Deleting {done}/{total}",
-  "@libraryDeletingSelected": {
-    "placeholders": {
-      "done": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
+  "@libraryDeletingSelected": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
   "libraryBatchDeleteSuccess": "Deleted {count} books",
-  "@libraryBatchDeleteSuccess": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@libraryBatchDeleteSuccess": {"placeholders": {"count": {"type": "int"}}},
   "libraryBatchDeletePartial": "Deleted {success}; {failed} failed",
-  "@libraryBatchDeletePartial": {
-    "placeholders": {
-      "success": {
-        "type": "int"
-      },
-      "failed": {
-        "type": "int"
-      }
-    }
-  },
+  "@libraryBatchDeletePartial": {"placeholders": {"success": {"type": "int"}, "failed": {"type": "int"}}},
   "@libraryDeleteComplete": {
     "description": "Deletion progress step: finished"
   },
@@ -2177,33 +2099,19 @@
   "additionalSourcesUrlLabel": "Source JSON URL",
   "additionalSourcesLoadUrl": "Load URL",
   "additionalSourcesPreview": "{supported} available, {partial} partially supported, {unsupported} not supported",
-  "@additionalSourcesPreview": {
-    "placeholders": {
-      "supported": {
-        "type": "int"
-      },
-      "partial": {
-        "type": "int"
-      },
-      "unsupported": {
-        "type": "int"
-      }
-    }
-  },
+  "@additionalSourcesPreview": {"placeholders":{"supported":{"type":"int"},"partial":{"type":"int"},"unsupported":{"type":"int"}}},
   "additionalSourcesAvailable": "Available",
   "additionalSourcesPartial": "Partially supported",
   "additionalSourcesUnsupported": "Not supported",
   "additionalSourcesImportConfirm": "Import disabled",
   "additionalSourcesImported": "Imported {count} sources",
-  "@additionalSourcesImported": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@additionalSourcesImported": {"placeholders":{"count":{"type":"int"}}},
   "@settingsSectionGeneral": {
     "description": "Section title grouping language and system toggles"
+  },
+  "settingsSectionAboutSupport": "About & Support",
+  "@settingsSectionAboutSupport": {
+    "description": "Section title grouping donation, about info and contributors"
   },
   "settingsKeepScreenOnTitle": "Keep screen on",
   "@settingsKeepScreenOnTitle": {
@@ -2311,6 +2219,66 @@
   "@settingsPageIntro": {
     "description": "Subtitle under the settings page title"
   },
+  "settingsSupportDevelopmentTitle": "Support development",
+  "@settingsSupportDevelopmentTitle": {
+    "description": "Settings section title for voluntary donations"
+  },
+  "firstHomeSupportNow": "Support now",
+  "@firstHomeSupportNow": {
+    "description": "Primary action on the first-home developer support introduction"
+  },
+  "firstHomeSupportLater": "Maybe later",
+  "@firstHomeSupportLater": {
+    "description": "Dismiss action on the first-home developer support introduction"
+  },
+  "firstHomeSupportPaperSemanticLabel": "A letter from the Open Reading developer asking for voluntary support",
+  "@firstHomeSupportPaperSemanticLabel": {
+    "description": "Accessibility label for the paper shown in the first-home support introduction"
+  },
+  "settingsSupportDevelopmentCardTitle": "Support continued development",
+  "@settingsSupportDevelopmentCardTitle": {
+    "description": "Title of the voluntary developer support card"
+  },
+  "settingsSupportDevelopmentCardSubtitle": "Building and maintaining Open Reading takes substantial time and effort. If it helps you, voluntary donations are welcome.",
+  "@settingsSupportDevelopmentCardSubtitle": {
+    "description": "Explanation shown on the voluntary developer support card"
+  },
+  "settingsDonationAction": "Donate with WeChat",
+  "@settingsDonationAction": {
+    "description": "Action label that opens the WeChat donation QR code"
+  },
+  "settingsAlipayDonationAction": "Donate with Alipay",
+  "@settingsAlipayDonationAction": {
+    "description": "Action label that opens the Alipay donation QR code"
+  },
+  "settingsDonationDialogTitle": "WeChat donation",
+  "@settingsDonationDialogTitle": {
+    "description": "Title of the WeChat donation QR code dialog"
+  },
+  "settingsDonationDialogHint": "Scan the QR code with WeChat to support continued development. Thank you.",
+  "@settingsDonationDialogHint": {
+    "description": "Instructions shown above the WeChat donation QR code"
+  },
+  "settingsAlipayDonationDialogTitle": "Alipay donation",
+  "@settingsAlipayDonationDialogTitle": {
+    "description": "Title of the Alipay donation QR code dialog"
+  },
+  "settingsAlipayDonationDialogHint": "Scan the QR code with Alipay to support continued development. Thank you.",
+  "@settingsAlipayDonationDialogHint": {
+    "description": "Instructions shown above the Alipay donation QR code"
+  },
+  "settingsDonationVoluntaryNotice": "Donations are entirely optional. They do not unlock features or constitute a purchase or service agreement.",
+  "@settingsDonationVoluntaryNotice": {
+    "description": "Notice clarifying that donations are voluntary and do not unlock features"
+  },
+  "settingsDonationQrCodeLabel": "WeChat donation QR code",
+  "@settingsDonationQrCodeLabel": {
+    "description": "Accessibility label for the WeChat donation QR code image"
+  },
+  "settingsAlipayDonationQrCodeLabel": "Alipay donation QR code",
+  "@settingsAlipayDonationQrCodeLabel": {
+    "description": "Accessibility label for the Alipay donation QR code image"
+  },
   "settingsAiSwipeHint": "Swipe through models, tap to switch, long-press to edit or delete.",
   "@settingsAiSwipeHint": {
     "description": "Hint above the horizontal AI model card list"
@@ -2347,14 +2315,14 @@
   "changelogHistorySubtitle": "View changes from every release",
   "openSourceLicensesTitle": "Open-source licenses",
   "openSourceLicensesSubtitle": "View licenses for the app, bundled fonts, and third-party software",
-  "openSourceLicensesIntro": "These license texts are available offline in the app. 拾页, bundled fonts, and third-party software remain subject to their respective licenses.",
+  "openSourceLicensesIntro": "These license texts are available offline in the app. Open Reading, bundled fonts, and third-party software remain subject to their respective licenses.",
   "openSourceProjectSection": "Project licenses",
   "openSourceLegacyLicenseTitle": "Earlier releases",
   "openSourceFontsSection": "Bundled fonts",
   "openSourceDependenciesSection": "Third-party software",
   "openSourceDependenciesTitle": "Flutter and Dart dependencies",
   "openSourceDependenciesSubtitle": "View third-party licenses collected automatically by Flutter",
-  "openSourceLicenseLegalese": "拾页 and third-party components remain subject to their respective licenses.",
+  "openSourceLicenseLegalese": "Open Reading and third-party components remain subject to their respective licenses.",
   "openSourceLicenseLoadFailed": "Could not load the license text.",
   "changelogPageTitle": "Release history",
   "changelogCurrentVersion": "Current version",
@@ -2383,7 +2351,7 @@
   "@contributorsTitle": {
     "description": "Title of the contributors card"
   },
-  "contributorsSubtitle": "Thanks to everyone making 拾页 better",
+  "contributorsSubtitle": "Thanks to everyone making Open Reading better",
   "@contributorsSubtitle": {
     "description": "Subtitle of the contributors card"
   },
@@ -2626,9 +2594,7 @@
   "updateDownloadProgress": "Downloaded {percent}%",
   "@updateDownloadProgress": {
     "placeholders": {
-      "percent": {
-        "type": "int"
-      }
+      "percent": {"type": "int"}
     }
   },
   "updatePreparingInstaller": "Verifying the package and preparing the system installer…",
@@ -3198,9 +3164,7 @@
   "readerCustomThemeDeleteMessage": "“{name}” will be removed from your themes, along with its saved background image.",
   "@readerCustomThemeDeleteMessage": {
     "placeholders": {
-      "name": {
-        "type": "String"
-      }
+      "name": {"type": "String"}
     }
   },
   "readerCustomThemeEmptyTitle": "No custom themes yet",
@@ -3222,8 +3186,8 @@
   "importSourceTitle": "Add books",
   "importSourceDescription": "Choose several files first. Review the queue before starting the import.",
   "importSelectFiles": "Choose files",
-  "importIosSharedDocuments": "On My iPhone · 拾页",
-  "importICloudDrive": "iCloud Drive · 拾页",
+  "importIosSharedDocuments": "On My iPhone · Open Reading",
+  "importICloudDrive": "iCloud Drive · Open Reading",
   "importICloudUnavailable": "iCloud Drive is unavailable",
   "importAndroidFolder": "Authorize a book folder",
   "importAndroidRescan": "Scan authorized folders",
@@ -3231,32 +3195,14 @@
   "importFolderPermissionLost": "Permission lost · authorize again to restore access",
   "importRemoveFolder": "Remove folder",
   "importQueueTitle": "Import queue ({count})",
-  "@importQueueTitle": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@importQueueTitle": {"placeholders": {"count": {"type": "int"}}},
   "importQueueHint": "Remove files selected by mistake, then import them one at a time.",
   "importQueueEmptyTitle": "No books selected",
   "importQueueEmptyBody": "Choose EPUB, PDF, TXT, MOBI or another supported book file.",
   "importAction": "Import {count} books",
-  "@importAction": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@importAction": {"placeholders": {"count": {"type": "int"}}},
   "importRetryFailed": "Retry {count} failed",
-  "@importRetryFailed": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@importRetryFailed": {"placeholders": {"count": {"type": "int"}}},
   "importStatusQueued": "Waiting",
   "importStatusPreparing": "Preparing file",
   "importStatusChecking": "Checking",
@@ -3271,19 +3217,7 @@
   "importClearCompleted": "Clear completed",
   "importDone": "Done",
   "importSummary": "{succeeded} imported · {skipped} skipped · {failed} failed",
-  "@importSummary": {
-    "placeholders": {
-      "succeeded": {
-        "type": "int"
-      },
-      "skipped": {
-        "type": "int"
-      },
-      "failed": {
-        "type": "int"
-      }
-    }
-  },
+  "@importSummary": {"placeholders": {"succeeded": {"type": "int"}, "skipped": {"type": "int"}, "failed": {"type": "int"}}},
   "importNoSupportedFiles": "No supported book files were found",
   "importScanning": "Scanning files…",
   "settingsAiApiKeyConfigured": "API Key configured",
@@ -3302,9 +3236,7 @@
   "@settingsAiSwitchedToModel": {
     "description": "Toast shown after switching to a different AI model",
     "placeholders": {
-      "model": {
-        "type": "String"
-      }
+        "model": {"type": "String"}
     }
   },
   "settingsAiFillBaseUrlAndApiKey": "Please fill in Base URL and API Key first",
@@ -3387,9 +3319,7 @@
   "@settingsAiFetchModelsFailed": {
     "description": "AIServiceException wrapping an unexpected error during model fetching",
     "placeholders": {
-      "error": {
-        "type": "String"
-      }
+        "error": {"type": "String"}
     }
   },
   "settingsAiPreprocessTitle": "AI book preprocessing",
@@ -3574,9 +3504,7 @@
   "@readerAiRequestFailed": {
     "description": "AIServiceException for a generic request failure",
     "placeholders": {
-      "error": {
-        "type": "String"
-      }
+        "error": {"type": "String"}
     }
   },
   "readerAiUnknownError": "Unknown error",
@@ -3587,135 +3515,85 @@
   "@readerAiEmptyResponseError": {
     "description": "AIServiceException when the response body is empty",
     "placeholders": {
-      "endpoint": {
-        "type": "String"
-      }
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiInvalidJsonError": "Server response is not valid JSON. The current endpoint may be incompatible with the {provider} configuration.\nRequest URL: {endpoint}\nResponse snippet: {snippet}",
   "@readerAiInvalidJsonError": {
     "description": "AIServiceException when the response body cannot be parsed as JSON",
     "placeholders": {
-      "provider": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      },
-      "snippet": {
-        "type": "String"
-      }
+        "provider": {"type": "String"},
+        "endpoint": {"type": "String"},
+        "snippet": {"type": "String"}
     }
   },
   "readerAiFailedReadBody": "Request failed{status}: could not read the server response. This is usually caused by an incorrect Base URL, the endpoint returning empty content, or the network truncating the response.\nRequest URL: {endpoint}",
   "@readerAiFailedReadBody": {
     "description": "AIServiceException when the response body cannot be read; {status} is either empty or '(code)'",
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiNetworkRequestFailed": "Network request failed{status}: {error}\nRequest URL: {endpoint}",
   "@readerAiNetworkRequestFailed": {
     "description": "AIServiceException for a Dio network error; {status} is either empty or '(code)'",
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "error": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "error": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiRequestFailedMinimaxHint": "Request failed({status}): {text}\nSuggestions: 1) MiniMax temperature must be in (0,1]; 2) check that the model name matches the endpoint; 3) use only a single system instruction.\nRequest URL: {endpoint}",
   "@readerAiRequestFailedMinimaxHint": {
     "description": "AIServiceException with MiniMax-specific debugging hints",
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "text": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "text": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiRequestFailedClaudeHint": "Request failed({status}): {text}\nTip: Claude requires the anthropic-version request header.\nRequest URL: {endpoint}",
   "@readerAiRequestFailedClaudeHint": {
     "description": "AIServiceException with Claude-specific debugging hints",
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "text": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "text": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiRequestFailedProviderMismatchHint": "Request failed({status}): {text}\nTip: Please confirm that the provider and API Key match; they cannot be mixed.\nRequest URL: {endpoint}",
   "@readerAiRequestFailedProviderMismatchHint": {
     "description": "AIServiceException hinting that the provider and API key may be mismatched",
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "text": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "text": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiRequestFailedGeneric": "Request failed({status}): {text}\nRequest URL: {endpoint}",
   "@readerAiRequestFailedGeneric": {
     "description": "Generic AIServiceException for a non-200 response with body text",
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "text": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "text": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiMockSelectionResponse": "AI (mock): The text you selected is \"{selectedText}\".\n\nBefore: {before}\nAfter: {after}",
   "@readerAiMockSelectionResponse": {
     "description": "Mock AI response shown when AI is not configured, for a text selection query",
     "placeholders": {
-      "selectedText": {
-        "type": "String"
-      },
-      "before": {
-        "type": "String"
-      },
-      "after": {
-        "type": "String"
-      }
+        "selectedText": {"type": "String"},
+        "before": {"type": "String"},
+        "after": {"type": "String"}
     }
   },
   "readerAiMockPageAnalysis": "AI (mock): This page has {chars} characters. Focus on the arguments at the beginning and end of paragraphs.",
   "@readerAiMockPageAnalysis": {
     "description": "Mock AI response shown when AI is not configured, for a page analysis query",
     "placeholders": {
-      "chars": {
-        "type": "int"
-      }
+        "chars": {"type": "int"}
     }
   },
   "readerAiMockGreeting": "Hello",
@@ -3726,12 +3604,8 @@
   "@readerAiMockChatResponse": {
     "description": "Mock AI response shown when AI is not configured, for a chat question",
     "placeholders": {
-      "question": {
-        "type": "String"
-      },
-      "chars": {
-        "type": "int"
-      }
+        "question": {"type": "String"},
+        "chars": {"type": "int"}
     }
   },
   "readerAiMemorySummaryHeading": "[Book memory summary]",
@@ -3766,15 +3640,9 @@
   "@readerAiSnippetLocation": {
     "description": "A single snippet location line in the local fallback response",
     "placeholders": {
-      "chapterId": {
-        "type": "String"
-      },
-      "startOffset": {
-        "type": "int"
-      },
-      "endOffset": {
-        "type": "int"
-      }
+        "chapterId": {"type": "String"},
+        "startOffset": {"type": "int"},
+        "endOffset": {"type": "int"}
     }
   },
   "readerAiReadingSuggestionHeading": "[How to read]",
@@ -3805,9 +3673,7 @@
   "@ttsUnsupportedLanguage": {
     "description": "Error message when the requested TTS language is not supported",
     "placeholders": {
-      "language": {
-        "type": "String"
-      }
+        "language": {"type": "String"}
     }
   },
   "ttsCallFailed": "System TTS call failed",
@@ -3866,9 +3732,7 @@
   "@homePlanTaskReadMinutes": {
     "description": "Reading plan task detail for reading a number of minutes",
     "placeholders": {
-      "minutes": {
-        "type": "int"
-      }
+        "minutes": {"type": "int"}
     }
   },
   "homePlanTaskCompleteFocusReading": "Complete focus reading",
@@ -3879,9 +3743,7 @@
   "@homePlanTaskFocusSession": {
     "description": "Reading plan task detail for completing a focus session",
     "placeholders": {
-      "minutes": {
-        "type": "int"
-      }
+        "minutes": {"type": "int"}
     }
   },
   "homePlanTaskKeepRhythm": "Keep the rhythm",
@@ -3932,48 +3794,36 @@
   "@noteShareBookHeader": {
     "description": "Share text header line with book title and author",
     "placeholders": {
-      "title": {
-        "type": "String"
-      },
-      "author": {
-        "type": "String"
-      }
+        "title": {"type": "String"},
+        "author": {"type": "String"}
     }
   },
   "noteShareNoteLabel": "💭 Note: {note}",
   "@noteShareNoteLabel": {
     "description": "Share text line for the reader's note",
     "placeholders": {
-      "note": {
-        "type": "String"
-      }
+        "note": {"type": "String"}
     }
   },
   "noteShareChapterLabel": "📍 {chapter}",
   "@noteShareChapterLabel": {
     "description": "Share text line for the chapter name",
     "placeholders": {
-      "chapter": {
-        "type": "String"
-      }
+        "chapter": {"type": "String"}
     }
   },
   "noteSharePageLabel": "📄 Page {page}",
   "@noteSharePageLabel": {
     "description": "Share text line for the page number",
     "placeholders": {
-      "page": {
-        "type": "int"
-      }
+        "page": {"type": "int"}
     }
   },
   "noteShareHashtags": "#BookNotes #{type}",
   "@noteShareHashtags": {
     "description": "Share text hashtags line with the note type name",
     "placeholders": {
-      "type": {
-        "type": "String"
-      }
+        "type": {"type": "String"}
     }
   },
   "accentPurple": "Elegant Purple",
@@ -4040,7 +3890,7 @@
   "@agreementV2HeroTitle": {
     "description": "User agreement V2 hero title"
   },
-  "agreementV2HeroBody": "拾页 is an open-source, cross-platform, local-first ebook reader. It provides reading tools; it does not provide, host, or review books you import.",
+  "agreementV2HeroBody": "OpenReading is an open-source, cross-platform, local-first ebook reader. It provides reading tools; it does not provide, host, or review books you import.",
   "@agreementV2HeroBody": {
     "description": "User agreement V2 hero body paragraph"
   },
@@ -4064,20 +3914,18 @@
   "@agreementV2VersionLabel": {
     "description": "User agreement V2 version label with version placeholder",
     "placeholders": {
-      "version": {
-        "type": "String"
-      }
+        "version": {"type": "String"}
     }
   },
   "agreementV2Title": "Terms of Use & Privacy Notice",
   "@agreementV2Title": {
     "description": "User agreement V2 panel title"
   },
-  "agreementV2Subtitle": "Please read before using 拾页",
+  "agreementV2Subtitle": "Please read before using OpenReading",
   "@agreementV2Subtitle": {
     "description": "User agreement V2 panel subtitle"
   },
-  "agreementV2ImportantNotice": "Important: The official 拾页 app does not preinstall, bundle, or recommend any third-party book source, and its developers do not operate, represent, or host source content. You choose every imported file and source you add; use only content you are authorized to access.",
+  "agreementV2ImportantNotice": "Important: The official OpenReading app does not preinstall, bundle, or recommend any third-party book source, and its developers do not operate, represent, or host source content. You choose every imported file and source you add; use only content you are authorized to access.",
   "@agreementV2ImportantNotice": {
     "description": "User agreement V2 important notice callout"
   },
@@ -4085,7 +3933,7 @@
   "@agreementV2SourceBoundaryTitle": {
     "description": "User agreement V2 source boundary card title"
   },
-  "agreementV2SourceBoundaryPoint1": "The official project provides open-source reader software and the 拾页 Source Protocol only. It provides no source addresses or official source directory.",
+  "agreementV2SourceBoundaryPoint1": "The official project provides open-source reader software and the Open Reading Source Protocol only. It provides no source addresses or official source directory.",
   "@agreementV2SourceBoundaryPoint1": {
     "description": "User agreement V2 source boundary point 1"
   },
@@ -4101,7 +3949,7 @@
   "@agreementV2Section1Title": {
     "description": "User agreement V2 section 1 title"
   },
-  "agreementV2Section1Body": "These terms apply to your download, installation, and use of 拾页 and its included features. By selecting “Agree and continue,” you confirm that you have read, understood, and accepted them. If you do not agree, stop using and exit the app. A guardian must consent where required by local law.",
+  "agreementV2Section1Body": "These terms apply to your download, installation, and use of OpenReading and its included features. By selecting “Agree and continue,” you confirm that you have read, understood, and accepted them. If you do not agree, stop using and exit the app. A guardian must consent where required by local law.",
   "@agreementV2Section1Body": {
     "description": "User agreement V2 section 1 body"
   },
@@ -4109,7 +3957,7 @@
   "@agreementV2Section2Title": {
     "description": "User agreement V2 section 2 title"
   },
-  "agreementV2Section2Body": "Future 拾页 versions are released under the GNU Affero General Public License v3.0. You may use, copy, modify, distribute, or sell the software under that license. A distributed modified version must provide its complete corresponding source under AGPL-3.0, and a modified version used to provide a network service must also offer corresponding source to users interacting with it. MIT rights already granted for v1.0.0 and earlier versions remain valid and are not revoked. These terms do not restrict rights granted by the open-source license. Third-party components remain subject to their own licenses.",
+  "agreementV2Section2Body": "Future OpenReading versions are released under the GNU Affero General Public License v3.0. You may use, copy, modify, distribute, or sell the software under that license. A distributed modified version must provide its complete corresponding source under AGPL-3.0, and a modified version used to provide a network service must also offer corresponding source to users interacting with it. MIT rights already granted for v1.0.0 and earlier versions remain valid and are not revoked. These terms do not restrict rights granted by the open-source license. Third-party components remain subject to their own licenses.",
   "@agreementV2Section2Body": {
     "description": "User agreement V2 section 2 body"
   },
@@ -4141,7 +3989,7 @@
   "@agreementV2Section6Title": {
     "description": "User agreement V2 section 6 title"
   },
-  "agreementV2Section6Body": "拾页 is local-first. Books, reading progress, notes, and settings are normally stored on your device. Unless you enable a network book source, AI, sync, or another online feature, the app does not need to send book text to the developers to provide local reading. Automatic and manual update checks contact GitHub and the official site at open.xxread.top with necessary technical parameters such as platform, processor architecture, and release channel; their servers process your IP address and User-Agent as part of ordinary network communication. When you download an installer from the official site, the backend records the version, architecture, download time, IP address, and User-Agent for download counts, security protection, and troubleshooting. Download-event records containing a raw IP are retained for no more than 30 days and then deleted; only aggregate statistics without raw IP addresses are kept longer. Update requests do not include book text, your library, notes, an account, or a unique device identifier. GitHub requests are also governed by GitHub’s privacy terms. When another online feature is used, queries, selected text, network information, or necessary parameters may be sent to the provider you selected under that provider’s policies. Protect your device, API keys, and backups; uninstalling, clearing data, device failure, or user error may permanently erase data.",
+  "agreementV2Section6Body": "OpenReading is local-first. Books, reading progress, notes, and settings are normally stored on your device. Unless you enable a network book source, AI, sync, or another online feature, the app does not need to send book text to the developers to provide local reading. Automatic and manual update checks contact GitHub and the official site at open.xxread.top with necessary technical parameters such as platform, processor architecture, and release channel; their servers process your IP address and User-Agent as part of ordinary network communication. When you download an installer from the official site, the backend records the version, architecture, download time, IP address, and User-Agent for download counts, security protection, and troubleshooting. Download-event records containing a raw IP are retained for no more than 30 days and then deleted; only aggregate statistics without raw IP addresses are kept longer. Update requests do not include book text, your library, notes, an account, or a unique device identifier. GitHub requests are also governed by GitHub’s privacy terms. When another online feature is used, queries, selected text, network information, or necessary parameters may be sent to the provider you selected under that provider’s policies. Protect your device, API keys, and backups; uninstalling, clearing data, device failure, or user error may permanently erase data.",
   "@agreementV2Section6Body": {
     "description": "User agreement V2 section 6 body"
   },
@@ -4205,7 +4053,7 @@
   "@agreementV2ExitDialogTitle": {
     "description": "User agreement V2 exit dialog title"
   },
-  "agreementV2ExitDialogBody": "You must accept the Terms of Use to continue using 拾页. If you do not agree, please exit the app.",
+  "agreementV2ExitDialogBody": "You must accept the Terms of Use to continue using OpenReading. If you do not agree, please exit the app.",
   "@agreementV2ExitDialogBody": {
     "description": "User agreement V2 exit dialog body"
   },
@@ -4226,11 +4074,7 @@
   "settingsCacheManagementSubtitle": "Using {size} · View details and clear caches",
   "@settingsCacheManagementSubtitle": {
     "description": "Cache management entry subtitle with current total usage",
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
+    "placeholders": {"size": {"type": "String"}}
   },
   "settingsCacheUsageTitle": "Cache usage",
   "@settingsCacheUsageTitle": {
@@ -4247,489 +4091,223 @@
   "settingsCacheSourceCovers": "Source cover cache",
   "settingsCacheSourceCoversSubtitle": "Downloaded source covers · {size}",
   "@settingsCacheSourceCoversSubtitle": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
+    "placeholders": {"size": {"type": "String"}}
   },
   "settingsCacheSourceData": "Source chapter cache",
   "settingsCacheSourceDataSubtitle": "Safely removable online chapter cache · {size}",
   "@settingsCacheSourceDataSubtitle": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
+    "placeholders": {"size": {"type": "String"}}
   },
   "settingsCacheTemporaryFiles": "Temporary files",
   "settingsCacheTemporaryFilesSubtitle": "Disposable update and temporary files · {size}",
   "@settingsCacheTemporaryFilesSubtitle": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
+    "placeholders": {"size": {"type": "String"}}
   },
   "settingsCacheClearAll": "Clear all safe caches",
   "settingsCacheClearAllSubtitle": "Clears only the categories above · {size}",
   "@settingsCacheClearAllSubtitle": {
-    "placeholders": {
-      "size": {
-        "type": "String"
-      }
-    }
+    "placeholders": {"size": {"type": "String"}}
   },
   "settingsCacheCalculating": "Calculating…",
   "settingsCacheClearConfirm": "This removes only temporary cache data. Books, saved covers, reading progress, databases, settings, and credentials are preserved.",
   "settingsCacheClearAction": "Clear",
   "settingsCacheCleared": "Cache cleared",
   "settingsCacheClearFailed": "Could not clear the cache",
-  "@settingsDataSyncTitle": {
-    "description": "Settings section title for data and sync"
-  },
+  "@settingsDataSyncTitle": {"description": "Settings section title for data and sync"},
   "settingsWebDavSyncTitle": "WebDAV sync",
-  "@settingsWebDavSyncTitle": {
-    "description": "WebDAV sync settings entry title"
-  },
+  "@settingsWebDavSyncTitle": {"description": "WebDAV sync settings entry title"},
   "webDavNotConfigured": "Not configured",
-  "@webDavNotConfigured": {
-    "description": "WebDAV unconfigured status"
-  },
+  "@webDavNotConfigured": {"description": "WebDAV unconfigured status"},
   "webDavConfigureSubtitle": "Sync reading data to your own WebDAV storage",
-  "@webDavConfigureSubtitle": {
-    "description": "WebDAV entry subtitle before setup"
-  },
+  "@webDavConfigureSubtitle": {"description": "WebDAV entry subtitle before setup"},
   "webDavBetaBadge": "Beta · May be unstable",
-  "@webDavBetaBadge": {
-    "description": "WebDAV beta stability badge"
-  },
+  "@webDavBetaBadge": {"description": "WebDAV beta stability badge"},
   "webDavPageTitle": "WebDAV sync",
-  "@webDavPageTitle": {
-    "description": "WebDAV overview page title"
-  },
+  "@webDavPageTitle": {"description": "WebDAV overview page title"},
   "webDavConnected": "Connected",
-  "@webDavConnected": {
-    "description": "WebDAV connected status"
-  },
+  "@webDavConnected": {"description": "WebDAV connected status"},
   "webDavSyncing": "Syncing",
-  "@webDavSyncing": {
-    "description": "WebDAV syncing status"
-  },
+  "@webDavSyncing": {"description": "WebDAV syncing status"},
   "webDavPartialFailure": "Some items need attention",
-  "@webDavPartialFailure": {
-    "description": "WebDAV partial failure status"
-  },
+  "@webDavPartialFailure": {"description": "WebDAV partial failure status"},
   "webDavSyncFailed": "Sync failed",
-  "@webDavSyncFailed": {
-    "description": "WebDAV failed status"
-  },
+  "@webDavSyncFailed": {"description": "WebDAV failed status"},
   "webDavPendingChanges": "{count} changes waiting to sync",
-  "@webDavPendingChanges": {
-    "description": "Count of pending WebDAV changes",
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@webDavPendingChanges": {"description": "Count of pending WebDAV changes", "placeholders": {"count": {"type": "int"}}},
   "webDavLastSync": "Last sync: {time}",
-  "@webDavLastSync": {
-    "description": "Last successful WebDAV sync time",
-    "placeholders": {
-      "time": {
-        "type": "String"
-      }
-    }
-  },
+  "@webDavLastSync": {"description": "Last successful WebDAV sync time", "placeholders": {"time": {"type": "String"}}},
   "webDavNeverSynced": "Not synced yet",
-  "@webDavNeverSynced": {
-    "description": "WebDAV has never synced"
-  },
+  "@webDavNeverSynced": {"description": "WebDAV has never synced"},
   "webDavSyncNow": "Sync now",
-  "@webDavSyncNow": {
-    "description": "Manual WebDAV sync button"
-  },
+  "@webDavSyncNow": {"description": "Manual WebDAV sync button"},
   "webDavSetUp": "Set up WebDAV",
-  "@webDavSetUp": {
-    "description": "Open WebDAV setup button"
-  },
+  "@webDavSetUp": {"description": "Open WebDAV setup button"},
   "webDavConnectionTitle": "Connection",
-  "@webDavConnectionTitle": {
-    "description": "WebDAV connection section title"
-  },
+  "@webDavConnectionTitle": {"description": "WebDAV connection section title"},
   "webDavServerUrl": "WebDAV address",
-  "@webDavServerUrl": {
-    "description": "WebDAV server URL field label"
-  },
+  "@webDavServerUrl": {"description": "WebDAV server URL field label"},
   "webDavUsername": "Username",
-  "@webDavUsername": {
-    "description": "WebDAV username field label"
-  },
+  "@webDavUsername": {"description": "WebDAV username field label"},
   "webDavPassword": "App password",
-  "@webDavPassword": {
-    "description": "WebDAV password field label"
-  },
+  "@webDavPassword": {"description": "WebDAV password field label"},
   "webDavPasswordHint": "Stored securely on this device only",
-  "@webDavPasswordHint": {
-    "description": "WebDAV password storage hint"
-  },
+  "@webDavPasswordHint": {"description": "WebDAV password storage hint"},
   "webDavRootPath": "Remote folder",
-  "@webDavRootPath": {
-    "description": "WebDAV root folder field label"
-  },
+  "@webDavRootPath": {"description": "WebDAV root folder field label"},
   "webDavTestConnection": "Test connection",
-  "@webDavTestConnection": {
-    "description": "WebDAV connection test button"
-  },
+  "@webDavTestConnection": {"description": "WebDAV connection test button"},
   "webDavTestingConnection": "Testing connection…",
-  "@webDavTestingConnection": {
-    "description": "WebDAV connection test progress"
-  },
+  "@webDavTestingConnection": {"description": "WebDAV connection test progress"},
   "webDavConnectionSuccess": "Connection and write access verified",
-  "@webDavConnectionSuccess": {
-    "description": "WebDAV connection test success"
-  },
+  "@webDavConnectionSuccess": {"description": "WebDAV connection test success"},
   "webDavConnectionFailed": "Connection test failed: {reason}",
-  "@webDavConnectionFailed": {
-    "description": "WebDAV connection test failure",
-    "placeholders": {
-      "reason": {
-        "type": "String"
-      }
-    }
-  },
+  "@webDavConnectionFailed": {"description": "WebDAV connection test failure", "placeholders": {"reason": {"type": "String"}}},
   "webDavSaveConfiguration": "Save configuration",
-  "@webDavSaveConfiguration": {
-    "description": "Save WebDAV configuration button"
-  },
+  "@webDavSaveConfiguration": {"description": "Save WebDAV configuration button"},
   "webDavAutomaticSync": "Automatic sync",
-  "@webDavAutomaticSync": {
-    "description": "Automatic WebDAV sync switch"
-  },
+  "@webDavAutomaticSync": {"description": "Automatic WebDAV sync switch"},
   "webDavAutomaticSyncHint": "Sync after launch or when the app returns to the foreground",
-  "@webDavAutomaticSyncHint": {
-    "description": "Automatic WebDAV sync explanation"
-  },
+  "@webDavAutomaticSyncHint": {"description": "Automatic WebDAV sync explanation"},
   "webDavSyncContent": "Sync content",
-  "@webDavSyncContent": {
-    "description": "WebDAV scope section title"
-  },
+  "@webDavSyncContent": {"description": "WebDAV scope section title"},
   "webDavScopeBookSources": "Book sources",
-  "@webDavScopeBookSources": {
-    "description": "Sync scope for registered book sources"
-  },
+  "@webDavScopeBookSources": {"description": "Sync scope for registered book sources"},
   "webDavScopeBooks": "Library and online books",
-  "@webDavScopeBooks": {
-    "description": "Sync scope for book metadata"
-  },
+  "@webDavScopeBooks": {"description": "Sync scope for book metadata"},
   "webDavScopeProgress": "Reading progress",
-  "@webDavScopeProgress": {
-    "description": "Sync scope for reading progress"
-  },
+  "@webDavScopeProgress": {"description": "Sync scope for reading progress"},
   "webDavScopeBookmarks": "Bookmarks",
-  "@webDavScopeBookmarks": {
-    "description": "Sync scope for bookmarks"
-  },
+  "@webDavScopeBookmarks": {"description": "Sync scope for bookmarks"},
   "webDavScopeReadingSessions": "Reading statistics",
-  "@webDavScopeReadingSessions": {
-    "description": "Sync scope for reading sessions"
-  },
+  "@webDavScopeReadingSessions": {"description": "Sync scope for reading sessions"},
   "webDavScopeBookFiles": "Book files",
-  "@webDavScopeBookFiles": {
-    "description": "Sync scope for book files"
-  },
+  "@webDavScopeBookFiles": {"description": "Sync scope for book files"},
   "webDavBookFilesHint": "Choose which books to upload or download",
-  "@webDavBookFilesHint": {
-    "description": "Book file sync scope explanation"
-  },
+  "@webDavBookFilesHint": {"description": "Book file sync scope explanation"},
   "webDavBookFilesUnavailable": "Book file transfer will be enabled after metadata sync is stable",
-  "@webDavBookFilesUnavailable": {
-    "description": "Book file transfer feature-gate explanation"
-  },
+  "@webDavBookFilesUnavailable": {"description": "Book file transfer feature-gate explanation"},
   "webDavSecurityNotice": "Data is sent over HTTPS, but your WebDAV provider can read unencrypted remote content.",
-  "@webDavSecurityNotice": {
-    "description": "WebDAV non-E2EE disclosure"
-  },
+  "@webDavSecurityNotice": {"description": "WebDAV non-E2EE disclosure"},
   "webDavConnectionDetails": "Connection settings",
-  "@webDavConnectionDetails": {
-    "description": "Open WebDAV connection settings"
-  },
+  "@webDavConnectionDetails": {"description": "Open WebDAV connection settings"},
   "webDavClearConfiguration": "Clear configuration",
-  "@webDavClearConfiguration": {
-    "description": "Clear local WebDAV configuration action"
-  },
+  "@webDavClearConfiguration": {"description": "Clear local WebDAV configuration action"},
   "webDavClearConfigurationTitle": "Clear WebDAV configuration?",
-  "@webDavClearConfigurationTitle": {
-    "description": "Clear WebDAV configuration dialog title"
-  },
+  "@webDavClearConfigurationTitle": {"description": "Clear WebDAV configuration dialog title"},
   "webDavClearConfigurationMessage": "This removes the WebDAV address and login from this device. Local reading data and remote files will not be deleted.",
-  "@webDavClearConfigurationMessage": {
-    "description": "Clear WebDAV configuration dialog body"
-  },
+  "@webDavClearConfigurationMessage": {"description": "Clear WebDAV configuration dialog body"},
   "webDavClearConfigurationConfirm": "Clear from this device",
-  "@webDavClearConfigurationConfirm": {
-    "description": "Clear WebDAV configuration confirmation"
-  },
+  "@webDavClearConfigurationConfirm": {"description": "Clear WebDAV configuration confirmation"},
   "webDavActivityTitle": "Sync activity",
-  "@webDavActivityTitle": {
-    "description": "WebDAV sync activity page title"
-  },
+  "@webDavActivityTitle": {"description": "WebDAV sync activity page title"},
   "webDavActivityEmpty": "No sync activity yet",
-  "@webDavActivityEmpty": {
-    "description": "Empty WebDAV activity state"
-  },
+  "@webDavActivityEmpty": {"description": "Empty WebDAV activity state"},
   "webDavSyncCompleteSummary": "Uploaded {uploaded}, downloaded {downloaded}",
-  "@webDavSyncCompleteSummary": {
-    "description": "WebDAV sync result summary",
-    "placeholders": {
-      "uploaded": {
-        "type": "int"
-      },
-      "downloaded": {
-        "type": "int"
-      }
-    }
-  },
+  "@webDavSyncCompleteSummary": {"description": "WebDAV sync result summary", "placeholders": {"uploaded": {"type": "int"}, "downloaded": {"type": "int"}}},
   "webDavErrorAuthentication": "The username, password, or folder permission is incorrect.",
-  "@webDavErrorAuthentication": {
-    "description": "WebDAV authentication error"
-  },
+  "@webDavErrorAuthentication": {"description": "WebDAV authentication error"},
   "webDavErrorInvalidConfiguration": "The WebDAV configuration is incomplete or invalid.",
-  "@webDavErrorInvalidConfiguration": {
-    "description": "Invalid WebDAV configuration error"
-  },
+  "@webDavErrorInvalidConfiguration": {"description": "Invalid WebDAV configuration error"},
   "webDavErrorInsecureConnection": "The connection does not meet the security requirements.",
-  "@webDavErrorInsecureConnection": {
-    "description": "Insecure WebDAV connection error"
-  },
+  "@webDavErrorInsecureConnection": {"description": "Insecure WebDAV connection error"},
   "webDavErrorCertificate": "The server certificate could not be verified.",
-  "@webDavErrorCertificate": {
-    "description": "WebDAV certificate error"
-  },
+  "@webDavErrorCertificate": {"description": "WebDAV certificate error"},
   "webDavErrorPermission": "The remote folder is not writable.",
-  "@webDavErrorPermission": {
-    "description": "WebDAV permission error"
-  },
+  "@webDavErrorPermission": {"description": "WebDAV permission error"},
   "webDavErrorNotFound": "The remote sync folder or a required file was not found.",
-  "@webDavErrorNotFound": {
-    "description": "WebDAV remote path not found error"
-  },
+  "@webDavErrorNotFound": {"description": "WebDAV remote path not found error"},
   "webDavErrorConflict": "Remote data is in conflict. Try syncing again.",
-  "@webDavErrorConflict": {
-    "description": "WebDAV conflict error"
-  },
+  "@webDavErrorConflict": {"description": "WebDAV conflict error"},
   "webDavErrorStorageFull": "The WebDAV storage is full.",
-  "@webDavErrorStorageFull": {
-    "description": "WebDAV storage full error"
-  },
+  "@webDavErrorStorageFull": {"description": "WebDAV storage full error"},
   "webDavErrorRateLimited": "Too many WebDAV requests were made. Try again later.",
-  "@webDavErrorRateLimited": {
-    "description": "WebDAV rate limit error"
-  },
+  "@webDavErrorRateLimited": {"description": "WebDAV rate limit error"},
   "webDavErrorTimeout": "The server did not respond in time.",
-  "@webDavErrorTimeout": {
-    "description": "WebDAV timeout error"
-  },
+  "@webDavErrorTimeout": {"description": "WebDAV timeout error"},
   "webDavErrorUnsupported": "This WebDAV server does not support safe synchronization.",
-  "@webDavErrorUnsupported": {
-    "description": "Unsupported WebDAV error"
-  },
+  "@webDavErrorUnsupported": {"description": "Unsupported WebDAV error"},
   "webDavErrorNetwork": "The network is unavailable. Changes remain saved on this device.",
-  "@webDavErrorNetwork": {
-    "description": "WebDAV network error"
-  },
+  "@webDavErrorNetwork": {"description": "WebDAV network error"},
   "webDavErrorCorruptData": "Some remote sync data is damaged and was not applied.",
-  "@webDavErrorCorruptData": {
-    "description": "WebDAV corrupt remote data error"
-  },
+  "@webDavErrorCorruptData": {"description": "WebDAV corrupt remote data error"},
   "webDavErrorClockSkew": "This device's clock differs too much from the WebDAV server.",
-  "@webDavErrorClockSkew": {
-    "description": "WebDAV clock skew error"
-  },
+  "@webDavErrorClockSkew": {"description": "WebDAV clock skew error"},
   "webDavErrorSecureStorage": "The WebDAV password could not be read from secure storage.",
-  "@webDavErrorSecureStorage": {
-    "description": "WebDAV secure storage error"
-  },
+  "@webDavErrorSecureStorage": {"description": "WebDAV secure storage error"},
   "webDavErrorUnknown": "WebDAV could not complete the operation.",
-  "@webDavErrorUnknown": {
-    "description": "Unknown WebDAV error"
-  },
+  "@webDavErrorUnknown": {"description": "Unknown WebDAV error"},
   "webDavErrorPhase": "Failed while: {phase}",
-  "@webDavErrorPhase": {
-    "description": "WebDAV failure phase",
-    "placeholders": {
-      "phase": {
-        "type": "String"
-      }
-    }
-  },
+  "@webDavErrorPhase": {"description": "WebDAV failure phase", "placeholders": {"phase": {"type": "String"}}},
   "webDavPhaseConnecting": "connecting to the remote server",
-  "@webDavPhaseConnecting": {
-    "description": "WebDAV connecting phase"
-  },
+  "@webDavPhaseConnecting": {"description": "WebDAV connecting phase"},
   "webDavPhaseScanningLocal": "scanning this device",
-  "@webDavPhaseScanningLocal": {
-    "description": "WebDAV local scan phase"
-  },
+  "@webDavPhaseScanningLocal": {"description": "WebDAV local scan phase"},
   "webDavPhaseReadingRemote": "reading remote data",
-  "@webDavPhaseReadingRemote": {
-    "description": "WebDAV remote read phase"
-  },
+  "@webDavPhaseReadingRemote": {"description": "WebDAV remote read phase"},
   "webDavPhaseApplyingRemote": "merging remote data",
-  "@webDavPhaseApplyingRemote": {
-    "description": "WebDAV remote apply phase"
-  },
+  "@webDavPhaseApplyingRemote": {"description": "WebDAV remote apply phase"},
   "webDavPhaseUploadingLocal": "uploading local changes",
-  "@webDavPhaseUploadingLocal": {
-    "description": "WebDAV local upload phase"
-  },
+  "@webDavPhaseUploadingLocal": {"description": "WebDAV local upload phase"},
   "webDavPhaseFinishing": "finishing synchronization",
-  "@webDavPhaseFinishing": {
-    "description": "WebDAV finishing phase"
-  },
+  "@webDavPhaseFinishing": {"description": "WebDAV finishing phase"},
   "webDavPhaseUnknown": "an unknown step",
-  "@webDavPhaseUnknown": {
-    "description": "Unknown WebDAV phase"
-  },
+  "@webDavPhaseUnknown": {"description": "Unknown WebDAV phase"},
   "webDavBookFilesTitle": "Book files",
-  "@webDavBookFilesTitle": {
-    "description": "WebDAV book-file manager title"
-  },
+  "@webDavBookFilesTitle": {"description": "WebDAV book-file manager title"},
   "webDavFilesPendingUpload": "To upload",
-  "@webDavFilesPendingUpload": {
-    "description": "Book-file pending upload tab"
-  },
+  "@webDavFilesPendingUpload": {"description": "Book-file pending upload tab"},
   "webDavFilesAvailableDownload": "Available",
-  "@webDavFilesAvailableDownload": {
-    "description": "Book-file available download tab"
-  },
+  "@webDavFilesAvailableDownload": {"description": "Book-file available download tab"},
   "webDavFilesSynced": "Synced",
-  "@webDavFilesSynced": {
-    "description": "Book-file synced tab"
-  },
+  "@webDavFilesSynced": {"description": "Book-file synced tab"},
   "webDavFilesUploadSelected": "Upload selected",
-  "@webDavFilesUploadSelected": {
-    "description": "Upload selected books action"
-  },
+  "@webDavFilesUploadSelected": {"description": "Upload selected books action"},
   "webDavFilesDownloadSelected": "Download selected",
-  "@webDavFilesDownloadSelected": {
-    "description": "Download selected books action"
-  },
+  "@webDavFilesDownloadSelected": {"description": "Download selected books action"},
   "webDavFilesSelectedSummary": "{count} selected · {size}",
-  "@webDavFilesSelectedSummary": {
-    "description": "Selected book-file count and size",
-    "placeholders": {
-      "count": {
-        "type": "int"
-      },
-      "size": {
-        "type": "String"
-      }
-    }
-  },
+  "@webDavFilesSelectedSummary": {"description": "Selected book-file count and size", "placeholders": {"count": {"type": "int"}, "size": {"type": "String"}}},
   "webDavFilesOnlyLocal": "Only on this device",
-  "@webDavFilesOnlyLocal": {
-    "description": "Book file exists only locally"
-  },
+  "@webDavFilesOnlyLocal": {"description": "Book file exists only locally"},
   "webDavFilesOnlyRemote": "File not downloaded to this device",
-  "@webDavFilesOnlyRemote": {
-    "description": "Book file exists only remotely"
-  },
+  "@webDavFilesOnlyRemote": {"description": "Book file exists only remotely"},
   "webDavFilesUploadPermission": "Allow book file uploads",
-  "@webDavFilesUploadPermission": {
-    "description": "Global permission for explicit book-file uploads"
-  },
+  "@webDavFilesUploadPermission": {"description": "Global permission for explicit book-file uploads"},
   "webDavFilesUploadPermissionHint": "Only selected books are uploaded; WebDAV keeps the original file name and bytes without encryption",
-  "@webDavFilesUploadPermissionHint": {
-    "description": "Explains that enabling uploads does not upload every book"
-  },
+  "@webDavFilesUploadPermissionHint": {"description": "Explains that enabling uploads does not upload every book"},
   "webDavLegacyBookDirectoryTitle": "Existing WebDAV books remain compatible",
-  "@webDavLegacyBookDirectoryTitle": {
-    "description": "Title for the legacy WebDAV book directory notice"
-  },
+  "@webDavLegacyBookDirectoryTitle": {"description": "Title for the legacy WebDAV book directory notice"},
   "webDavLegacyBookDirectoryMessage": "You do not need to sync them again. New uploads use a readable Book title - Author/original file name directory.",
-  "@webDavLegacyBookDirectoryMessage": {
-    "description": "Explains legacy WebDAV book files do not require resync"
-  },
+  "@webDavLegacyBookDirectoryMessage": {"description": "Explains legacy WebDAV book files do not require resync"},
   "webDavNewBookPolicyTitle": "New book files",
-  "@webDavNewBookPolicyTitle": {
-    "description": "Newly imported book file upload policy title"
-  },
+  "@webDavNewBookPolicyTitle": {"description": "Newly imported book file upload policy title"},
   "webDavNewBookPolicyAsk": "Ask every time (recommended)",
-  "@webDavNewBookPolicyAsk": {
-    "description": "Ask after each import policy"
-  },
+  "@webDavNewBookPolicyAsk": {"description": "Ask after each import policy"},
   "webDavNewBookPolicyAskHint": "Choose which books to upload after an import finishes",
-  "@webDavNewBookPolicyAskHint": {
-    "description": "Ask policy explanation"
-  },
+  "@webDavNewBookPolicyAskHint": {"description": "Ask policy explanation"},
   "webDavNewBookPolicyAutomatic": "Automatically upload new books",
-  "@webDavNewBookPolicyAutomatic": {
-    "description": "Automatic new-book upload policy"
-  },
+  "@webDavNewBookPolicyAutomatic": {"description": "Automatic new-book upload policy"},
   "webDavNewBookPolicyAutomaticHint": "Upload immediately after import and potentially use mobile data",
-  "@webDavNewBookPolicyAutomaticHint": {
-    "description": "Automatic policy explanation"
-  },
+  "@webDavNewBookPolicyAutomaticHint": {"description": "Automatic policy explanation"},
   "webDavNewBookPolicyManual": "Always choose manually",
-  "@webDavNewBookPolicyManual": {
-    "description": "Manual new-book upload policy"
-  },
+  "@webDavNewBookPolicyManual": {"description": "Manual new-book upload policy"},
   "webDavNewBookPolicyManualHint": "Start uploads only from the Book files page",
-  "@webDavNewBookPolicyManualHint": {
-    "description": "Manual policy explanation"
-  },
+  "@webDavNewBookPolicyManualHint": {"description": "Manual policy explanation"},
   "webDavNewBooksPromptTitle": "Sync the {count} books just imported?",
-  "@webDavNewBooksPromptTitle": {
-    "description": "Prompt title after importing books",
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@webDavNewBooksPromptTitle": {"description": "Prompt title after importing books", "placeholders": {"count": {"type": "int"}}},
   "webDavNewBooksPromptBody": "Reading data syncs automatically. Choose the original book files to upload to WebDAV.",
-  "@webDavNewBooksPromptBody": {
-    "description": "Prompt explanation after importing books"
-  },
+  "@webDavNewBooksPromptBody": {"description": "Prompt explanation after importing books"},
   "webDavNewBooksSkip": "Not now",
-  "@webDavNewBooksSkip": {
-    "description": "Skip new-book upload action"
-  },
+  "@webDavNewBooksSkip": {"description": "Skip new-book upload action"},
   "webDavNewBooksUploading": "Uploading {count} new books…",
-  "@webDavNewBooksUploading": {
-    "description": "New-book upload progress",
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@webDavNewBooksUploading": {"description": "New-book upload progress", "placeholders": {"count": {"type": "int"}}},
   "webDavNewBooksUploadResult": "New-book upload complete: {success} succeeded, {failed} failed",
-  "@webDavNewBooksUploadResult": {
-    "description": "New-book upload result",
-    "placeholders": {
-      "success": {
-        "type": "int"
-      },
-      "failed": {
-        "type": "int"
-      }
-    }
-  },
+  "@webDavNewBooksUploadResult": {"description": "New-book upload result", "placeholders": {"success": {"type": "int"}, "failed": {"type": "int"}}},
   "webDavFilesTooLarge": "Files over 100 MiB are not supported in this release",
-  "@webDavFilesTooLarge": {
-    "description": "Book file transfer size limit"
-  },
+  "@webDavFilesTooLarge": {"description": "Book file transfer size limit"},
   "webDavFilesEmpty": "No books in this category",
-  "@webDavFilesEmpty": {
-    "description": "Empty book-file category"
-  },
+  "@webDavFilesEmpty": {"description": "Empty book-file category"},
   "webDavFilesTransferComplete": "Book-file transfer complete",
-  "@webDavFilesTransferComplete": {
-    "description": "Book-file transfer success"
-  },
+  "@webDavFilesTransferComplete": {"description": "Book-file transfer success"},
   "readerAddAnnotation": "Add annotation",
   "readerAnnotationHint": "Write your thoughts about this passage…",
   "readerAnnotationSaved": "Annotation saved",

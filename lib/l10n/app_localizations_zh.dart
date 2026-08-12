@@ -98,7 +98,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bookSourcesNoSourcesDescription =>
-      '粘贴兼容 拾页 Source Protocol 的服务地址即可接入。';
+      '粘贴兼容 Open Reading Source Protocol 的服务地址即可接入。';
 
   @override
   String get bookSourcesManageTitle => '已接入书源';
@@ -192,7 +192,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bookSourcesNoOfficialSourcesNotice =>
-      '拾页不预装任何书源，也不运营、推荐或背书第三方书源服务。每个书源地址都由你主动添加。';
+      '开元阅读不预装任何书源，也不运营、推荐或背书第三方书源服务。每个书源地址都由你主动添加。';
 
   @override
   String get bookSourcesResponsibilityAck =>
@@ -217,7 +217,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get bookSourcesRefreshFailed => '无法刷新该书源';
 
   @override
-  String get bookSourcesProtocolTitle => '拾页 Source Protocol';
+  String get bookSourcesProtocolTitle => 'Open Reading Source Protocol';
 
   @override
   String get bookSourcesProtocolDescription =>
@@ -259,7 +259,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get bookSourcesRightsUnverifiedNotice =>
-      '上述信息由独立书源运营者自行声明。拾页仅为提高透明度而展示，不负责核验，也不构成推荐或背书。';
+      '上述信息由独立书源运营者自行声明。开元阅读仅为提高透明度而展示，不负责核验，也不构成推荐或背书。';
 
   @override
   String get bookSourcesContactOperator => '联系运营者';
@@ -497,7 +497,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get fontMonospaceDescription => '等宽字体，适合代码、技术内容和专注排版。';
 
   @override
-  String get fontPreviewText => '拾页 · 自由阅读，开卷有益';
+  String get fontPreviewText => 'Open Reading · 自由阅读，开卷有益';
 
   @override
   String get customFonts => '我的字体';
@@ -646,7 +646,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settingsQqChannel => 'QQ 频道';
 
   @override
-  String get settingsQqChannelSubtitle => '拾页 · 拾页6';
+  String get settingsQqChannelSubtitle => '开元阅读 · OpenReading6';
 
   @override
   String get settingsQqChannelOpenFailed => '无法打开 QQ 频道邀请链接';
@@ -1170,7 +1170,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get agreementCardSubtitle => '请仔细阅读以下内容';
 
   @override
-  String get agreementWelcomeTitle => '欢迎使用拾页';
+  String get agreementWelcomeTitle => '欢迎使用开元阅读';
 
   @override
   String get agreementWelcomeBody => '为保证你获得稳定、可预期的阅读体验，请先阅读并同意以下协议内容。';
@@ -2038,14 +2038,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get firstHomeSupportLater => '再说吧';
 
   @override
-  String get firstHomeSupportPaperSemanticLabel => '拾页开发者的自愿支持说明';
+  String get firstHomeSupportPaperSemanticLabel => '开元阅读开发者的自愿支持说明';
 
   @override
   String get settingsSupportDevelopmentCardTitle => '支持持续开发';
 
   @override
   String get settingsSupportDevelopmentCardSubtitle =>
-      '开发和维护投入了大量时间与精力。如果拾页对你有帮助，欢迎自愿捐赠支持。';
+      '开发和维护投入了大量时间与精力。如果开元阅读对你有帮助，欢迎自愿捐赠支持。';
 
   @override
   String get settingsDonationAction => '微信捐赠';
@@ -2112,7 +2112,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get openSourceLicensesIntro =>
-      '以下许可文本随应用离线提供。拾页、内置字体及第三方软件分别遵循各自的许可条款。';
+      '以下许可文本随应用离线提供。Open Reading、内置字体及第三方软件分别遵循各自的许可条款。';
 
   @override
   String get openSourceProjectSection => '项目许可';
@@ -2133,7 +2133,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get openSourceDependenciesSubtitle => '查看由 Flutter 自动收集的第三方软件许可';
 
   @override
-  String get openSourceLicenseLegalese => '拾页 与第三方组件分别遵循各自的许可条款。';
+  String get openSourceLicenseLegalese => 'Open Reading 与第三方组件分别遵循各自的许可条款。';
 
   @override
   String get openSourceLicenseLoadFailed => '无法加载许可文本。';
@@ -2166,7 +2166,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get contributorsTitle => '贡献者';
 
   @override
-  String get contributorsSubtitle => '感谢每一位让 拾页 变得更好的人';
+  String get contributorsSubtitle => '感谢每一位让 Open Reading 变得更好的人';
 
   @override
   String get contributorsOpenProfileFailed => '无法打开贡献者主页';
@@ -3064,10 +3064,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get importSelectFiles => '选择文件';
 
   @override
-  String get importIosSharedDocuments => '我的 iPhone · 拾页';
+  String get importIosSharedDocuments => '我的 iPhone · Open Reading';
 
   @override
-  String get importICloudDrive => 'iCloud Drive · 拾页';
+  String get importICloudDrive => 'iCloud Drive · Open Reading';
 
   @override
   String get importICloudUnavailable => 'iCloud Drive 当前不可用';
@@ -3672,7 +3672,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get agreementV2HeroBody =>
-      '拾页是一款开源、跨平台、本地优先的电子书阅读工具。它提供阅读能力，但不提供、托管或审核你导入的书籍。';
+      '开元阅读是一款开源、跨平台、本地优先的电子书阅读工具。它提供阅读能力，但不提供、托管或审核你导入的书籍。';
 
   @override
   String get agreementV2LocalTitle => '本地优先';
@@ -3700,14 +3700,14 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get agreementV2ImportantNotice =>
-      '特别提示：拾页官方版本不预装、不内置、不推荐任何第三方书源，也不运营、代理或托管书源内容。你导入的文件和主动添加的书源均由你自行选择；请仅访问和使用你有权使用的内容。';
+      '特别提示：开元阅读官方版本不预装、不内置、不推荐任何第三方书源，也不运营、代理或托管书源内容。你导入的文件和主动添加的书源均由你自行选择；请仅访问和使用你有权使用的内容。';
 
   @override
   String get agreementV2SourceBoundaryTitle => '第三方书源责任边界';
 
   @override
   String get agreementV2SourceBoundaryPoint1 =>
-      '官方只提供开源阅读软件和 拾页 Source Protocol，不提供书源地址或官方书源目录。';
+      '官方只提供开源阅读软件和 Open Reading Source Protocol，不提供书源地址或官方书源目录。';
 
   @override
   String get agreementV2SourceBoundaryPoint2 =>
@@ -3722,7 +3722,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get agreementV2Section1Body =>
-      '本协议适用于你对拾页软件及其附带功能的下载、安装和使用。点击“同意并继续”即表示你已阅读、理解并同意本协议；如你不同意，请停止使用并退出应用。若你未达到所在地法律规定的独立同意年龄，应由监护人阅读并同意。';
+      '本协议适用于你对开元阅读软件及其附带功能的下载、安装和使用。点击“同意并继续”即表示你已阅读、理解并同意本协议；如你不同意，请停止使用并退出应用。若你未达到所在地法律规定的独立同意年龄，应由监护人阅读并同意。';
 
   @override
   String get agreementV2Section2Title => '开源软件与许可';
@@ -3811,7 +3811,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get agreementV2ExitDialogTitle => '不同意条款？';
 
   @override
-  String get agreementV2ExitDialogBody => '你需要同意使用条款后才能继续使用拾页。若不同意，请退出应用。';
+  String get agreementV2ExitDialogBody => '你需要同意使用条款后才能继续使用开元阅读。若不同意，请退出应用。';
 
   @override
   String get agreementV2CancelLabel => '返回阅读';
@@ -4230,7 +4230,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   AppLocalizationsZhTw() : super('zh_TW');
 
   @override
-  String get appTitle => '開元閱讀';
+  String get appTitle => '拾頁';
 
   @override
   String get home => '首頁';
@@ -4319,7 +4319,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get bookSourcesNoSourcesDescription =>
-      '貼上相容 拾页 Source Protocol 的服務位址即可接入。';
+      '貼上相容 Open Reading Source Protocol 的服務位址即可接入。';
 
   @override
   String get bookSourcesManageTitle => '已接入書源';
@@ -4438,7 +4438,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get bookSourcesRefreshFailed => '無法重新整理此書源';
 
   @override
-  String get bookSourcesProtocolTitle => '拾页 Source Protocol';
+  String get bookSourcesProtocolTitle => 'Open Reading Source Protocol';
 
   @override
   String get bookSourcesProtocolDescription =>
@@ -4718,7 +4718,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get fontMonospaceDescription => '等寬字體，適合程式碼、技術內容和專注排版。';
 
   @override
-  String get fontPreviewText => '拾页 · 自由閱讀，開卷有益';
+  String get fontPreviewText => 'Open Reading · 自由閱讀，開卷有益';
 
   @override
   String get customFonts => '我的字體';
@@ -4824,7 +4824,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get settingsQqChannel => 'QQ 頻道';
 
   @override
-  String get settingsQqChannelSubtitle => '開元閱讀 · 拾页6';
+  String get settingsQqChannelSubtitle => '開元閱讀 · OpenReading6';
 
   @override
   String get settingsQqChannelOpenFailed => '無法開啟 QQ 頻道邀請連結';
@@ -6290,7 +6290,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get openSourceLicensesIntro =>
-      '以下授權文字隨應用程式離線提供。拾页、內建字型及第三方軟體分別適用各自的授權條款。';
+      '以下授權文字隨應用程式離線提供。Open Reading、內建字型及第三方軟體分別適用各自的授權條款。';
 
   @override
   String get openSourceProjectSection => '專案授權';
@@ -6311,7 +6311,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get openSourceDependenciesSubtitle => '查看由 Flutter 自動彙整的第三方軟體授權';
 
   @override
-  String get openSourceLicenseLegalese => '拾页 與第三方元件分別適用各自的授權條款。';
+  String get openSourceLicenseLegalese => 'Open Reading 與第三方元件分別適用各自的授權條款。';
 
   @override
   String get openSourceLicenseLoadFailed => '無法載入授權文字。';
@@ -6344,7 +6344,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get contributorsTitle => '貢獻者';
 
   @override
-  String get contributorsSubtitle => '感謝每一位讓 拾页 變得更好的人';
+  String get contributorsSubtitle => '感謝每一位讓 Open Reading 變得更好的人';
 
   @override
   String get contributorsOpenProfileFailed => '無法開啟貢獻者主頁';
@@ -6552,7 +6552,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get settingsAboutTitle => '關於應用程式';
 
   @override
-  String get settingsAppName => '開元閱讀';
+  String get settingsAppName => '拾頁';
 
   @override
   String get settingsAuthor => '維護者：小元Niki';
@@ -7242,10 +7242,10 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
   String get importSelectFiles => '選擇檔案';
 
   @override
-  String get importIosSharedDocuments => '我的 iPhone · 拾页';
+  String get importIosSharedDocuments => '我的 iPhone · Open Reading';
 
   @override
-  String get importICloudDrive => 'iCloud Drive · 拾页';
+  String get importICloudDrive => 'iCloud Drive · Open Reading';
 
   @override
   String get importICloudUnavailable => 'iCloud Drive 目前無法使用';
@@ -7885,7 +7885,7 @@ class AppLocalizationsZhTw extends AppLocalizationsZh {
 
   @override
   String get agreementV2SourceBoundaryPoint1 =>
-      '官方只提供開源閱讀軟體和 拾页 Source Protocol，不提供書源位址或官方書源目錄。';
+      '官方只提供開源閱讀軟體和 Open Reading Source Protocol，不提供書源位址或官方書源目錄。';
 
   @override
   String get agreementV2SourceBoundaryPoint2 =>

@@ -21,7 +21,7 @@ class OpenReadingCurrentIcon extends StatelessWidget {
   Widget build(BuildContext context) {
     return Semantics(
       image: true,
-      label: '拾页 current reading position',
+      label: 'Open Reading current reading position',
       child: SizedBox.square(
         dimension: size,
         child: CustomPaint(painter: _OpenReadingCurrentIconPainter(color)),

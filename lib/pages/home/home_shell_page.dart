@@ -84,7 +84,9 @@ class NavigationContext extends InheritedWidget {
 }
 
 class HomeShellPage extends StatefulWidget {
-  const HomeShellPage({super.key});
+  const HomeShellPage({super.key, this.showFirstHomeSupport = false});
+
+  final bool showFirstHomeSupport;
 
   @override
   State<HomeShellPage> createState() => _HomeShellPageState();
@@ -127,6 +129,11 @@ class _HomeShellPageState extends State<HomeShellPage> {
 
   void _handleLibrarySelectionChanged() {
     if (mounted) setState(() {});
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeShellPage oldWidget) {
+    super.didUpdateWidget(oldWidget);
   }
 
 
@@ -177,15 +184,9 @@ class _HomeShellPageState extends State<HomeShellPage> {
         label: l10n.navAi,
         page: AiPage(controller: _aiPageController),
       ),
-      HomeNavigationDestination.settings: HomeNavigationItem(
-        destination: HomeNavigationDestination.settings,
-        icon: Icons.settings_outlined,
-        selectedIcon: Icons.settings,
-        label: l10n.settings,
-        page: SettingsPage(controller: _settingsController),
-      ),
     };
     final items = navigationOrder
+        .where((destination) => destination != HomeNavigationDestination.settings)
         .map((destination) => itemsByDestination[destination]!)
         .toList(growable: false);
 
@@ -323,7 +324,6 @@ class _HomeShellPageState extends State<HomeShellPage> {
     super.dispose();
   }
 
-
   Future<void> _waitForNextFrame() {
     final completer = Completer<void>();
     WidgetsBinding.instance.addPostFrameCallback((_) => completer.complete());
@@ -375,7 +375,11 @@ class _HomeShellPageState extends State<HomeShellPage> {
 
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: overlayStyle,
-      child: content,
+      child: Stack(
+        children: [
+          Positioned.fill(child: content),
+        ],
+      ),
     );
   }
 }

@@ -190,7 +190,7 @@ class SyncEngine {
     } catch (_) {
       throw const WebDavSyncFailure(
         WebDavSyncErrorCode.serverIncompatible,
-        'This remote folder contains an unsupported 拾页 sync space.',
+        'This remote folder contains an unsupported Open Reading sync space.',
       );
     }
   }

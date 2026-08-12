@@ -137,7 +137,7 @@ class AppRelease {
 
     return AppRelease(
       version: version,
-      name: '拾页 v$version',
+      name: 'Open Reading v$version',
       notes: _firstString(payload, ['release_notes', 'notes', 'body']),
       releaseUrl: Uri.parse(githubUrl),
       publishedAt: DateTime.tryParse(_string(payload, 'published_at')),
@@ -220,7 +220,7 @@ class UpdateCheckService {
             BaseOptions(
               connectTimeout: const Duration(seconds: 8),
               receiveTimeout: const Duration(seconds: 8),
-              headers: {if (!kIsWeb) 'User-Agent': 'Shiye-UpdateCheck'},
+              headers: {if (!kIsWeb) 'User-Agent': 'OpenReading-UpdateCheck'},
             ),
           ),
       _targetResolver = targetResolver ?? UpdateTarget.current;

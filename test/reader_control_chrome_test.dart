@@ -18,6 +18,7 @@ void main() {
 
     expect(find.byType(BackdropFilter), findsOneWidget);
     expect(_panelGradient(tester).colors.every((color) => color.a < 1), isTrue);
+    expect(_iconBackground(tester).a, lessThan(1));
 
     GlassEffectConfig.setDisableAllGlassEffects(true);
     await tester.pumpWidget(_testApp(glassEnabled: false));
@@ -31,6 +32,8 @@ void main() {
       _panelGradient(tester).colors,
       everyElement(ReaderThemes.day.controlBar),
     );
+    expect(_iconBackground(tester).a, 1);
+    expect(_iconBackground(tester), ReaderThemes.day.controlFill);
   });
 
   testWidgets('reader-owned top information shows time title and battery', (
@@ -113,7 +116,7 @@ void main() {
     expect(roseSurface.g, lessThan(greenSurface.g));
   });
 
-  testWidgets('reader chrome uses a single Apple Books-style reading menu', (tester) async {
+  testWidgets('bottom control bar only shows reader actions', (tester) async {
     const bottomKey = ValueKey('reader-bottom-controls');
     const statusKey = ValueKey('reader-status');
 
@@ -148,19 +151,31 @@ void main() {
 
     final bottomControls = find.byKey(bottomKey);
     expect(
-      find.descendant(of: bottomControls, matching: find.byIcon(Icons.menu_rounded)),
+      find.descendant(of: bottomControls, matching: find.text('4 / 12')),
+      findsNothing,
+    );
+    expect(
+      find.descendant(
+        of: bottomControls,
+        matching: find.byIcon(Icons.format_list_bulleted_rounded),
+      ),
       findsOneWidget,
     );
-    expect(find.byIcon(Icons.close_rounded), findsOneWidget);
+    expect(
+      find.descendant(
+        of: bottomControls,
+        matching: find.byIcon(Icons.headphones_rounded),
+      ),
+      findsOneWidget,
+    );
+    expect(
+      find.descendant(
+        of: bottomControls,
+        matching: find.byIcon(Icons.tune_rounded),
+      ),
+      findsOneWidget,
+    );
     expect(find.byKey(statusKey), findsOneWidget);
-
-    await tester.tap(find.byIcon(Icons.menu_rounded));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Contents'), findsOneWidget);
-    expect(find.text('Bookmark'), findsOneWidget);
-    expect(find.text('Read aloud'), findsOneWidget);
-    expect(find.text('Settings'), findsOneWidget);
   });
 }
 
@@ -200,4 +215,9 @@ LinearGradient _panelGradient(WidgetTester tester) {
       .map((decoration) => decoration.gradient)
       .whereType<LinearGradient>()
       .single;
+}
+
+Color _iconBackground(WidgetTester tester) {
+  final button = tester.widget<IconButton>(find.byType(IconButton));
+  return button.style!.backgroundColor!.resolve(const <WidgetState>{})!;
 }

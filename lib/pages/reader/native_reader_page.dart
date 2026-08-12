@@ -2608,9 +2608,7 @@ class _NativeReaderPageState extends State<NativeReaderPage>
           firstLineIndent: _firstLineIndent,
           paragraphSpacing: _paragraphSpacing,
           normalizeParagraphBreaks: widget.book.format.toLowerCase() == 'epub',
-          showDedicatedChapterTitlePage:
-              widget.book.format.toLowerCase() != 'txt' ||
-              _txtChapterTitlePageEnabled,
+          showDedicatedChapterTitlePage: false,
         ),
       );
     });

@@ -41,7 +41,7 @@ class AppUpdateDownloadService {
               connectTimeout: const Duration(seconds: 15),
               receiveTimeout: const Duration(minutes: 10),
               followRedirects: false,
-              headers: {if (!kIsWeb) 'User-Agent': 'Shiye-AppUpdate'},
+              headers: {if (!kIsWeb) 'User-Agent': 'OpenReading-AppUpdate'},
             ),
           );
 
@@ -67,7 +67,7 @@ class AppUpdateDownloadService {
     final notificationTask = BackgroundDownloadTask(
       id: 'app-update:${asset.buildNumber}',
       kind: BackgroundDownloadKind.update,
-      title: '拾页 ${asset.buildNumber}',
+      title: 'Open Reading ${asset.buildNumber}',
     );
     await _notify(() => BackgroundDownloadNotifier.begin(notificationTask));
 

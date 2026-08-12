@@ -3081,7 +3081,7 @@ class _BookSourceReaderPageState extends State<BookSourceReaderPage>
       locale: locale,
       firstLineIndent: _firstLineIndent,
       paragraphSpacing: _paragraphSpacing,
-      includeChapterTitlePage: true,
+      includeChapterTitlePage: false,
     );
     final layout = _BookSourcePagedLayout(fingerprint: key, pages: pages);
     _pagedLayouts[chapterIndex] = layout;

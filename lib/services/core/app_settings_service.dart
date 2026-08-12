@@ -92,12 +92,11 @@ class AppSettingsNotifier extends ChangeNotifier {
   double get floatingNavigationHorizontalMargin =>
       _floatingNavigationHorizontalMargin;
 
-  /// 按用户顺序过滤隐藏项后的实际导航列表。设置页只从首页右上角进入。
+  /// 按用户顺序过滤隐藏项后的实际导航列表；设置页永远可见。
   List<HomeNavigationDestination> get visibleHomeNavigationOrder =>
       List<HomeNavigationDestination>.unmodifiable(
         _homeNavigationOrder.where(
           (destination) =>
-              destination != HomeNavigationDestination.settings &&
               !_hiddenHomeNavigationDestinations.contains(destination),
         ),
       );

@@ -54,7 +54,7 @@
   "bookSourcesSearchPrompt": "添加并启用书源后，即可在这里统一搜索",
   "bookSourcesNoResults": "没有找到匹配的书籍",
   "bookSourcesNoSourcesTitle": "还没有书源",
-  "bookSourcesNoSourcesDescription": "粘贴兼容 拾页 Source Protocol 的服务地址即可接入。",
+  "bookSourcesNoSourcesDescription": "粘贴兼容 Open Reading Source Protocol 的服务地址即可接入。",
   "bookSourcesManageTitle": "已接入书源",
   "bookSourcesEnabled": "已启用",
   "bookSourcesDisabled": "已停用",
@@ -73,19 +73,7 @@
   "bookSourcesAdvancedFeatureRequired": "请先在“高级功能”中开启“更多书源协议”，再导入该书源。",
   "bookSourcesNoWorkingSources": "没有书源通过实际搜索检测，本次未导入任何书源。",
   "bookSourcesVerificationProgress": "已检测 {completed}/{total}，可用 {available} 个",
-  "@bookSourcesVerificationProgress": {
-    "placeholders": {
-      "completed": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      },
-      "available": {
-        "type": "int"
-      }
-    }
-  },
+  "@bookSourcesVerificationProgress": {"placeholders":{"completed":{"type":"int"},"total":{"type":"int"},"available":{"type":"int"}}},
   "bookSourcesSelect": "多选书源",
   "bookSourcesSelectAll": "全选",
   "bookSourcesClearSelection": "取消全选",
@@ -93,16 +81,10 @@
   "bookSourcesDisableSelected": "停用所选",
   "bookSourcesDeleteSelected": "删除所选",
   "bookSourcesDeleteSelectedMessage": "确定删除选中的 {count} 个书源吗？本地书籍不会受到影响。",
-  "@bookSourcesDeleteSelectedMessage": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@bookSourcesDeleteSelectedMessage": {"placeholders":{"count":{"type":"int"}}},
   "bookSourcesUrlLabel": "书源地址",
   "bookSourcesUrlHint": "https://example.com 或发现文档 URL",
-  "bookSourcesNoOfficialSourcesNotice": "拾页不预装任何书源，也不运营、推荐或背书第三方书源服务。每个书源地址都由你主动添加。",
+  "bookSourcesNoOfficialSourcesNotice": "开元阅读不预装任何书源，也不运营、推荐或背书第三方书源服务。每个书源地址都由你主动添加。",
   "bookSourcesResponsibilityAck": "我确认自己有权访问相关内容，且不会利用书源绕过登录、付费、DRM 或其他访问控制。",
   "bookSourcesConnect": "连接并校验",
   "bookSourcesConnecting": "正在校验协议…",
@@ -110,7 +92,7 @@
   "bookSourcesRefresh": "刷新书源",
   "bookSourcesRefreshed": "书源已刷新",
   "bookSourcesRefreshFailed": "无法刷新该书源",
-  "bookSourcesProtocolTitle": "拾页 Source Protocol",
+  "bookSourcesProtocolTitle": "Open Reading Source Protocol",
   "bookSourcesProtocolDescription": "统一发现、搜索、书籍详情、目录与章节正文接口。开发者可搭建原生书源，也可为已有合法内容服务编写适配网关。",
   "bookSourcesProtocolDetails": "查看协议",
   "bookSourcesProtocolRepository": "协议开源仓库",
@@ -123,7 +105,7 @@
   "bookSourcesContentLicense": "内容许可",
   "bookSourcesRightsStatement": "权利声明",
   "bookSourcesRightsNotProvided": "该书源未提供",
-  "bookSourcesRightsUnverifiedNotice": "上述信息由独立书源运营者自行声明。拾页仅为提高透明度而展示，不负责核验，也不构成推荐或背书。",
+  "bookSourcesRightsUnverifiedNotice": "上述信息由独立书源运营者自行声明。开元阅读仅为提高透明度而展示，不负责核验，也不构成推荐或背书。",
   "bookSourcesContactOperator": "联系运营者",
   "bookSourcesRightsReport": "权利投诉",
   "bookSourcesRightsReportOpenFailed": "无法打开权利投诉表单",
@@ -424,7 +406,7 @@
   "@fontMonospaceDescription": {
     "description": "等宽字体选项说明"
   },
-  "fontPreviewText": "拾页 · 自由阅读，开卷有益",
+  "fontPreviewText": "Open Reading · 自由阅读，开卷有益",
   "@fontPreviewText": {
     "description": "中英文字体预览文本"
   },
@@ -434,9 +416,7 @@
   "customFontsCount": "已导入 {count} 款字体",
   "@customFontsCount": {
     "placeholders": {
-      "count": {
-        "type": "int"
-      }
+      "count": {"type": "int"}
     }
   },
   "customFontsLocalOnly": "导入的字体只保存在当前设备，不会自动同步。",
@@ -451,17 +431,13 @@
   "fontDeleteDownloadTitle": "删除已下载的“{name}”？",
   "@fontDeleteDownloadTitle": {
     "placeholders": {
-      "name": {
-        "type": "String"
-      }
+      "name": {"type": "String"}
     }
   },
   "fontDeleteDownloadMessage": "将释放 {size} 存储空间。下次使用时会重新下载。",
   "@fontDeleteDownloadMessage": {
     "placeholders": {
-      "size": {
-        "type": "String"
-      }
+      "size": {"type": "String"}
     }
   },
   "fontDownloadCancelled": "下载已取消",
@@ -490,9 +466,7 @@
   "deleteCustomFontTitle": "删除“{name}”？",
   "@deleteCustomFontTitle": {
     "placeholders": {
-      "name": {
-        "type": "String"
-      }
+      "name": {"type": "String"}
     }
   },
   "deleteCustomFontMessage": "字体文件将从当前设备删除。",
@@ -502,7 +476,7 @@
   "settingsTelegramSubtitle": "Telegram 官方频道",
   "settingsTelegramOpenFailed": "无法打开 Telegram 链接",
   "settingsQqChannel": "QQ 频道",
-  "settingsQqChannelSubtitle": "拾页 · 拾页6",
+  "settingsQqChannelSubtitle": "开元阅读 · OpenReading6",
   "settingsQqChannelOpenFailed": "无法打开 QQ 频道邀请链接",
   "languageSystem": "跟随系统",
   "@languageSystem": {
@@ -960,12 +934,8 @@
   "readerNavigationPosition": "第 {current}/{total} 章",
   "@readerNavigationPosition": {
     "placeholders": {
-      "current": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
+      "current": {"type": "int"},
+      "total": {"type": "int"}
     }
   },
   "readerSearchChapters": "搜索章节",
@@ -1167,7 +1137,7 @@
   "agreementTagline": "沉浸阅读 · AI 助手 · 本地优先",
   "agreementCardTitle": "用户服务协议",
   "agreementCardSubtitle": "请仔细阅读以下内容",
-  "agreementWelcomeTitle": "欢迎使用拾页",
+  "agreementWelcomeTitle": "欢迎使用开元阅读",
   "agreementWelcomeBody": "为保证你获得稳定、可预期的阅读体验，请先阅读并同意以下协议内容。",
   "agreementFeatureFormatsTitle": "多格式支持",
   "agreementFeatureFormatsBody": "EPUB、PDF、TXT、MOBI等多种格式",
@@ -1272,13 +1242,7 @@
   "libraryExportOriginalHint": "复制原文件到设备上的其他位置",
   "libraryExportDownloadedTxtHint": "导出下载后生成的 TXT 文件",
   "bookExportSuccess": "已导出到 {location}",
-  "@bookExportSuccess": {
-    "placeholders": {
-      "location": {
-        "type": "String"
-      }
-    }
-  },
+  "@bookExportSuccess": {"placeholders": {"location": {"type": "String"}}},
   "bookExportSourceMissing": "书籍文件不存在，无法导出",
   "bookExportUnsupported": "当前平台暂不支持导出书籍",
   "bookExportFailed": "书籍导出失败",
@@ -1313,60 +1277,18 @@
   "librarySelectMultiple": "选择多本",
   "librarySelectAll": "全选",
   "librarySelectedBooks": "已选择 {count} 本",
-  "@librarySelectedBooks": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@librarySelectedBooks": {"placeholders": {"count": {"type": "int"}}},
   "libraryDeleteSelected": "删除 {count} 本",
-  "@libraryDeleteSelected": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@libraryDeleteSelected": {"placeholders": {"count": {"type": "int"}}},
   "libraryBatchDeleteTitle": "删除所选书籍？",
   "libraryBatchDeleteMessage": "将永久删除所选的 {count} 本书，以及相关笔记、书签和本地文件。此操作无法撤销。",
-  "@libraryBatchDeleteMessage": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@libraryBatchDeleteMessage": {"placeholders": {"count": {"type": "int"}}},
   "libraryDeletingSelected": "正在删除 {done}/{total}",
-  "@libraryDeletingSelected": {
-    "placeholders": {
-      "done": {
-        "type": "int"
-      },
-      "total": {
-        "type": "int"
-      }
-    }
-  },
+  "@libraryDeletingSelected": {"placeholders": {"done": {"type": "int"}, "total": {"type": "int"}}},
   "libraryBatchDeleteSuccess": "已删除 {count} 本书",
-  "@libraryBatchDeleteSuccess": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@libraryBatchDeleteSuccess": {"placeholders": {"count": {"type": "int"}}},
   "libraryBatchDeletePartial": "已删除 {success} 本，{failed} 本删除失败",
-  "@libraryBatchDeletePartial": {
-    "placeholders": {
-      "success": {
-        "type": "int"
-      },
-      "failed": {
-        "type": "int"
-      }
-    }
-  },
+  "@libraryBatchDeletePartial": {"placeholders": {"success": {"type": "int"}, "failed": {"type": "int"}}},
   "readerPrefaceTitle": "正文前",
   "readerModeHorizontalPage": "无动画",
   "readerModeVerticalScrollHint": "预分页内容上下连续滑动，左右滑动切换章节",
@@ -1441,31 +1363,14 @@
   "additionalSourcesUrlLabel": "书源 JSON 地址",
   "additionalSourcesLoadUrl": "从 URL 加载",
   "additionalSourcesPreview": "可使用 {supported} 个，部分支持 {partial} 个，暂不支持 {unsupported} 个",
-  "@additionalSourcesPreview": {
-    "placeholders": {
-      "supported": {
-        "type": "int"
-      },
-      "partial": {
-        "type": "int"
-      },
-      "unsupported": {
-        "type": "int"
-      }
-    }
-  },
+  "@additionalSourcesPreview": {"placeholders":{"supported":{"type":"int"},"partial":{"type":"int"},"unsupported":{"type":"int"}}},
   "additionalSourcesAvailable": "可使用",
   "additionalSourcesPartial": "部分支持",
   "additionalSourcesUnsupported": "暂不支持",
   "additionalSourcesImportConfirm": "停用状态导入",
   "additionalSourcesImported": "已导入 {count} 个书源",
-  "@additionalSourcesImported": {
-    "placeholders": {
-      "count": {
-        "type": "int"
-      }
-    }
-  },
+  "@additionalSourcesImported": {"placeholders":{"count":{"type":"int"}}},
+  "settingsSectionAboutSupport": "关于与支持",
   "settingsKeepScreenOnTitle": "保持屏幕常亮",
   "settingsKeepScreenOnSubtitle": "阅读时防止屏幕自动关闭",
   "settingsAutoSaveTitle": "自动保存",
@@ -1490,6 +1395,21 @@
   "settingsAiSaving": "保存中...",
   "settingsAiSaveConfig": "保存 AI 配置",
   "settingsPageIntro": "只保留真正影响阅读体验的选项。",
+  "settingsSupportDevelopmentTitle": "支持开发",
+  "firstHomeSupportNow": "立即支持",
+  "firstHomeSupportLater": "再说吧",
+  "firstHomeSupportPaperSemanticLabel": "开元阅读开发者的自愿支持说明",
+  "settingsSupportDevelopmentCardTitle": "支持持续开发",
+  "settingsSupportDevelopmentCardSubtitle": "开发和维护投入了大量时间与精力。如果开元阅读对你有帮助，欢迎自愿捐赠支持。",
+  "settingsDonationAction": "微信捐赠",
+  "settingsAlipayDonationAction": "支付宝捐赠",
+  "settingsDonationDialogTitle": "微信捐赠",
+  "settingsDonationDialogHint": "请使用微信扫描二维码。感谢你对持续开发的支持。",
+  "settingsAlipayDonationDialogTitle": "支付宝捐赠",
+  "settingsAlipayDonationDialogHint": "请使用支付宝扫描二维码。感谢你对持续开发的支持。",
+  "settingsDonationVoluntaryNotice": "捐赠完全自愿，不影响任何功能，也不构成购买或服务承诺。",
+  "settingsDonationQrCodeLabel": "微信捐赠二维码",
+  "settingsAlipayDonationQrCodeLabel": "支付宝捐赠二维码",
   "settingsAiSwipeHint": "左右滑动选择模型，点击切换，长按编辑或删除。",
   "settingsAiLegacyIntro": "选择服务商和模型，填写 API Key 即可。其余参数保持默认。",
   "settingsAiModelLabel": "模型",
@@ -1502,14 +1422,14 @@
   "changelogHistorySubtitle": "查看各版本更新内容",
   "openSourceLicensesTitle": "开源许可",
   "openSourceLicensesSubtitle": "查看应用、内置字体与第三方组件的许可",
-  "openSourceLicensesIntro": "以下许可文本随应用离线提供。拾页、内置字体及第三方软件分别遵循各自的许可条款。",
+  "openSourceLicensesIntro": "以下许可文本随应用离线提供。Open Reading、内置字体及第三方软件分别遵循各自的许可条款。",
   "openSourceProjectSection": "项目许可",
   "openSourceLegacyLicenseTitle": "历史版本",
   "openSourceFontsSection": "内置字体",
   "openSourceDependenciesSection": "第三方软件",
   "openSourceDependenciesTitle": "Flutter 与 Dart 依赖",
   "openSourceDependenciesSubtitle": "查看由 Flutter 自动收集的第三方软件许可",
-  "openSourceLicenseLegalese": "拾页 与第三方组件分别遵循各自的许可条款。",
+  "openSourceLicenseLegalese": "Open Reading 与第三方组件分别遵循各自的许可条款。",
   "openSourceLicenseLoadFailed": "无法加载许可文本。",
   "changelogPageTitle": "版本更新记录",
   "changelogCurrentVersion": "当前版本",
@@ -1520,7 +1440,7 @@
   "settingsJoinQqGroup": "加入 QQ 群",
   "settingsQqOpenFailed": "无法打开 QQ，请确认已安装 QQ",
   "contributorsTitle": "贡献者",
-  "contributorsSubtitle": "感谢每一位让 拾页 变得更好的人",
+  "contributorsSubtitle": "感谢每一位让 Open Reading 变得更好的人",
   "contributorsOpenProfileFailed": "无法打开贡献者主页",
   "contributorsEmpty": "暂时没有可展示的贡献者",
   "contributorsLoadFailed": "贡献者加载失败，请检查网络后重试",
@@ -1612,9 +1532,7 @@
   "updateDownloadProgress": "已下载 {percent}%",
   "@updateDownloadProgress": {
     "placeholders": {
-      "percent": {
-        "type": "int"
-      }
+      "percent": {"type": "int"}
     }
   },
   "updatePreparingInstaller": "正在校验安装包并准备系统安装程序…",
@@ -1806,8 +1724,8 @@
   "importSourceTitle": "添加书籍",
   "importSourceDescription": "可以一次选择多本书，确认队列后再开始导入。",
   "importSelectFiles": "选择文件",
-  "importIosSharedDocuments": "我的 iPhone · 拾页",
-  "importICloudDrive": "iCloud Drive · 拾页",
+  "importIosSharedDocuments": "我的 iPhone · Open Reading",
+  "importICloudDrive": "iCloud Drive · Open Reading",
   "importICloudUnavailable": "iCloud Drive 当前不可用",
   "importAndroidFolder": "授权书籍目录",
   "importAndroidRescan": "扫描已授权目录",
@@ -1842,9 +1760,7 @@
   "settingsAiSwitchedToModel": "已切换到 {model}",
   "@settingsAiSwitchedToModel": {
     "placeholders": {
-      "model": {
-        "type": "String"
-      }
+        "model": {"type": "String"}
     }
   },
   "settingsAiFillBaseUrlAndApiKey": "请先填写 Base URL 和 API Key",
@@ -1869,9 +1785,7 @@
   "settingsAiFetchModelsFailed": "获取模型失败：{error}",
   "@settingsAiFetchModelsFailed": {
     "placeholders": {
-      "error": {
-        "type": "String"
-      }
+        "error": {"type": "String"}
     }
   },
   "settingsAiPreprocessTitle": "AI 预处理书籍",
@@ -1913,147 +1827,91 @@
   "readerAiRequestFailed": "请求失败：{error}",
   "@readerAiRequestFailed": {
     "placeholders": {
-      "error": {
-        "type": "String"
-      }
+        "error": {"type": "String"}
     }
   },
   "readerAiUnknownError": "未知错误",
   "readerAiEmptyResponseError": "服务端返回为空，通常是 Base URL 配置错误、网关没有转发到模型接口，或服务端提前断开连接。\n请求地址：{endpoint}",
   "@readerAiEmptyResponseError": {
     "placeholders": {
-      "endpoint": {
-        "type": "String"
-      }
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiInvalidJsonError": "服务端返回的不是合法 JSON，当前接口可能与 {provider} 配置不兼容。\n请求地址：{endpoint}\n返回片段：{snippet}",
   "@readerAiInvalidJsonError": {
     "placeholders": {
-      "provider": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      },
-      "snippet": {
-        "type": "String"
-      }
+        "provider": {"type": "String"},
+        "endpoint": {"type": "String"},
+        "snippet": {"type": "String"}
     }
   },
   "readerAiFailedReadBody": "请求失败{status}：未能读取服务端返回的数据，通常是 Base URL 配错、接口返回空内容，或网络把响应截断了。\n请求地址：{endpoint}",
   "@readerAiFailedReadBody": {
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiNetworkRequestFailed": "网络请求失败{status}：{error}\n请求地址：{endpoint}",
   "@readerAiNetworkRequestFailed": {
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "error": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "error": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiRequestFailedMinimaxHint": "请求失败({status})：{text}\n建议检查：1) MiniMax 温度需在 (0,1]；2) 模型名与接口是否匹配；3) 仅使用单条 system 指令。\n请求地址：{endpoint}",
   "@readerAiRequestFailedMinimaxHint": {
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "text": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "text": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiRequestFailedClaudeHint": "请求失败({status})：{text}\n提示：Claude 必须携带 anthropic-version 请求头。\n请求地址：{endpoint}",
   "@readerAiRequestFailedClaudeHint": {
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "text": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "text": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiRequestFailedProviderMismatchHint": "请求失败({status})：{text}\n提示：请确认服务商与 API Key 对应，不可混用。\n请求地址：{endpoint}",
   "@readerAiRequestFailedProviderMismatchHint": {
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "text": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "text": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiRequestFailedGeneric": "请求失败({status})：{text}\n请求地址：{endpoint}",
   "@readerAiRequestFailedGeneric": {
     "placeholders": {
-      "status": {
-        "type": "String"
-      },
-      "text": {
-        "type": "String"
-      },
-      "endpoint": {
-        "type": "String"
-      }
+        "status": {"type": "String"},
+        "text": {"type": "String"},
+        "endpoint": {"type": "String"}
     }
   },
   "readerAiMockSelectionResponse": "AI(模拟): 你选择的内容是\"{selectedText}\"。\n\n上文: {before}\n下文: {after}",
   "@readerAiMockSelectionResponse": {
     "placeholders": {
-      "selectedText": {
-        "type": "String"
-      },
-      "before": {
-        "type": "String"
-      },
-      "after": {
-        "type": "String"
-      }
+        "selectedText": {"type": "String"},
+        "before": {"type": "String"},
+        "after": {"type": "String"}
     }
   },
   "readerAiMockPageAnalysis": "AI(模拟): 本页共 {chars} 字，建议重点关注段落开头与结尾处的论点。",
   "@readerAiMockPageAnalysis": {
     "placeholders": {
-      "chars": {
-        "type": "int"
-      }
+        "chars": {"type": "int"}
     }
   },
   "readerAiMockGreeting": "你好",
   "readerAiMockChatResponse": "AI(模拟): 你问的是「{question}」。\n\n我已读取当前页（{chars} 字），你可以继续追问。",
   "@readerAiMockChatResponse": {
     "placeholders": {
-      "question": {
-        "type": "String"
-      },
-      "chars": {
-        "type": "int"
-      }
+        "question": {"type": "String"},
+        "chars": {"type": "int"}
     }
   },
   "readerAiMemorySummaryHeading": "【本书记忆摘要】",
@@ -2066,15 +1924,9 @@
   "readerAiSnippetLocation": "- 位置：{chapterId} ({startOffset}-{endOffset})",
   "@readerAiSnippetLocation": {
     "placeholders": {
-      "chapterId": {
-        "type": "String"
-      },
-      "startOffset": {
-        "type": "int"
-      },
-      "endOffset": {
-        "type": "int"
-      }
+        "chapterId": {"type": "String"},
+        "startOffset": {"type": "int"},
+        "endOffset": {"type": "int"}
     }
   },
   "readerAiReadingSuggestionHeading": "【建议怎么读】",
@@ -2086,9 +1938,7 @@
   "ttsUnsupportedLanguage": "系统不支持语言: {language}",
   "@ttsUnsupportedLanguage": {
     "placeholders": {
-      "language": {
-        "type": "String"
-      }
+        "language": {"type": "String"}
     }
   },
   "ttsCallFailed": "系统 TTS 调用失败",
@@ -2107,18 +1957,14 @@
   "homePlanTaskReadMinutes": "阅读 {minutes} 分钟",
   "@homePlanTaskReadMinutes": {
     "placeholders": {
-      "minutes": {
-        "type": "int"
-      }
+        "minutes": {"type": "int"}
     }
   },
   "homePlanTaskCompleteFocusReading": "完成专注阅读",
   "homePlanTaskFocusSession": "至少 1 次 {minutes} 分钟专注会话",
   "@homePlanTaskFocusSession": {
     "placeholders": {
-      "minutes": {
-        "type": "int"
-      }
+        "minutes": {"type": "int"}
     }
   },
   "homePlanTaskKeepRhythm": "保持节奏",
@@ -2135,44 +1981,32 @@
   "noteShareBookHeader": "📖 《{title}》- {author}",
   "@noteShareBookHeader": {
     "placeholders": {
-      "title": {
-        "type": "String"
-      },
-      "author": {
-        "type": "String"
-      }
+        "title": {"type": "String"},
+        "author": {"type": "String"}
     }
   },
   "noteShareNoteLabel": "💭 笔记：{note}",
   "@noteShareNoteLabel": {
     "placeholders": {
-      "note": {
-        "type": "String"
-      }
+        "note": {"type": "String"}
     }
   },
   "noteShareChapterLabel": "📍 {chapter}",
   "@noteShareChapterLabel": {
     "placeholders": {
-      "chapter": {
-        "type": "String"
-      }
+        "chapter": {"type": "String"}
     }
   },
   "noteSharePageLabel": "📄 第{page}页",
   "@noteSharePageLabel": {
     "placeholders": {
-      "page": {
-        "type": "int"
-      }
+        "page": {"type": "int"}
     }
   },
   "noteShareHashtags": "#读书笔记 #{type}",
   "@noteShareHashtags": {
     "placeholders": {
-      "type": {
-        "type": "String"
-      }
+        "type": {"type": "String"}
     }
   },
   "accentPurple": "优雅紫",
@@ -2191,7 +2025,7 @@
   "glassPresetStandard": "标准模式",
   "glassPresetDreamy": "朦胧模式",
   "agreementV2HeroTitle": "把阅读，留在自己的设备里。",
-  "agreementV2HeroBody": "拾页是一款开源、跨平台、本地优先的电子书阅读工具。它提供阅读能力，但不提供、托管或审核你导入的书籍。",
+  "agreementV2HeroBody": "开元阅读是一款开源、跨平台、本地优先的电子书阅读工具。它提供阅读能力，但不提供、托管或审核你导入的书籍。",
   "agreementV2LocalTitle": "本地优先",
   "agreementV2LocalBody": "书籍、进度与笔记原则上保存在你的设备中，由你自行管理与备份。",
   "agreementV2OpenSourceTitle": "AGPL-3.0 开源",
@@ -2199,20 +2033,18 @@
   "agreementV2VersionLabel": "条款版本 {version}",
   "@agreementV2VersionLabel": {
     "placeholders": {
-      "version": {
-        "type": "String"
-      }
+        "version": {"type": "String"}
     }
   },
   "agreementV2Title": "使用条款与隐私说明",
   "agreementV2Subtitle": "使用前请完整阅读，重点条款已直接说明",
-  "agreementV2ImportantNotice": "特别提示：拾页官方版本不预装、不内置、不推荐任何第三方书源，也不运营、代理或托管书源内容。你导入的文件和主动添加的书源均由你自行选择；请仅访问和使用你有权使用的内容。",
+  "agreementV2ImportantNotice": "特别提示：开元阅读官方版本不预装、不内置、不推荐任何第三方书源，也不运营、代理或托管书源内容。你导入的文件和主动添加的书源均由你自行选择；请仅访问和使用你有权使用的内容。",
   "agreementV2SourceBoundaryTitle": "第三方书源责任边界",
-  "agreementV2SourceBoundaryPoint1": "官方只提供开源阅读软件和 拾页 Source Protocol，不提供书源地址或官方书源目录。",
+  "agreementV2SourceBoundaryPoint1": "官方只提供开源阅读软件和 Open Reading Source Protocol，不提供书源地址或官方书源目录。",
   "agreementV2SourceBoundaryPoint2": "每个书源地址都必须由你主动输入添加；App 直接连接该独立第三方服务，不经过开发者内容服务器。",
   "agreementV2SourceBoundaryPoint3": "协议兼容只代表接口可连接，不代表内容合法或获得授权。书源运营者负责其内容，你负责添加前审查并合法使用。",
   "agreementV2Section1Title": "协议范围与接受",
-  "agreementV2Section1Body": "本协议适用于你对拾页软件及其附带功能的下载、安装和使用。点击“同意并继续”即表示你已阅读、理解并同意本协议；如你不同意，请停止使用并退出应用。若你未达到所在地法律规定的独立同意年龄，应由监护人阅读并同意。",
+  "agreementV2Section1Body": "本协议适用于你对开元阅读软件及其附带功能的下载、安装和使用。点击“同意并继续”即表示你已阅读、理解并同意本协议；如你不同意，请停止使用并退出应用。若你未达到所在地法律规定的独立同意年龄，应由监护人阅读并同意。",
   "agreementV2Section2Title": "开源软件与许可",
   "agreementV2Section2Body": "开源阅读后续版本按 GNU Affero General Public License v3.0 发布。你可以依许可证使用、复制、修改、分发或销售软件；分发修改版时必须按 AGPL-3.0 提供完整对应源代码，修改版通过网络向用户提供服务时也必须按许可证向这些用户提供对应源代码。v1.0.0 及更早版本已经获得的 MIT 授权继续有效且不会撤回。本协议不限制开源许可证已经授予的权利；第三方组件仍适用各自许可证。",
   "agreementV2Section3Title": "用户内容与版权责任",
@@ -2238,7 +2070,7 @@
   "agreementV2ExitLabel": "不同意",
   "agreementV2ContinueLabel": "同意并继续",
   "agreementV2ExitDialogTitle": "不同意条款？",
-  "agreementV2ExitDialogBody": "你需要同意使用条款后才能继续使用拾页。若不同意，请退出应用。",
+  "agreementV2ExitDialogBody": "你需要同意使用条款后才能继续使用开元阅读。若不同意，请退出应用。",
   "agreementV2CancelLabel": "返回阅读",
   "agreementV2ConfirmExitLabel": "确认退出",
   "agreementV2SaveFailed": "无法保存同意状态，请稍后重试。",

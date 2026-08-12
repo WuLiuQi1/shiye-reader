@@ -1,6 +1,3 @@
-import java.util.Properties
-import java.io.FileInputStream
-
 plugins {
     id("com.android.application")
     id("kotlin-android")
@@ -8,21 +5,10 @@ plugins {
     id("dev.flutter.flutter-gradle-plugin")
 }
 
-val keystoreProperties = Properties()
-val keystorePropertiesFile = rootProject.file("key.properties")
-if (keystorePropertiesFile.exists()) {
-    FileInputStream(keystorePropertiesFile).use { keystoreProperties.load(it) }
-}
-
-// CI 环境变量优先；本地构建回退到 android/key.properties。
 val releaseKeystorePath = System.getenv("ANDROID_KEYSTORE_PATH")
-    ?: keystoreProperties.getProperty("storeFile")
 val releaseKeystorePassword = System.getenv("ANDROID_KEYSTORE_PASSWORD")
-    ?: keystoreProperties.getProperty("storePassword")
 val releaseKeyAlias = System.getenv("ANDROID_KEY_ALIAS")
-    ?: keystoreProperties.getProperty("keyAlias")
 val releaseKeyPassword = System.getenv("ANDROID_KEY_PASSWORD")
-    ?: keystoreProperties.getProperty("keyPassword")
 val hasReleaseSigning = listOf(
     releaseKeystorePath,
     releaseKeystorePassword,
@@ -39,9 +25,8 @@ gradle.taskGraph.whenReady {
     }
     if (buildsRelease && !hasReleaseSigning) {
         throw GradleException(
-            "Release signing is required. Configure android/key.properties or set " +
-                "ANDROID_KEYSTORE_PATH, ANDROID_KEYSTORE_PASSWORD, " +
-                "ANDROID_KEY_ALIAS, and ANDROID_KEY_PASSWORD.",
+            "Release signing is required. Set ANDROID_KEYSTORE_PATH, " +
+                "ANDROID_KEYSTORE_PASSWORD, ANDROID_KEY_ALIAS, and ANDROID_KEY_PASSWORD.",
         )
     }
 }
@@ -75,7 +60,7 @@ android {
     signingConfigs {
         if (hasReleaseSigning) {
             create("release") {
-                storeFile = rootProject.file(releaseKeystorePath!!)
+                storeFile = file(releaseKeystorePath!!)
                 storePassword = releaseKeystorePassword
                 keyAlias = releaseKeyAlias
                 keyPassword = releaseKeyPassword

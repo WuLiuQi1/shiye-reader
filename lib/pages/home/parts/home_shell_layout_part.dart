@@ -509,7 +509,7 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
       trailing = _buildTopBarActionButton(
         icon: Icons.settings_outlined,
         tooltip: context.l10n.settings,
-        onTap: () => unawaited(_showSettingsSheet()),
+        onTap: _showSettingsSheet,
       );
     } else if (currentPage is AiPage) {
       trailing = Row(
@@ -635,83 +635,21 @@ extension _HomeShellLayoutPart on _HomeShellPageState {
     );
   }
 
-
   Future<void> _showSettingsSheet() async {
-    final scheme = Theme.of(context).colorScheme;
     await showModalBottomSheet<void>(
       context: context,
       isScrollControlled: true,
-      useSafeArea: false,
+      useSafeArea: true,
       enableDrag: true,
-      isDismissible: true,
-      backgroundColor: Colors.transparent,
-      barrierColor: Colors.black.withValues(alpha: 0.34),
-      builder: (sheetContext) {
-        final media = MediaQuery.of(sheetContext);
-        final topGap = (media.viewPadding.top + 14).clamp(46.0, 72.0).toDouble();
-        final sheetHeight = media.size.height - topGap;
-        return SizedBox(
-          height: sheetHeight,
-          child: ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(34)),
-            child: Material(
-              color: scheme.surface,
-              child: Stack(
-                children: [
-                  MediaQuery(
-                    data: media.copyWith(
-                      padding: media.padding.copyWith(top: 0),
-                      viewPadding: media.viewPadding.copyWith(top: 0),
-                    ),
-                    child: SettingsPage(controller: _settingsController),
-                  ),
-                  Positioned(
-                    top: 16,
-                    left: 24,
-                    right: 24,
-                    child: SizedBox(
-                      height: 54,
-                      child: Stack(
-                        alignment: Alignment.center,
-                        children: [
-                          Text(
-                            sheetContext.l10n.settings,
-                            style: Theme.of(sheetContext)
-                                .textTheme
-                                .titleLarge
-                                ?.copyWith(fontWeight: FontWeight.w700),
-                          ),
-                          Align(
-                            alignment: Alignment.centerRight,
-                            child: Material(
-                              color: scheme.surfaceContainerHighest
-                                  .withValues(alpha: 0.9),
-                              shape: const CircleBorder(),
-                              child: InkWell(
-                                customBorder: const CircleBorder(),
-                                onTap: () => Navigator.of(sheetContext).pop(),
-                                child: SizedBox(
-                                  width: 48,
-                                  height: 48,
-                                  child: Icon(
-                                    Icons.close_rounded,
-                                    size: 30,
-                                    color: scheme.onSurface,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-        );
-      },
+      showDragHandle: true,
+      backgroundColor: Theme.of(context).colorScheme.surface,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+      ),
+      builder: (sheetContext) => FractionallySizedBox(
+        heightFactor: 0.94,
+        child: SettingsPage(controller: _settingsController),
+      ),
     );
   }
 

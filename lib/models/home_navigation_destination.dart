@@ -25,6 +25,7 @@ const List<HomeNavigationDestination> defaultHomeNavigationOrder = [
   HomeNavigationDestination.library,
   HomeNavigationDestination.discover,
   HomeNavigationDestination.ai,
+  HomeNavigationDestination.settings,
 ];
 
 List<HomeNavigationDestination> normalizeHomeNavigationOrder(
@@ -35,9 +36,7 @@ List<HomeNavigationDestination> normalizeHomeNavigationOrder(
 
   for (final id in storedIds ?? const <String>[]) {
     final destination = HomeNavigationDestination.fromStorageId(id);
-    if (destination != null &&
-        destination != HomeNavigationDestination.settings &&
-        seen.add(destination)) {
+    if (destination != null && seen.add(destination)) {
       normalized.add(destination);
     }
   }
@@ -49,8 +48,8 @@ List<HomeNavigationDestination> normalizeHomeNavigationOrder(
   return List<HomeNavigationDestination>.unmodifiable(normalized);
 }
 
-/// 规范化隐藏目的地集合：忽略未知 ID。
-/// 设置页已从底部导航移除，不再参与可见性配置。
+/// 规范化隐藏目的地集合：忽略未知 ID，设置页永远不可隐藏，
+/// 全部隐藏的非法状态回退为全部显示。
 Set<HomeNavigationDestination> normalizeHiddenHomeNavigationDestinations(
   Iterable<String>? storedIds,
 ) {

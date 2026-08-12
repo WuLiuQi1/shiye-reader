@@ -19,7 +19,7 @@ class _WebDavSetupPageState extends State<WebDavSetupPage> {
   final _serverController = TextEditingController();
   final _usernameController = TextEditingController();
   final _passwordController = TextEditingController();
-  final _rootController = TextEditingController(text: '拾页');
+  final _rootController = TextEditingController(text: 'OpenReading');
 
   var _obscurePassword = true;
   var _testing = false;
@@ -33,7 +33,7 @@ class _WebDavSetupPageState extends State<WebDavSetupPage> {
     final sync = context.read<WebDavSyncController>();
     _serverController.text = sync.serverUrl ?? '';
     _usernameController.text = sync.username ?? '';
-    _rootController.text = sync.rootPath ?? '拾页';
+    _rootController.text = sync.rootPath ?? 'OpenReading';
   }
 
   @override

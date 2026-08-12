@@ -53,8 +53,9 @@ class ReaderInlineChapterTitle extends StatelessWidget {
   final TextStyle bodyStyle;
 
   static TextStyle titleStyleFor(TextStyle bodyStyle) => bodyStyle.copyWith(
-    fontSize: ((bodyStyle.fontSize ?? 19) * 1.45).clamp(24, 30),
-    fontWeight: FontWeight.w600,
+    // Two typographic steps above body copy, matching Apple Books' hierarchy.
+    fontSize: ((bodyStyle.fontSize ?? 19) + 4).clamp(22, 28),
+    fontWeight: FontWeight.w700,
     height: 1.35,
   );
 

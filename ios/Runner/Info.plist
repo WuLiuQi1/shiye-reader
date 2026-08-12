@@ -28,7 +28,7 @@
 	<array>
 		<dict>
 			<key>CFBundleTypeName</key>
-			<string>拾页 Book Document</string>
+			<string>Open Reading Book Document</string>
 			<key>CFBundleTypeRole</key>
 			<string>Viewer</string>
 			<key>LSHandlerRank</key>
@@ -118,7 +118,7 @@
 			<key>NSUbiquitousContainerIsDocumentScopePublic</key>
 			<true/>
 			<key>NSUbiquitousContainerName</key>
-			<string>拾页</string>
+			<string>Open Reading</string>
 			<key>NSUbiquitousContainerSupportedFolderLevels</key>
 			<string>Any</string>
 		</dict>
@@ -136,6 +136,6 @@
 	<key>NSPhotoLibraryAddUsageDescription</key>
 	<string>用于将应用内生成或导出的图片保存到你的相册。</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>用于兼容图片导入组件在处理照片时读取拍摄位置信息。拾页不会在后台获取位置，也不会将位置信息用于其他用途。</string>
+	<string>用于兼容图片导入组件在处理照片时读取拍摄位置信息。开元阅读不会在后台获取位置，也不会将位置信息用于其他用途。</string>
 </dict>
 </plist>

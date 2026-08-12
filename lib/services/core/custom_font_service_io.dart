@@ -182,7 +182,7 @@ class CustomFontService {
     final record = CustomFontRecord(
       id: id,
       displayName: path.basenameWithoutExtension(fileName).trim(),
-      runtimeFamily: 'ShiyeCustom_$shortHash',
+      runtimeFamily: 'OpenReadingCustom_$shortHash',
       fileName: fileName,
       relativePath: storedFileName,
       format: extension.substring(1),
